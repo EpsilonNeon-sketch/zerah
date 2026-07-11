@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,649 +7,164 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-    <link rel="icon"
-        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👗</text></svg>">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👗</text></svg>">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: #fdf2f8;
-            color: #1f2937;
-            overflow-x: hidden
-        }
-
-        .bg-pattern {
-            position: fixed;
-            inset: 0;
-            z-index: -1;
-            background-image: radial-gradient(at 0% 0%, rgba(214, 51, 108, .06) 0, transparent 50%), radial-gradient(at 100% 100%, rgba(232, 67, 147, .05) 0, transparent 50%)
-        }
-
-        .input-field {
-            width: 100%;
-            border-radius: .6rem;
-            padding: .75rem 1rem;
-            background: #fff;
-            border: 1.5px solid #fbcfe8;
-            transition: all .25s;
-            font-size: .9rem;
-            font-family: 'Inter', sans-serif;
-            color: #1f2937
-        }
-
-        .input-field:focus {
-            outline: none;
-            border-color: #d6336c;
-            box-shadow: 0 0 0 3px rgba(214, 51, 108, .1)
-        }
-
-        .input-field::placeholder {
-            color: #f9a8d4
-        }
-
-        textarea.input-field {
-            resize: vertical;
-            min-height: 80px
-        }
-
-        .btn-primary {
-            padding: .7rem 1.4rem;
-            border-radius: .6rem;
-            background: linear-gradient(135deg, #d6336c, #e84393);
-            color: #fff;
-            font-size: .88rem;
-            font-weight: 600;
-            border: none;
-            cursor: pointer;
-            transition: all .25s;
-            font-family: 'Inter', sans-serif;
-            display: inline-flex;
-            align-items: center;
-            gap: .4rem
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 8px 24px rgba(214, 51, 108, .3)
-        }
-
-        .btn-primary:disabled {
-            opacity: .5;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none
-        }
-
-        .btn-outline {
-            padding: .6rem 1.2rem;
-            border-radius: .6rem;
-            background: #fff;
-            color: #d6336c;
-            font-size: .82rem;
-            font-weight: 600;
-            border: 1.5px solid #fbcfe8;
-            cursor: pointer;
-            transition: all .25s;
-            font-family: 'Inter', sans-serif;
-            display: inline-flex;
-            align-items: center;
-            gap: .35rem
-        }
-
-        .btn-outline:hover {
-            border-color: #d6336c;
-            background: #fdf2f8
-        }
-
-        .btn-danger {
-            padding: .5rem 1rem;
-            border-radius: .5rem;
-            background: #fef2f2;
-            color: #dc2626;
-            font-size: .78rem;
-            font-weight: 600;
-            border: 1px solid #fecaca;
-            cursor: pointer;
-            transition: all .2s;
-            font-family: 'Inter', sans-serif
-        }
-
-        .btn-danger:hover {
-            background: #dc2626;
-            color: #fff
-        }
+        *{box-sizing:border-box;margin:0;padding:0}
+        body{font-family:'Inter',sans-serif;background:#fdf2f8;color:#1f2937;overflow-x:hidden}
+        .bg-pattern{position:fixed;inset:0;z-index:-1;background-image:radial-gradient(at 0% 0%,rgba(214,51,108,.06) 0,transparent 50%),radial-gradient(at 100% 100%,rgba(232,67,147,.05) 0,transparent 50%)}
+        .input-field{width:100%;border-radius:.6rem;padding:.75rem 1rem;background:#fff;border:1.5px solid #fbcfe8;transition:all .25s;font-size:.9rem;font-family:'Inter',sans-serif;color:#1f2937}
+        .input-field:focus{outline:none;border-color:#d6336c;box-shadow:0 0 0 3px rgba(214,51,108,.1)}
+        .input-field::placeholder{color:#f9a8d4}
+        textarea.input-field{resize:vertical;min-height:80px}
+        .btn-primary{padding:.7rem 1.4rem;border-radius:.6rem;background:linear-gradient(135deg,#d6336c,#e84393);color:#fff;font-size:.88rem;font-weight:600;border:none;cursor:pointer;transition:all .25s;font-family:'Inter',sans-serif;display:inline-flex;align-items:center;gap:.4rem}
+        .btn-primary:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(214,51,108,.3)}
+        .btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+        .btn-outline{padding:.6rem 1.2rem;border-radius:.6rem;background:#fff;color:#d6336c;font-size:.82rem;font-weight:600;border:1.5px solid #fbcfe8;cursor:pointer;transition:all .25s;font-family:'Inter',sans-serif;display:inline-flex;align-items:center;gap:.35rem}
+        .btn-outline:hover{border-color:#d6336c;background:#fdf2f8}
+        .btn-danger{padding:.5rem 1rem;border-radius:.5rem;background:#fef2f2;color:#dc2626;font-size:.78rem;font-weight:600;border:1px solid #fecaca;cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif}
+        .btn-danger:hover{background:#dc2626;color:#fff}
+        .btn-admin-promote{padding:.45rem .85rem;border-radius:.5rem;background:#fdf2f8;color:#d6336c;font-size:.78rem;font-weight:600;border:1.5px solid #fbcfe8;cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif;display:inline-flex;align-items:center;gap:.3rem;white-space:nowrap}
+        .btn-admin-promote:hover{background:linear-gradient(135deg,#d6336c,#e84393);color:#fff;border-color:#d6336c}
+        .btn-admin-demote{padding:.45rem .85rem;border-radius:.5rem;background:#fef3c7;color:#d97706;font-size:.78rem;font-weight:600;border:1.5px solid #fde68a;cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif;display:inline-flex;align-items:center;gap:.3rem;white-space:nowrap}
+        .btn-admin-demote:hover{background:#d97706;color:#fff;border-color:#d97706}
 
         /* Auth */
-        #authPage {
-            position: fixed;
-            inset: 0;
-            z-index: 200;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 50%, #fbcfe8 100%)
-        }
-
-        .auth-card {
-            background: #fff;
-            border-radius: 1.25rem;
-            box-shadow: 0 24px 64px rgba(214, 51, 108, .1);
-            max-width: 420px;
-            width: 100%;
-            margin: 1rem;
-            padding: 2rem
-        }
+        #authPage{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#fdf2f8 0%,#fce7f3 50%,#fbcfe8 100%)}
+        .auth-card{background:#fff;border-radius:1.25rem;box-shadow:0 24px 64px rgba(214,51,108,.1);max-width:420px;width:100%;margin:1rem;padding:2rem}
 
         /* Sidebar */
-        .sidebar {
-            position: fixed;
-            left: 0;
-            top: 0;
-            height: 100vh;
-            width: 260px;
-            background: rgba(255, 255, 255, .97);
-            backdrop-filter: blur(20px);
-            border-right: 1px solid rgba(214, 51, 108, .08);
-            transition: transform .35s cubic-bezier(.4, 0, .2, 1);
-            z-index: 100;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column
-        }
-
-        .sidebar::-webkit-scrollbar {
-            width: 4px
-        }
-
-        .sidebar::-webkit-scrollbar-thumb {
-            background: #fbcfe8;
-            border-radius: 4px
-        }
-
-        .sidebar.closed {
-            transform: translateX(-100%)
-        }
-
-        .main-content {
-            margin-left: 260px;
-            transition: margin-left .35s cubic-bezier(.4, 0, .2, 1);
-            padding: 2rem 2.5rem;
-            min-height: 100vh
-        }
-
-        .main-content.expanded {
-            margin-left: 0
-        }
-
-        .menu-toggle {
-            position: fixed;
-            top: 1.25rem;
-            left: 1.25rem;
-            z-index: 101;
-            background: linear-gradient(135deg, #d6336c, #e84393);
-            border: none;
-            padding: .65rem;
-            border-radius: .6rem;
-            cursor: pointer;
-            transition: all .25s;
-            color: #fff;
-            box-shadow: 0 4px 12px rgba(214, 51, 108, .25);
-            display: none;
-            align-items: center;
-            justify-content: center
-        }
-
-        .nav-btn {
-            display: flex;
-            align-items: center;
-            gap: .75rem;
-            padding: .7rem 1.25rem;
-            margin: .15rem .75rem;
-            border-radius: .6rem;
-            font-size: .88rem;
-            font-weight: 500;
-            color: #6b7280;
-            cursor: pointer;
-            transition: all .2s;
-            border: none;
-            background: transparent;
-            width: calc(100% - 1.5rem);
-            font-family: 'Inter', sans-serif;
-            text-align: left
-        }
-
-        .nav-btn:hover {
-            background: #fdf2f8;
-            color: #d6336c
-        }
-
-        .nav-btn.active-nav {
-            background: linear-gradient(135deg, #d6336c, #e84393) !important;
-            color: #fff !important
-        }
-
-        .nav-btn.active-nav svg {
-            color: #fff !important
-        }
-
-        .section {
-            display: none
-        }
-
-        .section.active {
-            display: block
-        }
+        .sidebar{position:fixed;left:0;top:0;height:100vh;width:260px;background:rgba(255,255,255,.97);backdrop-filter:blur(20px);border-right:1px solid rgba(214,51,108,.08);transition:transform .35s cubic-bezier(.4,0,.2,1);z-index:100;overflow-y:auto;display:flex;flex-direction:column}
+        .sidebar::-webkit-scrollbar{width:4px}
+        .sidebar::-webkit-scrollbar-thumb{background:#fbcfe8;border-radius:4px}
+        .sidebar.closed{transform:translateX(-100%)}
+        .main-content{margin-left:260px;transition:margin-left .35s cubic-bezier(.4,0,.2,1);padding:2rem 2.5rem;min-height:100vh}
+        .main-content.expanded{margin-left:0}
+        .menu-toggle{position:fixed;top:1.25rem;left:1.25rem;z-index:101;background:linear-gradient(135deg,#d6336c,#e84393);border:none;padding:.65rem;border-radius:.6rem;cursor:pointer;transition:all .25s;color:#fff;box-shadow:0 4px 12px rgba(214,51,108,.25);display:none;align-items:center;justify-content:center}
+        .nav-btn{display:flex;align-items:center;gap:.75rem;padding:.7rem 1.25rem;margin:.15rem .75rem;border-radius:.6rem;font-size:.88rem;font-weight:500;color:#6b7280;cursor:pointer;transition:all .2s;border:none;background:transparent;width:calc(100% - 1.5rem);font-family:'Inter',sans-serif;text-align:left}
+        .nav-btn:hover{background:#fdf2f8;color:#d6336c}
+        .nav-btn.active-nav{background:linear-gradient(135deg,#d6336c,#e84393)!important;color:#fff!important}
+        .nav-btn.active-nav svg{color:#fff!important}
+        .section{display:none}
+        .section.active{display:block}
 
         /* Stat card */
-        .stat-card {
-            background: #fff;
-            border-radius: 1rem;
-            border: 1px solid rgba(214, 51, 108, .08);
-            padding: 1.25rem;
-            transition: all .3s
-        }
-
-        .stat-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(214, 51, 108, .06)
-        }
+        .stat-card{background:#fff;border-radius:1rem;border:1px solid rgba(214,51,108,.08);padding:1.25rem;transition:all .3s}
+        .stat-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(214,51,108,.06)}
 
         /* Table */
-        .data-table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
-            background: #fff;
-            border-radius: 1rem;
-            overflow: hidden;
-            border: 1px solid rgba(214, 51, 108, .08)
-        }
-
-        .data-table thead {
-            background: linear-gradient(135deg, #d6336c, #e84393)
-        }
-
-        .data-table th {
-            padding: .85rem 1rem;
-            text-align: left;
-            font-size: .78rem;
-            font-weight: 700;
-            color: #fff;
-            text-transform: uppercase;
-            letter-spacing: .04em
-        }
-
-        .data-table td {
-            padding: .85rem 1rem;
-            font-size: .85rem;
-            border-bottom: 1px solid #fce7f3;
-            color: #1f2937
-        }
-
-        .data-table tbody tr {
-            transition: background .15s
-        }
-
-        .data-table tbody tr:hover {
-            background: #fdf2f8
-        }
-
-        .data-table tbody tr:last-child td {
-            border-bottom: none
-        }
+        .data-table{width:100%;border-collapse:separate;border-spacing:0;background:#fff;border-radius:1rem;overflow:hidden;border:1px solid rgba(214,51,108,.08)}
+        .data-table thead{background:linear-gradient(135deg,#d6336c,#e84393)}
+        .data-table th{padding:.85rem 1rem;text-align:left;font-size:.78rem;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.04em}
+        .data-table td{padding:.85rem 1rem;font-size:.85rem;border-bottom:1px solid #fce7f3;color:#1f2937}
+        .data-table tbody tr{transition:background .15s}
+        .data-table tbody tr:hover{background:#fdf2f8}
+        .data-table tbody tr:last-child td{border-bottom:none}
 
         /* Status badges */
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: .3rem;
-            padding: .2rem .65rem;
-            border-radius: 9999px;
-            font-size: .68rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: .04em
-        }
+        .status-badge{display:inline-flex;align-items:center;gap:.3rem;padding:.2rem .65rem;border-radius:9999px;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+        .status-pending{background:#fef3c7;color:#d97706}
+        .status-processing{background:#dbeafe;color:#2563eb}
+        .status-shipped{background:#e0e7ff;color:#4f46e5}
+        .status-delivered{background:#d1fae5;color:#059669}
+        .status-cancelled{background:#fee2e2;color:#dc2626}
+        .admin-badge{display:inline-flex;align-items:center;gap:.3rem;padding:.2rem .65rem;border-radius:9999px;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;background:linear-gradient(135deg,#d6336c,#e84393);color:#fff}
+        .user-badge{display:inline-flex;align-items:center;gap:.3rem;padding:.2rem .65rem;border-radius:9999px;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;background:#f3f4f6;color:#6b7280}
 
-        .status-pending {
-            background: #fef3c7;
-            color: #d97706
-        }
-
-        .status-processing {
-            background: #dbeafe;
-            color: #2563eb
-        }
-
-        .status-shipped {
-            background: #e0e7ff;
-            color: #4f46e5
-        }
-
-        .status-delivered {
-            background: #d1fae5;
-            color: #059669
-        }
-
-        .status-cancelled {
-            background: #fee2e2;
-            color: #dc2626
-        }
+        /* User card */
+        .user-card{background:#fff;border-radius:1rem;border:1px solid rgba(214,51,108,.08);padding:1.25rem;transition:all .25s;display:flex;align-items:center;gap:1rem}
+        .user-card:hover{box-shadow:0 8px 24px rgba(214,51,108,.06);transform:translateY(-2px)}
+        .user-avatar{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#d6336c,#e84393);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:1rem;flex-shrink:0;border:2px solid #fff;box-shadow:0 4px 12px rgba(214,51,108,.15)}
+        .user-avatar.is-admin{background:linear-gradient(135deg,#1f2937,#374151);box-shadow:0 4px 12px rgba(31,41,55,.2)}
+        .user-meta{flex:1;min-width:0}
+        .user-meta-name{font-weight:700;font-size:.95rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+        .user-meta-detail{font-size:.78rem;color:#9ca3af;margin-top:.15rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+        .user-meta-detail svg{width:13px;height:13px;display:inline;vertical-align:middle;margin-right:.25rem}
 
         /* Chat */
-        .chat-layout {
-            display: grid;
-            grid-template-columns: 320px 1fr;
-            gap: 0;
-            background: #fff;
-            border-radius: 1rem;
-            border: 1px solid rgba(214, 51, 108, .08);
-            overflow: hidden;
-            height: calc(100vh - 10rem);
-            min-height: 500px
-        }
-
-        .chat-conv-list {
-            border-right: 1px solid #fce7f3;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column
-        }
-
-        .chat-conv-item {
-            padding: 1rem 1.25rem;
-            cursor: pointer;
-            transition: all .2s;
-            border-bottom: 1px solid #fce7f3
-        }
-
-        .chat-conv-item:hover {
-            background: #fdf2f8
-        }
-
-        .chat-conv-item.active {
-            background: #fce7f3;
-            border-left: 3px solid #d6336c
-        }
-
-        .chat-conv-name {
-            font-size: .88rem;
-            font-weight: 600;
-            color: #1f2937
-        }
-
-        .chat-conv-preview {
-            font-size: .75rem;
-            color: #9ca3af;
-            margin-top: .2rem;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap
-        }
-
-        .chat-conv-time {
-            font-size: .65rem;
-            color: #d1d5db;
-            margin-top: .3rem
-        }
-
-        .chat-window {
-            display: flex;
-            flex-direction: column
-        }
-
-        .chat-window-header {
-            padding: 1rem 1.25rem;
-            border-bottom: 1px solid #fce7f3;
-            background: #fdf2f8
-        }
-
-        .chat-window-messages {
-            flex: 1;
-            overflow-y: auto;
-            padding: 1.25rem;
-            display: flex;
-            flex-direction: column;
-            gap: .75rem
-        }
-
-        .chat-msg {
-            display: flex;
-            gap: .6rem;
-            max-width: 80%;
-            animation: msgIn .25s ease
-        }
-
-        @keyframes msgIn {
-            from {
-                opacity: 0;
-                transform: translateY(6px)
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0)
-            }
-        }
-
-        .chat-msg.user {
-            align-self: flex-end;
-            flex-direction: row-reverse
-        }
-
-        .chat-msg .msg-bubble {
-            padding: .65rem 1rem;
-            border-radius: 1rem;
-            font-size: .85rem;
-            line-height: 1.55
-        }
-
-        .chat-msg.admin .msg-bubble {
-            background: #fce7f3;
-            color: #1f2937;
-            border-top-left-radius: .25rem
-        }
-
-        .chat-msg.user .msg-bubble {
-            background: linear-gradient(135deg, #d6336c, #e84393);
-            color: #fff;
-            border-top-right-radius: .25rem
-        }
-
-        .chat-msg .msg-time {
-            font-size: .6rem;
-            color: #d1d5db;
-            margin-top: .25rem
-        }
-
-        .chat-window-input {
-            padding: .85rem 1rem;
-            border-top: 1px solid #fce7f3;
-            display: flex;
-            gap: .5rem;
-            background: #fff
-        }
-
-        .chat-window-input input {
-            flex: 1;
-            border: 1.5px solid #fbcfe8;
-            border-radius: .75rem;
-            padding: .6rem 1rem;
-            font-size: .85rem;
-            outline: none;
-            background: #fdf2f8;
-            transition: all .2s;
-            font-family: 'Inter', sans-serif;
-            color: #1f2937
-        }
-
-        .chat-window-input input:focus {
-            border-color: #d6336c;
-            background: #fff
-        }
-
-        .chat-window-input button {
-            width: 40px;
-            height: 40px;
-            border-radius: .75rem;
-            background: linear-gradient(135deg, #d6336c, #e84393);
-            color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all .2s;
-            border: none;
-            cursor: pointer
-        }
-
-        .chat-window-input button:hover {
-            box-shadow: 0 4px 12px rgba(214, 51, 108, .3)
-        }
+        .chat-layout{display:grid;grid-template-columns:320px 1fr;gap:0;background:#fff;border-radius:1rem;border:1px solid rgba(214,51,108,.08);overflow:hidden;height:calc(100vh - 10rem);min-height:500px}
+        .chat-conv-list{border-right:1px solid #fce7f3;overflow-y:auto;display:flex;flex-direction:column}
+        .chat-conv-item{padding:1rem 1.25rem;cursor:pointer;transition:all .2s;border-bottom:1px solid #fce7f3}
+        .chat-conv-item:hover{background:#fdf2f8}
+        .chat-conv-item.active{background:#fce7f3;border-left:3px solid #d6336c}
+        .chat-conv-name{font-size:.88rem;font-weight:600;color:#1f2937}
+        .chat-conv-preview{font-size:.75rem;color:#9ca3af;margin-top:.2rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+        .chat-conv-time{font-size:.65rem;color:#d1d5db;margin-top:.3rem}
+        .chat-window{display:flex;flex-direction:column}
+        .chat-window-header{padding:1rem 1.25rem;border-bottom:1px solid #fce7f3;background:#fdf2f8}
+        .chat-window-messages{flex:1;overflow-y:auto;padding:1.25rem;display:flex;flex-direction:column;gap:.75rem}
+        .chat-msg{display:flex;gap:.6rem;max-width:80%;animation:msgIn .25s ease}
+        @keyframes msgIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+        .chat-msg.user{align-self:flex-end;flex-direction:row-reverse}
+        .chat-msg .msg-bubble{padding:.65rem 1rem;border-radius:1rem;font-size:.85rem;line-height:1.55}
+        .chat-msg.admin .msg-bubble{background:#fce7f3;color:#1f2937;border-top-left-radius:.25rem}
+        .chat-msg.user .msg-bubble{background:linear-gradient(135deg,#d6336c,#e84393);color:#fff;border-top-right-radius:.25rem}
+        .chat-msg .msg-time{font-size:.6rem;color:#d1d5db;margin-top:.25rem}
+        .chat-window-input{padding:.85rem 1rem;border-top:1px solid #fce7f3;display:flex;gap:.5rem;background:#fff}
+        .chat-window-input input{flex:1;border:1.5px solid #fbcfe8;border-radius:.75rem;padding:.6rem 1rem;font-size:.85rem;outline:none;background:#fdf2f8;transition:all .2s;font-family:'Inter',sans-serif;color:#1f2937}
+        .chat-window-input input:focus{border-color:#d6336c;background:#fff}
+        .chat-window-input button{width:40px;height:40px;border-radius:.75rem;background:linear-gradient(135deg,#d6336c,#e84393);color:#fff;display:flex;align-items:center;justify-content:center;transition:all .2s;border:none;cursor:pointer}
+        .chat-window-input button:hover{box-shadow:0 4px 12px rgba(214,51,108,.3)}
 
         /* Toast */
-        .toast {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            z-index: 500;
-            padding: 1rem 1.5rem;
-            border-radius: .75rem;
-            color: #fff;
-            font-weight: 500;
-            font-size: .9rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, .15);
-            transform: translateY(120%);
-            transition: transform .4s cubic-bezier(.4, 0, .2, 1)
-        }
-
-        .toast.show {
-            transform: translateY(0)
-        }
-
-        .toast-success {
-            background: linear-gradient(135deg, #d6336c, #e84393)
-        }
-
-        .toast-error {
-            background: #dc2626
-        }
+        .toast{position:fixed;bottom:2rem;right:2rem;z-index:500;padding:1rem 1.5rem;border-radius:.75rem;color:#fff;font-weight:500;font-size:.9rem;box-shadow:0 10px 30px rgba(0,0,0,.15);transform:translateY(120%);transition:transform .4s cubic-bezier(.4,0,.2,1)}
+        .toast.show{transform:translateY(0)}
+        .toast-success{background:linear-gradient(135deg,#d6336c,#e84393)}
+        .toast-error{background:#dc2626}
 
         /* Product card in admin */
-        .admin-product-card {
-            background: #fff;
-            border-radius: .75rem;
-            border: 1px solid rgba(214, 51, 108, .08);
-            padding: 1rem;
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-            transition: all .25s
-        }
-
-        .admin-product-card:hover {
-            box-shadow: 0 4px 16px rgba(214, 51, 108, .06)
-        }
-
-        .admin-product-card img {
-            width: 64px;
-            height: 64px;
-            border-radius: .5rem;
-            object-fit: cover;
-            background: #fce7f3;
-            flex-shrink: 0
-        }
+        .admin-product-card{background:#fff;border-radius:.75rem;border:1px solid rgba(214,51,108,.08);padding:1rem;display:flex;gap:1rem;align-items:center;transition:all .25s}
+        .admin-product-card:hover{box-shadow:0 4px 16px rgba(214,51,108,.06)}
+        .admin-product-card img{width:64px;height:64px;border-radius:.5rem;object-fit:cover;background:#fce7f3;flex-shrink:0}
 
         /* Status select */
-        .status-select {
-            padding: .35rem .6rem;
-            border-radius: .5rem;
-            border: 1.5px solid #fbcfe8;
-            font-size: .78rem;
-            font-weight: 600;
-            font-family: 'Inter', sans-serif;
-            color: #1f2937;
-            background: #fff;
-            cursor: pointer;
-            outline: none
-        }
+        .status-select{padding:.35rem .6rem;border-radius:.5rem;border:1.5px solid #fbcfe8;font-size:.78rem;font-weight:600;font-family:'Inter',sans-serif;color:#1f2937;background:#fff;cursor:pointer;outline:none}
+        .status-select:focus{border-color:#d6336c}
 
-        .status-select:focus {
-            border-color: #d6336c
-        }
+        /* Confirm modal */
+        .confirm-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);backdrop-filter:blur(4px);z-index:400;display:none;align-items:center;justify-content:center;padding:1rem}
+        .confirm-overlay.active{display:flex}
+        .confirm-box{background:#fff;border-radius:1rem;padding:1.75rem;max-width:400px;width:100%;box-shadow:0 24px 64px rgba(0,0,0,.15);animation:modalIn .25s ease}
+        @keyframes modalIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
 
-        @media(max-width:768px) {
-            .sidebar {
-                transform: translateX(-100%)
-            }
+        /* Users filter bar */
+        .users-filter-bar{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;margin-bottom:1.25rem}
+        .filter-chip{padding:.45rem 1rem;border-radius:9999px;font-size:.8rem;font-weight:600;border:1.5px solid #fbcfe8;background:#fff;color:#6b7280;cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif}
+        .filter-chip:hover{border-color:#d6336c;color:#d6336c}
+        .filter-chip.active-chip{background:linear-gradient(135deg,#d6336c,#e84393);color:#fff;border-color:transparent}
 
-            .sidebar.open {
-                transform: translateX(0)
-            }
-
-            .main-content {
-                margin-left: 0;
-                padding: 1.25rem
-            }
-
-            .menu-toggle {
-                display: flex !important
-            }
-
-            .chat-layout {
-                grid-template-columns: 1fr;
-                height: auto;
-                min-height: 400px
-            }
-
-            .chat-conv-list {
-                max-height: 200px;
-                border-right: none;
-                border-bottom: 1px solid #fce7f3
-            }
-
-            .data-table {
-                font-size: .75rem
-            }
-
-            .data-table th,
-            .data-table td {
-                padding: .6rem .5rem
-            }
+        @media(max-width:768px){
+            .sidebar{transform:translateX(-100%)}
+            .sidebar.open{transform:translateX(0)}
+            .main-content{margin-left:0;padding:1.25rem}
+            .menu-toggle{display:flex!important}
+            .chat-layout{grid-template-columns:1fr;height:auto;min-height:400px}
+            .chat-conv-list{max-height:200px;border-right:none;border-bottom:1px solid #fce7f3}
+            .data-table{font-size:.75rem}
+            .data-table th,.data-table td{padding:.6rem .5rem}
+            .user-card{flex-wrap:wrap}
+            .user-card .user-actions{width:100%;display:flex;justify-content:flex-end}
         }
     </style>
 </head>
-
 <body>
     <div class="bg-pattern"></div>
 
     <!-- ==================== AUTH PAGE ==================== -->
     <div id="authPage">
         <div class="auth-card" style="text-align:center">
-            <h1
-                style="font-size:1.6rem;font-weight:800;background:linear-gradient(135deg,#d6336c,#e84393);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:.25rem">
-                Zerah Admin</h1>
+            <h1 style="font-size:1.6rem;font-weight:800;background:linear-gradient(135deg,#d6336c,#e84393);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:.25rem">Zerah Admin</h1>
             <p style="font-size:.82rem;color:#9ca3af;margin-bottom:1.75rem">Sign in to manage your store</p>
-            <form onsubmit="handleAdminSignIn(event)"
-                style="display:flex;flex-direction:column;gap:.85rem;text-align:left">
+            <form onsubmit="handleAdminSignIn(event)" style="display:flex;flex-direction:column;gap:.85rem;text-align:left">
                 <div>
-                    <label
-                        style="font-size:.78rem;font-weight:600;color:#6b7280;display:block;margin-bottom:.35rem">Email</label>
+                    <label style="font-size:.78rem;font-weight:600;color:#6b7280;display:block;margin-bottom:.35rem">Email</label>
                     <input type="email" class="input-field" id="adminEmail" placeholder="admin@zerah.co.ke" required>
                 </div>
                 <div>
-                    <label
-                        style="font-size:.78rem;font-weight:600;color:#6b7280;display:block;margin-bottom:.35rem">Password</label>
+                    <label style="font-size:.78rem;font-weight:600;color:#6b7280;display:block;margin-bottom:.35rem">Password</label>
                     <input type="password" class="input-field" id="adminPassword" placeholder="••••••••" required>
                 </div>
-                <button type="submit" class="btn-primary" style="width:100%;justify-content:center;margin-top:.5rem"
-                    id="adminSignInBtn">Sign In</button>
+                <button type="submit" class="btn-primary" style="width:100%;justify-content:center;margin-top:.5rem" id="adminSignInBtn">Sign In</button>
             </form>
             <p id="authError" style="color:#dc2626;font-size:.82rem;margin-top:1rem;display:none"></p>
         </div>
@@ -658,17 +172,13 @@
 
     <!-- ==================== DASHBOARD ==================== -->
     <div id="dashboardPage" style="display:none">
-        <button class="menu-toggle" onclick="toggleSidebar()"><i data-lucide="menu"
-                style="width:20px;height:20px"></i></button>
+        <button class="menu-toggle" onclick="toggleSidebar()"><i data-lucide="menu" style="width:20px;height:20px"></i></button>
 
         <nav class="sidebar" id="sidebar">
             <div style="padding:1.5rem 1.25rem;border-bottom:1px solid #fce7f3">
                 <div style="display:flex;align-items:center;gap:.5rem">
-                    <h2
-                        style="font-size:1.3rem;font-weight:800;background:linear-gradient(135deg,#d6336c,#e84393);-webkit-background-clip:text;-webkit-text-fill-color:transparent">
-                        Zerah</h2>
-                    <span
-                        style="font-size:.6rem;font-weight:700;background:#fce7f3;color:#d6336c;padding:.15rem .5rem;border-radius:9999px;text-transform:uppercase;letter-spacing:.05em">Admin</span>
+                    <h2 style="font-size:1.3rem;font-weight:800;background:linear-gradient(135deg,#d6336c,#e84393);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Zerah</h2>
+                    <span style="font-size:.6rem;font-weight:700;background:#fce7f3;color:#d6336c;padding:.15rem .5rem;border-radius:9999px;text-transform:uppercase;letter-spacing:.05em">Admin</span>
                 </div>
                 <p style="font-size:.72rem;color:#9ca3af;margin-top:.1rem">Store Management</p>
             </div>
@@ -682,13 +192,15 @@
                 <button class="nav-btn" data-section="ordersSection" onclick="navigateTo('ordersSection',this)">
                     <i data-lucide="clipboard-list" style="width:18px;height:18px"></i> Orders
                 </button>
+                <button class="nav-btn" data-section="usersSection" onclick="navigateTo('usersSection',this)">
+                    <i data-lucide="users" style="width:18px;height:18px"></i> Users
+                </button>
                 <button class="nav-btn" data-section="chatSection" onclick="navigateTo('chatSection',this)">
                     <i data-lucide="messages-square" style="width:18px;height:18px"></i> Chat
                 </button>
             </div>
             <div style="padding:1rem 1.25rem;border-top:1px solid #fce7f3">
-                <button onclick="handleSignOut()"
-                    style="width:100%;padding:.55rem;border-radius:.5rem;background:#fdf2f8;color:#d6336c;font-size:.8rem;font-weight:600;border:1px solid #fbcfe8;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:.4rem">
+                <button onclick="handleSignOut()" style="width:100%;padding:.55rem;border-radius:.5rem;background:#fdf2f8;color:#d6336c;font-size:.8rem;font-weight:600;border:1px solid #fbcfe8;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:.4rem">
                     <i data-lucide="log-out" style="width:15px;height:15px"></i> Sign Out
                 </button>
             </div>
@@ -699,50 +211,29 @@
             <!-- DASHBOARD -->
             <div class="section active" id="dashSection">
                 <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:1.5rem">Dashboard</h2>
-                <div
-                    style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:2rem">
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:2rem">
                     <div class="stat-card">
                         <div style="display:flex;align-items:center;gap:.75rem">
-                            <div
-                                style="width:44px;height:44px;border-radius:.75rem;background:#fdf2f8;display:flex;align-items:center;justify-content:center">
-                                <i data-lucide="shirt" style="width:20px;height:20px;color:#d6336c"></i></div>
-                            <div>
-                                <div style="font-size:1.3rem;font-weight:800" id="dashProducts">0</div>
-                                <div style="font-size:.72rem;color:#9ca3af;font-weight:600">Products</div>
-                            </div>
+                            <div style="width:44px;height:44px;border-radius:.75rem;background:#fdf2f8;display:flex;align-items:center;justify-content:center"><i data-lucide="shirt" style="width:20px;height:20px;color:#d6336c"></i></div>
+                            <div><div style="font-size:1.3rem;font-weight:800" id="dashProducts">0</div><div style="font-size:.72rem;color:#9ca3af;font-weight:600">Products</div></div>
                         </div>
                     </div>
                     <div class="stat-card">
                         <div style="display:flex;align-items:center;gap:.75rem">
-                            <div
-                                style="width:44px;height:44px;border-radius:.75rem;background:#fdf2f8;display:flex;align-items:center;justify-content:center">
-                                <i data-lucide="clipboard-list" style="width:20px;height:20px;color:#d6336c"></i></div>
-                            <div>
-                                <div style="font-size:1.3rem;font-weight:800" id="dashOrders">0</div>
-                                <div style="font-size:.72rem;color:#9ca3af;font-weight:600">Total Orders</div>
-                            </div>
+                            <div style="width:44px;height:44px;border-radius:.75rem;background:#fdf2f8;display:flex;align-items:center;justify-content:center"><i data-lucide="clipboard-list" style="width:20px;height:20px;color:#d6336c"></i></div>
+                            <div><div style="font-size:1.3rem;font-weight:800" id="dashOrders">0</div><div style="font-size:.72rem;color:#9ca3af;font-weight:600">Total Orders</div></div>
                         </div>
                     </div>
                     <div class="stat-card">
                         <div style="display:flex;align-items:center;gap:.75rem">
-                            <div
-                                style="width:44px;height:44px;border-radius:.75rem;background:#d1fae5;display:flex;align-items:center;justify-content:center">
-                                <i data-lucide="currency-dollar" style="width:20px;height:20px;color:#059669"></i></div>
-                            <div>
-                                <div style="font-size:1.3rem;font-weight:800" id="dashRevenue">KES 0</div>
-                                <div style="font-size:.72rem;color:#9ca3af;font-weight:600">Revenue</div>
-                            </div>
+                            <div style="width:44px;height:44px;border-radius:.75rem;background:#d1fae5;display:flex;align-items:center;justify-content:center"><i data-lucide="currency-dollar" style="width:20px;height:20px;color:#059669"></i></div>
+                            <div><div style="font-size:1.3rem;font-weight:800" id="dashRevenue">KES 0</div><div style="font-size:.72rem;color:#9ca3af;font-weight:600">Revenue</div></div>
                         </div>
                     </div>
                     <div class="stat-card">
                         <div style="display:flex;align-items:center;gap:.75rem">
-                            <div
-                                style="width:44px;height:44px;border-radius:.75rem;background:#fef3c7;display:flex;align-items:center;justify-content:center">
-                                <i data-lucide="clock" style="width:20px;height:20px;color:#d97706"></i></div>
-                            <div>
-                                <div style="font-size:1.3rem;font-weight:800" id="dashPending">0</div>
-                                <div style="font-size:.72rem;color:#9ca3af;font-weight:600">Pending</div>
-                            </div>
+                            <div style="width:44px;height:44px;border-radius:.75rem;background:#e0e7ff;display:flex;align-items:center;justify-content:center"><i data-lucide="users" style="width:20px;height:20px;color:#4f46e5"></i></div>
+                            <div><div style="font-size:1.3rem;font-weight:800" id="dashUsers">0</div><div style="font-size:.72rem;color:#9ca3af;font-weight:600">Users</div></div>
                         </div>
                     </div>
                 </div>
@@ -750,66 +241,39 @@
                 <h3 style="font-size:1.05rem;font-weight:700;margin-bottom:1rem">Recent Orders</h3>
                 <div style="overflow-x:auto;border-radius:1rem;border:1px solid rgba(214,51,108,.08)">
                     <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Customer</th>
-                                <th>Items</th>
-                                <th>Total</th>
-                                <th>Status</th>
-                                <th>Date</th>
-                            </tr>
-                        </thead>
-                        <tbody id="dashRecentOrders">
-                            <tr>
-                                <td colspan="5" style="text-align:center;color:#9ca3af;padding:2rem">Loading...</td>
-                            </tr>
-                        </tbody>
+                        <thead><tr><th>Customer</th><th>Items</th><th>Total</th><th>Status</th><th>Date</th></tr></thead>
+                        <tbody id="dashRecentOrders"><tr><td colspan="5" style="text-align:center;color:#9ca3af;padding:2rem">Loading...</td></tr></tbody>
                     </table>
                 </div>
             </div>
 
             <!-- PRODUCTS -->
             <div class="section" id="productsSection">
-                <div
-                    style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:1.5rem">
+                <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:1.5rem">
                     <h2 style="font-size:1.3rem;font-weight:800">Products</h2>
-                    <button class="btn-primary" onclick="toggleAddProduct()"><i data-lucide="plus"
-                            style="width:16px;height:16px"></i> Add Product</button>
+                    <button class="btn-primary" onclick="toggleAddProduct()"><i data-lucide="plus" style="width:16px;height:16px"></i> Add Product</button>
                 </div>
-
-                <!-- Add Product Form -->
-                <div id="addProductForm"
-                    style="display:none;background:#fff;border-radius:1rem;border:1px solid rgba(214,51,108,.08);padding:1.75rem;margin-bottom:1.5rem">
+                <div id="addProductForm" style="display:none;background:#fff;border-radius:1rem;border:1px solid rgba(214,51,108,.08);padding:1.75rem;margin-bottom:1.5rem">
                     <h3 style="font-size:1rem;font-weight:700;margin-bottom:1.25rem">New Product</h3>
                     <form onsubmit="addProduct(event)" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
                         <div>
-                            <label
-                                style="font-size:.75rem;font-weight:600;color:#6b7280;display:block;margin-bottom:.3rem">Product
-                                Name</label>
+                            <label style="font-size:.75rem;font-weight:600;color:#6b7280;display:block;margin-bottom:.3rem">Product Name</label>
                             <input type="text" class="input-field" id="pName" placeholder="Pink Ankara Dress" required>
                         </div>
                         <div>
-                            <label
-                                style="font-size:.75rem;font-weight:600;color:#6b7280;display:block;margin-bottom:.3rem">Price
-                                (KES)</label>
-                            <input type="number" class="input-field" id="pPrice" placeholder="1500" min="0" step="0.01"
-                                required>
+                            <label style="font-size:.75rem;font-weight:600;color:#6b7280;display:block;margin-bottom:.3rem">Price (KES)</label>
+                            <input type="number" class="input-field" id="pPrice" placeholder="1500" min="0" step="0.01" required>
                         </div>
                         <div style="grid-column:1/-1">
-                            <label
-                                style="font-size:.75rem;font-weight:600;color:#6b7280;display:block;margin-bottom:.3rem">Description</label>
-                            <textarea class="input-field" id="pDesc"
-                                placeholder="Beautiful hand-crafted Kenyan dress..."></textarea>
+                            <label style="font-size:.75rem;font-weight:600;color:#6b7280;display:block;margin-bottom:.3rem">Description</label>
+                            <textarea class="input-field" id="pDesc" placeholder="Beautiful hand-crafted Kenyan dress..."></textarea>
                         </div>
                         <div>
-                            <label
-                                style="font-size:.75rem;font-weight:600;color:#6b7280;display:block;margin-bottom:.3rem">Stock</label>
+                            <label style="font-size:.75rem;font-weight:600;color:#6b7280;display:block;margin-bottom:.3rem">Stock</label>
                             <input type="number" class="input-field" id="pStock" placeholder="50" min="0" required>
                         </div>
                         <div>
-                            <label
-                                style="font-size:.75rem;font-weight:600;color:#6b7280;display:block;margin-bottom:.3rem">Image
-                                URL</label>
+                            <label style="font-size:.75rem;font-weight:600;color:#6b7280;display:block;margin-bottom:.3rem">Image URL</label>
                             <input type="url" class="input-field" id="pImage" placeholder="https://...">
                         </div>
                         <div style="grid-column:1/-1;display:flex;gap:.75rem;justify-content:flex-end">
@@ -818,7 +282,6 @@
                         </div>
                     </form>
                 </div>
-
                 <div id="productsList" style="display:flex;flex-direction:column;gap:.75rem"></div>
                 <div id="productsEmpty" style="display:none;text-align:center;padding:4rem 1rem">
                     <i data-lucide="shirt" style="width:48px;height:48px;color:#fbcfe8;margin:0 auto 1rem"></i>
@@ -844,11 +307,7 @@
                                 <th>Date</th>
                             </tr>
                         </thead>
-                        <tbody id="ordersTableBody">
-                            <tr>
-                                <td colspan="9" style="text-align:center;color:#9ca3af;padding:2rem">Loading...</td>
-                            </tr>
-                        </tbody>
+                        <tbody id="ordersTableBody"><tr><td colspan="9" style="text-align:center;color:#9ca3af;padding:2rem">Loading...</td></tr></tbody>
                     </table>
                 </div>
                 <div id="ordersEmpty" style="display:none;text-align:center;padding:4rem 1rem">
@@ -857,13 +316,40 @@
                 </div>
             </div>
 
+            <!-- USERS -->
+            <div class="section" id="usersSection">
+                <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:1rem">
+                    <h2 style="font-size:1.3rem;font-weight:800">Users</h2>
+                    <div style="position:relative;min-width:260px">
+                        <i data-lucide="search" style="width:16px;height:16px;position:absolute;left:1rem;top:50%;transform:translateY(-50%);color:#f9a8d4;pointer-events:none"></i>
+                        <input type="text" class="input-field" style="padding-left:2.75rem" placeholder="Search by name, email, location..." id="usersSearch" oninput="filterUsers()">
+                    </div>
+                </div>
+
+                <div class="users-filter-bar">
+                    <button class="filter-chip active-chip" data-filter="all" onclick="setUserFilter('all',this)">All</button>
+                    <button class="filter-chip" data-filter="admin" onclick="setUserFilter('admin',this)">
+                        <i data-lucide="shield" style="width:12px;height:12px;display:inline;vertical-align:middle;margin-right:.2rem"></i>Admins
+                    </button>
+                    <button class="filter-chip" data-filter="user" onclick="setUserFilter('user',this)">
+                        <i data-lucide="user" style="width:12px;height:12px;display:inline;vertical-align:middle;margin-right:.2rem"></i>Customers
+                    </button>
+                    <span style="margin-left:auto;font-size:.8rem;color:#9ca3af;font-weight:600" id="usersCount">0 users</span>
+                </div>
+
+                <div id="usersList" style="display:flex;flex-direction:column;gap:.75rem"></div>
+                <div id="usersEmpty" style="display:none;text-align:center;padding:4rem 1rem">
+                    <i data-lucide="users" style="width:48px;height:48px;color:#fbcfe8;margin:0 auto 1rem"></i>
+                    <p style="font-size:1rem;font-weight:600;color:#9ca3af">No users found</p>
+                </div>
+            </div>
+
             <!-- CHAT -->
             <div class="section" id="chatSection">
                 <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:1.5rem">Customer Chat</h2>
                 <div class="chat-layout">
                     <div class="chat-conv-list" id="convList">
-                        <div style="padding:2rem;text-align:center;color:#9ca3af;font-size:.88rem">Loading
-                            conversations...</div>
+                        <div style="padding:2rem;text-align:center;color:#9ca3af;font-size:.88rem">Loading conversations...</div>
                     </div>
                     <div class="chat-window" id="chatWindow">
                         <div class="chat-window-header" id="chatWindowHeader" style="display:none">
@@ -871,18 +357,31 @@
                             <div style="font-size:.75rem;color:#9ca3af" id="chatUserEmail"></div>
                         </div>
                         <div class="chat-window-messages" id="chatWindowMessages" style="flex:1">
-                            <div
-                                style="display:flex;align-items:center;justify-content:center;height:100%;color:#d1d5db;font-size:.88rem">
-                                Select a conversation to start chatting</div>
+                            <div style="display:flex;align-items:center;justify-content:center;height:100%;color:#d1d5db;font-size:.88rem">Select a conversation to start chatting</div>
                         </div>
                         <div class="chat-window-input" id="chatWindowInput" style="display:none">
-                            <input type="text" id="adminChatInput" placeholder="Type a reply..."
-                                onkeydown="if(event.key==='Enter')sendAdminReply()">
-                            <button onclick="sendAdminReply()"><i data-lucide="send"
-                                    style="width:18px;height:18px"></i></button>
+                            <input type="text" id="adminChatInput" placeholder="Type a reply..." onkeydown="if(event.key==='Enter')sendAdminReply()">
+                            <button onclick="sendAdminReply()"><i data-lucide="send" style="width:18px;height:18px"></i></button>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== CONFIRM MODAL ==================== -->
+    <div class="confirm-overlay" id="confirmModal">
+        <div class="confirm-box">
+            <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1rem">
+                <div id="confirmIcon" style="width:44px;height:44px;border-radius:.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0"></div>
+                <div>
+                    <h3 style="font-size:1.05rem;font-weight:700" id="confirmTitle">Confirm</h3>
+                    <p style="font-size:.85rem;color:#6b7280;margin-top:.15rem" id="confirmDesc">Are you sure?</p>
+                </div>
+            </div>
+            <div style="display:flex;gap:.75rem;justify-content:flex-end">
+                <button class="btn-outline" onclick="closeConfirm()">Cancel</button>
+                <button class="btn-primary" id="confirmAction" onclick="">Confirm</button>
             </div>
         </div>
     </div>
@@ -891,18 +390,22 @@
     <div class="toast" id="toast"></div>
 
     <script>
-        const { createClient } = supabase;
+         const { createClient } = supabase;
         const supabaseClient = createClient('https://ycpteixmladknxndneho.supabase.co',
             'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InljcHRlaXhtbGFka254bmRuZWhvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg0MTA1MjYsImV4cCI6MjA5Mzk4NjUyNn0.LCy-JDnLoSHSmB7GgSoge4nRi0X6LgkUGF1WYMogRGQ', {
             auth: { persistSession: true, storageKey: 'zh-auth' }
         });
 
+
         let currentUser = null;
         let allProducts = [];
         let allOrders = [];
+        let allUsers = [];
         let conversations = [];
         let activeConvId = null;
         let chatPoll = null;
+        let userFilter = 'all';
+        let pendingConfirmFn = null;
 
         // ========== AUTH ==========
         async function handleAdminSignIn(e) {
@@ -917,7 +420,6 @@
                 password: document.getElementById('adminPassword').value
             });
             if (error) { errEl.textContent = error.message; errEl.style.display = 'block'; btn.disabled = false; btn.textContent = 'Sign In'; return; }
-            // Check admin status
             const { data: profile } = await supabaseClient.from('zhu').select('is_admin, name').eq('id', data.user.id).single();
             if (!profile || !profile.is_admin) {
                 errEl.textContent = 'Access denied. You are not an admin.';
@@ -949,6 +451,7 @@
             loadDashboard();
             loadProducts();
             loadOrders();
+            loadUsers();
             loadConversations();
             startChatPolling();
             lucide.createIcons();
@@ -962,23 +465,54 @@
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active-nav'));
             if (btn) btn.classList.add('active-nav');
             if (window.innerWidth <= 768) document.getElementById('sidebar').classList.remove('open');
+            // Refresh data when switching to section
+            if (sectionId === 'usersSection') loadUsers();
+            if (sectionId === 'ordersSection') loadOrders();
+            if (sectionId === 'dashSection') loadDashboard();
         }
 
         function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
 
+        // ========== CONFIRM MODAL ==========
+        function showConfirm(title, desc, isDanger, actionFn) {
+            document.getElementById('confirmTitle').textContent = title;
+            document.getElementById('confirmDesc').textContent = desc;
+            const icon = document.getElementById('confirmIcon');
+            const actionBtn = document.getElementById('confirmAction');
+            if (isDanger) {
+                icon.style.background = '#fef2f2';
+                icon.innerHTML = '<i data-lucide="alert-triangle" style="width:22px;height:22px;color:#dc2626"></i>';
+                actionBtn.style.background = '#dc2626';
+                actionBtn.textContent = 'Remove Admin';
+            } else {
+                icon.style.background = '#fdf2f8';
+                icon.innerHTML = '<i data-lucide="shield-check" style="width:22px;height:22px;color:#d6336c"></i>';
+                actionBtn.style.background = 'linear-gradient(135deg,#d6336c,#e84393)';
+                actionBtn.textContent = 'Make Admin';
+            }
+            pendingConfirmFn = actionFn;
+            actionBtn.onclick = function() { if (pendingConfirmFn) pendingConfirmFn(); closeConfirm(); };
+            document.getElementById('confirmModal').classList.add('active');
+            lucide.createIcons();
+        }
+
+        function closeConfirm() {
+            document.getElementById('confirmModal').classList.remove('active');
+            pendingConfirmFn = null;
+        }
+
         // ========== DASHBOARD ==========
         async function loadDashboard() {
             const { data: prods } = await supabaseClient.from('zhp').select('id');
+            const { data: users } = await supabaseClient.from('zhu').select('id');
             const { data: ords } = await supabaseClient.from('orders').select('*').order('created_at', { ascending: false }).limit(100);
             allOrders = ords || [];
             const revenue = allOrders.reduce((s, o) => s + Number(o.total_price), 0);
-            const pending = allOrders.filter(o => o.status === 'pending').length;
             document.getElementById('dashProducts').textContent = (prods || []).length;
             document.getElementById('dashOrders').textContent = allOrders.length;
             document.getElementById('dashRevenue').textContent = 'KES ' + revenue.toLocaleString();
-            document.getElementById('dashPending').textContent = pending;
+            document.getElementById('dashUsers').textContent = (users || []).length;
 
-            // Recent orders (last 5)
             const recent = allOrders.slice(0, 5);
             const tbody = document.getElementById('dashRecentOrders');
             if (!recent.length) { tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#9ca3af;padding:2rem">No orders yet</td></tr>'; return; }
@@ -1114,6 +648,114 @@
             loadDashboard();
         }
 
+        // ========== USERS ==========
+        async function loadUsers() {
+            const { data, error } = await supabaseClient.from('zhu').select('*').order('created_at', { ascending: false });
+            if (error) { console.error(error); return; }
+            allUsers = data || [];
+            renderUsers();
+        }
+
+        function setUserFilter(filter, btn) {
+            userFilter = filter;
+            document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active-chip'));
+            btn.classList.add('active-chip');
+            renderUsers();
+        }
+
+        function filterUsers() {
+            renderUsers();
+        }
+
+        function renderUsers() {
+            const search = (document.getElementById('usersSearch').value || '').toLowerCase();
+            let filtered = allUsers;
+
+            // Apply filter
+            if (userFilter === 'admin') filtered = filtered.filter(u => u.is_admin);
+            if (userFilter === 'user') filtered = filtered.filter(u => !u.is_admin);
+
+            // Apply search
+            if (search) {
+                filtered = filtered.filter(u =>
+                    (u.name || '').toLowerCase().includes(search) ||
+                    (u.email || '').toLowerCase().includes(search) ||
+                    (u.location || '').toLowerCase().includes(search) ||
+                    (u.number || '').toLowerCase().includes(search)
+                );
+            }
+
+            document.getElementById('usersCount').textContent = filtered.length + ' user' + (filtered.length !== 1 ? 's' : '');
+            const list = document.getElementById('usersList');
+            const empty = document.getElementById('usersEmpty');
+
+            if (!filtered.length) { list.innerHTML = ''; empty.style.display = 'block'; return; }
+            empty.style.display = 'none';
+
+            list.innerHTML = filtered.map(u => {
+                const initials = (u.name || '?').split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+                const joined = u.created_at ? new Date(u.created_at).toLocaleDateString('en-KE', { day: 'numeric', month: 'short', year: 'numeric' }) : '—';
+                const isMe = currentUser && u.id === currentUser.id;
+
+                return `<div class="user-card">
+                    <div class="user-avatar ${u.is_admin ? 'is-admin' : ''}">${initials}</div>
+                    <div class="user-meta">
+                        <div style="display:flex;align-items:center;gap:.5rem;flex-wrap:wrap">
+                            <span class="user-meta-name">${u.name || 'Unknown'}</span>
+                            ${u.is_admin ? '<span class="admin-badge"><i data-lucide="shield" style="width:10px;height:10px"></i> Admin</span>' : '<span class="user-badge">Customer</span>'}
+                            ${isMe ? '<span style="font-size:.65rem;font-weight:700;color:#9ca3af;background:#f3f4f6;padding:.1rem .45rem;border-radius:9999px">YOU</span>' : ''}
+                        </div>
+                        <div class="user-meta-detail"><i data-lucide="mail" style="width:13px;height:13px;display:inline;vertical-align:middle;margin-right:.25rem"></i>${u.email || '—'}</div>
+                        <div style="display:flex;gap:1.25rem;flex-wrap:wrap;margin-top:.35rem">
+                            ${u.number ? `<span class="user-meta-detail"><i data-lucide="phone" style="width:13px;height:13px;display:inline;vertical-align:middle;margin-right:.25rem"></i>${u.number}</span>` : ''}
+                            ${u.location ? `<span class="user-meta-detail"><i data-lucide="map-pin" style="width:13px;height:13px;display:inline;vertical-align:middle;margin-right:.25rem"></i>${u.location}</span>` : ''}
+                            ${u.gender ? `<span class="user-meta-detail"><i data-lucide="user" style="width:13px;height:13px;display:inline;vertical-align:middle;margin-right:.25rem"></i>${u.gender}</span>` : ''}
+                        </div>
+                        ${u.preferences ? `<div class="user-meta-detail" style="margin-top:.2rem;color:#d6336c"><i data-lucide="heart" style="width:13px;height:13px;display:inline;vertical-align:middle;margin-right:.25rem"></i>${u.preferences}</div>` : ''}
+                        <div style="font-size:.68rem;color:#d1d5db;margin-top:.3rem">Joined ${joined}</div>
+                    </div>
+                    <div class="user-actions" style="display:flex;gap:.5rem;flex-shrink:0;align-self:center">
+                        ${isMe ? '<span style="font-size:.75rem;color:#9ca3af;font-weight:600;padding:.45rem .85rem">Current account</span>' :
+                            u.is_admin ?
+                                `<button class="btn-admin-demote" onclick="demoteAdmin('${u.id}','${(u.name||'').replace(/'/g,"\\'")}')"><i data-lucide="shield-off" style="width:13px;height:13px"></i> Remove Admin</button>` :
+                                `<button class="btn-admin-promote" onclick="promoteAdmin('${u.id}','${(u.name||'').replace(/'/g,"\\'")}')"><i data-lucide="shield-check" style="width:13px;height:13px"></i> Make Admin</button>`
+                        }
+                    </div>
+                </div>`;
+            }).join('');
+            lucide.createIcons();
+        }
+
+        function promoteAdmin(userId, userName) {
+            showConfirm(
+                'Make Admin',
+                `Grant admin privileges to "${userName}"? They will be able to manage products, orders, users, and chat.`,
+                false,
+                async function() {
+                    const { error } = await supabaseClient.from('zhu').update({ is_admin: true }).eq('id', userId);
+                    if (error) { showToast('Failed: ' + error.message, 'error'); return; }
+                    showToast(userName + ' is now an admin 🛡️', 'success');
+                    loadUsers();
+                    loadDashboard();
+                }
+            );
+        }
+
+        function demoteAdmin(userId, userName) {
+            showConfirm(
+                'Remove Admin',
+                `Remove admin privileges from "${userName}"? They will lose access to this panel.`,
+                true,
+                async function() {
+                    const { error } = await supabaseClient.from('zhu').update({ is_admin: false }).eq('id', userId);
+                    if (error) { showToast('Failed: ' + error.message, 'error'); return; }
+                    showToast(userName + ' admin rights removed', 'success');
+                    loadUsers();
+                    loadDashboard();
+                }
+            );
+        }
+
         // ========== CHAT ==========
         async function loadConversations() {
             const { data, error } = await supabaseClient.from('conversations').select('*').order('updated_at', { ascending: false });
@@ -1142,7 +784,6 @@
                 </div>`;
             }).join('');
 
-            // Load last message for each conversation
             conversations.forEach(async c => {
                 const { data: msgs } = await supabaseClient.from('chat_messages').select('message,created_at').eq('conversation_id', c.id).order('created_at', { ascending: false }).limit(1);
                 if (msgs && msgs.length) {
@@ -1161,6 +802,8 @@
             if (conv) {
                 document.getElementById('chatUserName').textContent = conv.user_name || 'Customer';
             }
+            const msgContainer = document.getElementById('chatWindowMessages');
+            delete msgContainer.dataset.loaded;
             loadChatMessages();
             lucide.createIcons();
         }
@@ -1231,7 +874,11 @@
             lucide.createIcons();
         }
         init();
+
+        // Close confirm modal on overlay click
+        document.getElementById('confirmModal').addEventListener('click', function(e) {
+            if (e.target === this) closeConfirm();
+        });
     </script>
 </body>
-
 </html>
