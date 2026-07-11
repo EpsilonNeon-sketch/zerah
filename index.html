@@ -1,15 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
+<html lang="en"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zerah — Kenyan Fashion</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-    <link rel="icon"
-        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👗</text></svg>">
+    <link rel="icon" href="data:image/svg+xml,&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'&gt;&lt;text y='.9em' font-size='90'&gt;👗&lt;/text&gt;&lt;/svg&gt;">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
@@ -135,7 +131,29 @@
             margin: 1rem;
             overflow: hidden
         }
-
+/* ===== EPSILON PANEL AD MODAL — ZERAH PINK THEME ===== */
+.ad-overlay{position:fixed;inset:0;background:rgba(15,23,42,.55);backdrop-filter:blur(8px);z-index:9999;display:none;align-items:center;justify-content:center;padding:1rem;animation:adFadeIn .3s ease}
+.ad-overlay.visible{display:flex}
+@keyframes adFadeIn{from{opacity:0}to{opacity:1}}
+.ad-card{background:#fff;border-radius:1.25rem;max-width:440px;width:100%;overflow:hidden;box-shadow:0 32px 80px rgba(214,51,108,.18);animation:adSlideUp .4s cubic-bezier(.22,1,.36,1);position:relative}
+@keyframes adSlideUp{from{opacity:0;transform:translateY(30px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+.ad-card-top{background:linear-gradient(135deg,#1a0a10 0%,#4a1028 40%,#d6336c 100%);padding:2rem 1.75rem 1.75rem;text-align:center;position:relative;overflow:hidden}
+.ad-card-top::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 80% 20%,rgba(232,67,147,.2) 0%,transparent 50%),radial-gradient(circle at 20% 80%,rgba(214,51,108,.15) 0%,transparent 50%)}
+.ad-card-top .ad-logo{width:56px;height:56px;border-radius:.85rem;background:rgba(255,255,255,.1);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.12);margin:0 auto .85rem;display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:900;color:#fff;letter-spacing:-.03em;position:relative}
+.ad-card-top h3{font-size:1.35rem;font-weight:800;color:#fff;margin-bottom:.35rem;position:relative}
+.ad-card-top p{font-size:.85rem;color:rgba(255,255,255,.65);line-height:1.55;position:relative}
+.ad-card-body{padding:1.5rem 1.75rem 1.75rem}
+.ad-features{display:flex;flex-direction:column;gap:.55rem;margin-bottom:1.5rem}
+.ad-feature{display:flex;align-items:center;gap:.65rem;font-size:.84rem;color:#334155}
+.ad-feature-icon{width:28px;height:28px;border-radius:.5rem;background:#fdf2f8;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ad-feature-icon svg{width:14px;height:14px;color:#d6336c}
+.ad-close{position:absolute;top:.85rem;right:.85rem;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.5);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;z-index:2;font-size:1.1rem;line-height:1}
+.ad-close:hover{background:rgba(255,255,255,.18);color:#fff}
+.ad-btn-primary{display:flex;align-items:center;justify-content:center;gap:.5rem;width:100%;padding:.85rem;border-radius:.65rem;background:linear-gradient(135deg,#d6336c,#e84393);color:#fff;font-size:.92rem;font-weight:700;border:none;cursor:pointer;transition:all .25s;font-family:'Inter',sans-serif;text-decoration:none;box-shadow:0 4px 16px rgba(214,51,108,.3)}
+.ad-btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(214,51,108,.4)}
+.ad-btn-dismiss{display:block;width:100%;margin-top:.65rem;padding:.65rem;border-radius:.65rem;background:transparent;color:#9ca3af;font-size:.82rem;font-weight:600;border:none;cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif}
+.ad-btn-dismiss:hover{color:#6b7280;background:#fdf2f8}
+@media(max-width:480px){.ad-card-top{padding:1.5rem 1.25rem 1.25rem}.ad-card-body{padding:1.25rem}.ad-card-top h3{font-size:1.15rem}}
         .auth-tabs {
             display: flex;
             border-bottom: 2px solid #fce7f3
@@ -789,7 +807,7 @@
             }
         }
     </style>
-</head>
+<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}</style></head>
 
 <body>
     <div class="bg-pattern"></div>
@@ -798,8 +816,7 @@
     <div id="authPage">
         <div class="auth-card">
             <div style="padding:1.75rem 1.75rem 0;text-align:center">
-                <h1
-                    style="font-size:1.8rem;font-weight:800;background:linear-gradient(135deg,#d6336c,#e84393);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:.25rem">
+                <h1 style="font-size:1.8rem;font-weight:800;background:linear-gradient(135deg,#d6336c,#e84393);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:.25rem">
                     Zerah</h1>
                 <p style="font-size:.82rem;color:#9ca3af">Kenyan Fashion, Redefined</p>
             </div>
@@ -812,17 +829,14 @@
             <form class="auth-form active" id="signinForm" onsubmit="handleSignIn(event)">
                 <div style="display:flex;flex-direction:column;gap:.85rem">
                     <div>
-                        <label
-                            style="font-size:.78rem;font-weight:600;color:#6b7280;display:block;margin-bottom:.35rem">Email</label>
-                        <input type="email" class="input-field" id="siEmail" placeholder="you@example.com" required>
+                        <label style="font-size:.78rem;font-weight:600;color:#6b7280;display:block;margin-bottom:.35rem">Email</label>
+                        <input type="email" class="input-field" id="siEmail" placeholder="you@example.com" required="">
                     </div>
                     <div>
-                        <label
-                            style="font-size:.78rem;font-weight:600;color:#6b7280;display:block;margin-bottom:.35rem">Password</label>
-                        <input type="password" class="input-field" id="siPassword" placeholder="••••••••" required>
+                        <label style="font-size:.78rem;font-weight:600;color:#6b7280;display:block;margin-bottom:.35rem">Password</label>
+                        <input type="password" class="input-field" id="siPassword" placeholder="••••••••" required="">
                     </div>
-                    <button type="submit" class="btn-primary" style="width:100%;justify-content:center;margin-top:.5rem"
-                        id="siBtn">
+                    <button type="submit" class="btn-primary" style="width:100%;justify-content:center;margin-top:.5rem" id="siBtn">
                         Sign In
                     </button>
                 </div>
@@ -834,16 +848,14 @@
             <form class="auth-form" id="signupForm" onsubmit="handleSignUp(event)">
                 <div style="display:flex;flex-direction:column;gap:.75rem">
                     <div>
-                        <label
-                            style="font-size:.78rem;font-weight:600;color:#6b7280;display:block;margin-bottom:.35rem">Full
+                        <label style="font-size:.78rem;font-weight:600;color:#6b7280;display:block;margin-bottom:.35rem">Full
                             Name</label>
-                        <input type="text" class="input-field" id="suName" placeholder="Jane Wanjiku" required>
+                        <input type="text" class="input-field" id="suName" placeholder="Jane Wanjiku" required="">
                     </div>
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
                         <div>
-                            <label
-                                style="font-size:.78rem;font-weight:600;color:#6b7280;display:block;margin-bottom:.35rem">Gender</label>
-                            <select class="input-field" id="suGender" required>
+                            <label style="font-size:.78rem;font-weight:600;color:#6b7280;display:block;margin-bottom:.35rem">Gender</label>
+                            <select class="input-field" id="suGender" required="">
                                 <option value="">Select</option>
                                 <option value="Female">Female</option>
                                 <option value="Male">Male</option>
@@ -851,78 +863,66 @@
                             </select>
                         </div>
                         <div>
-                            <label
-                                style="font-size:.78rem;font-weight:600;color:#6b7280;display:block;margin-bottom:.35rem">Phone</label>
-                            <input type="tel" class="input-field" id="suNumber" placeholder="0712 345 678" required>
+                            <label style="font-size:.78rem;font-weight:600;color:#6b7280;display:block;margin-bottom:.35rem">Phone</label>
+                            <input type="tel" class="input-field" id="suNumber" placeholder="0712 345 678" required="">
                         </div>
                     </div>
                     <div>
-                        <label
-                            style="font-size:.78rem;font-weight:600;color:#6b7280;display:block;margin-bottom:.35rem">Email</label>
-                        <input type="email" class="input-field" id="suEmail" placeholder="you@example.com" required>
+                        <label style="font-size:.78rem;font-weight:600;color:#6b7280;display:block;margin-bottom:.35rem">Email</label>
+                        <input type="email" class="input-field" id="suEmail" placeholder="you@example.com" required="">
                     </div>
                     <div>
-                        <label
-                            style="font-size:.78rem;font-weight:600;color:#6b7280;display:block;margin-bottom:.35rem">Location</label>
-                        <input type="text" class="input-field" id="suLocation" placeholder="Nairobi, Kenya" required>
+                        <label style="font-size:.78rem;font-weight:600;color:#6b7280;display:block;margin-bottom:.35rem">Location</label>
+                        <input type="text" class="input-field" id="suLocation" placeholder="Nairobi, Kenya" required="">
                     </div>
                     <div>
-                        <label
-                            style="font-size:.78rem;font-weight:600;color:#6b7280;display:block;margin-bottom:.35rem">Style
+                        <label style="font-size:.78rem;font-weight:600;color:#6b7280;display:block;margin-bottom:.35rem">Style
                             Preferences</label>
-                        <input type="text" class="input-field" id="suPrefs"
-                            placeholder="Dresses, casual wear, African print...">
+                        <input type="text" class="input-field" id="suPrefs" placeholder="Dresses, casual wear, African print...">
                     </div>
                     <div>
-                        <label
-                            style="font-size:.78rem;font-weight:600;color:#6b7280;display:block;margin-bottom:.35rem">Password</label>
-                        <input type="password" class="input-field" id="suPassword" placeholder="Min 6 characters"
-                            required minlength="6">
+                        <label style="font-size:.78rem;font-weight:600;color:#6b7280;display:block;margin-bottom:.35rem">Password</label>
+                        <input type="password" class="input-field" id="suPassword" placeholder="Min 6 characters" required="" minlength="6">
                     </div>
                     <div>
-                        <label
-                            style="font-size:.78rem;font-weight:600;color:#6b7280;display:block;margin-bottom:.35rem">Confirm
+                        <label style="font-size:.78rem;font-weight:600;color:#6b7280;display:block;margin-bottom:.35rem">Confirm
                             Password</label>
-                        <input type="password" class="input-field" id="suConfirm" placeholder="••••••••" required>
+                        <input type="password" class="input-field" id="suConfirm" placeholder="••••••••" required="">
                     </div>
-                    <button type="submit" class="btn-primary" style="width:100%;justify-content:center;margin-top:.5rem"
-                        id="suBtn">
+                    <button type="submit" class="btn-primary" style="width:100%;justify-content:center;margin-top:.5rem" id="suBtn">
                         Create Account
                     </button>
                 </div>
                 <p id="suError" style="color:#dc2626;font-size:.82rem;margin-top:.75rem;text-align:center;display:none">
                 </p>
-                <p id="suSuccess"
-                    style="color:#059669;font-size:.82rem;margin-top:.75rem;text-align:center;display:none"></p>
+                <p id="suSuccess" style="color:#059669;font-size:.82rem;margin-top:.75rem;text-align:center;display:none"></p>
             </form>
         </div>
     </div>
 
     <!-- ==================== DASHBOARD ==================== -->
     <div id="dashboardPage" style="display:none">
-        <button class="menu-toggle" onclick="toggleSidebar()"><i data-lucide="menu"
-                style="width:20px;height:20px"></i></button>
+        <button class="menu-toggle" onclick="toggleSidebar()"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="menu" aria-hidden="true" style="width:20px;height:20px" class="lucide lucide-menu"><path d="M4 5h16"></path><path d="M4 12h16"></path><path d="M4 19h16"></path></svg></button>
 
         <!-- Sidebar -->
         <nav class="sidebar" id="sidebar">
             <div style="padding:1.5rem 1.25rem;border-bottom:1px solid #fce7f3">
-                <h2
-                    style="font-size:1.4rem;font-weight:800;background:linear-gradient(135deg,#d6336c,#e84393);-webkit-background-clip:text;-webkit-text-fill-color:transparent">
+                <h2 style="font-size:1.4rem;font-weight:800;background:linear-gradient(135deg,#d6336c,#e84393);-webkit-background-clip:text;-webkit-text-fill-color:transparent">
                     Zerah</h2>
-                <p style="font-size:.72rem;color:#9ca3af;margin-top:.1rem">Fashion & Style</p>
+                <p style="font-size:.72rem;color:#9ca3af;margin-top:.1rem">Fashion &amp; Style</p>
             </div>
             <div style="padding:.75rem 0;flex:1">
                 <button class="nav-btn active-nav" data-section="homeSection" onclick="navigateTo('homeSection',this)">
-                    <i data-lucide="home" style="width:18px;height:18px"></i> Home
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="home" aria-hidden="true" style="width:18px;height:18px" class="lucide lucide-home"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg> Home
                 </button>
                 <button class="nav-btn" data-section="shopSection" onclick="navigateTo('shopSection',this)">
-                    <i data-lucide="shopping-bag" style="width:18px;height:18px"></i> Shop
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="shopping-bag" aria-hidden="true" style="width:18px;height:18px" class="lucide lucide-shopping-bag"><path d="M16 10a4 4 0 0 1-8 0"></path><path d="M3.103 6.034h17.794"></path><path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"></path></svg> Shop
                 </button>
                 <button class="nav-btn" data-section="ordersSection" onclick="navigateTo('ordersSection',this)">
-                    <i data-lucide="package" style="width:18px;height:18px"></i> My Orders
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="package" aria-hidden="true" style="width:18px;height:18px" class="lucide lucide-package"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path><path d="M12 22V12"></path><polyline points="3.29 7 12 12 20.71 7"></polyline><path d="m7.5 4.27 9 5.15"></path></svg> My Orders
                 </button>
                 <button class="nav-btn" data-section="profileSection" onclick="navigateTo('profileSection',this)">
-                    <i data-lucide="user" style="width:18px;height:18px"></i> Profile
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="user" aria-hidden="true" style="width:18px;height:18px" class="lucide lucide-user"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg> Profile
                 </button>
             </div>
             <div style="padding:1rem 1.25rem;border-top:1px solid #fce7f3">
@@ -932,15 +932,12 @@
                         </div>
                     </div>
                     <div style="min-width:0">
-                        <div style="font-size:.82rem;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"
-                            id="sidebarName">Loading...</div>
-                        <div style="font-size:.68rem;color:#9ca3af;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"
-                            id="sidebarEmail"></div>
+                        <div style="font-size:.82rem;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" id="sidebarName">Loading...</div>
+                        <div style="font-size:.68rem;color:#9ca3af;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" id="sidebarEmail"></div>
                     </div>
                 </div>
-                <button onclick="handleSignOut()"
-                    style="width:100%;padding:.55rem;border-radius:.5rem;background:#fdf2f8;color:#d6336c;font-size:.8rem;font-weight:600;border:1px solid #fbcfe8;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:.4rem">
-                    <i data-lucide="log-out" style="width:15px;height:15px"></i> Sign Out
+                <button onclick="handleSignOut()" style="width:100%;padding:.55rem;border-radius:.5rem;background:#fdf2f8;color:#d6336c;font-size:.8rem;font-weight:600;border:1px solid #fbcfe8;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:.4rem">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="log-out" aria-hidden="true" style="width:15px;height:15px" class="lucide lucide-log-out"><path d="m16 17 5-5-5-5"></path><path d="M21 12H9"></path><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path></svg> Sign Out
                 </button>
             </div>
         </nav>
@@ -950,13 +947,10 @@
 
             <!-- HOME -->
             <div class="section active" id="homeSection">
-                <div
-                    style="background:linear-gradient(135deg,#d6336c,#e84393);border-radius:1.25rem;padding:2.5rem;color:#fff;margin-bottom:2rem;position:relative;overflow:hidden">
-                    <div
-                        style="position:absolute;top:-40px;right:-40px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.08)">
+                <div style="background:linear-gradient(135deg,#d6336c,#e84393);border-radius:1.25rem;padding:2.5rem;color:#fff;margin-bottom:2rem;position:relative;overflow:hidden">
+                    <div style="position:absolute;top:-40px;right:-40px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.08)">
                     </div>
-                    <div
-                        style="position:absolute;bottom:-60px;right:80px;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,.05)">
+                    <div style="position:absolute;bottom:-60px;right:80px;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,.05)">
                     </div>
                     <h1 style="font-size:1.75rem;font-weight:800;margin-bottom:.5rem;position:relative">Welcome back,
                         <span id="homeName">there</span> ✨
@@ -965,13 +959,11 @@
                         fashion. Browse our collection and place your orders effortlessly.</p>
                 </div>
 
-                <div
-                    style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:2rem">
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:2rem">
                     <div class="stat-card">
                         <div style="display:flex;align-items:center;gap:.75rem">
-                            <div
-                                style="width:44px;height:44px;border-radius:.75rem;background:#fdf2f8;display:flex;align-items:center;justify-content:center">
-                                <i data-lucide="shopping-bag" style="width:20px;height:20px;color:#d6336c"></i>
+                            <div style="width:44px;height:44px;border-radius:.75rem;background:#fdf2f8;display:flex;align-items:center;justify-content:center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="shopping-bag" aria-hidden="true" style="width:20px;height:20px;color:#d6336c" class="lucide lucide-shopping-bag"><path d="M16 10a4 4 0 0 1-8 0"></path><path d="M3.103 6.034h17.794"></path><path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"></path></svg>
                             </div>
                             <div>
                                 <div style="font-size:1.3rem;font-weight:800;color:#1f2937" id="statProducts">0</div>
@@ -981,9 +973,8 @@
                     </div>
                     <div class="stat-card">
                         <div style="display:flex;align-items:center;gap:.75rem">
-                            <div
-                                style="width:44px;height:44px;border-radius:.75rem;background:#fdf2f8;display:flex;align-items:center;justify-content:center">
-                                <i data-lucide="package" style="width:20px;height:20px;color:#d6336c"></i>
+                            <div style="width:44px;height:44px;border-radius:.75rem;background:#fdf2f8;display:flex;align-items:center;justify-content:center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="package" aria-hidden="true" style="width:20px;height:20px;color:#d6336c" class="lucide lucide-package"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path><path d="M12 22V12"></path><polyline points="3.29 7 12 12 20.71 7"></polyline><path d="m7.5 4.27 9 5.15"></path></svg>
                             </div>
                             <div>
                                 <div style="font-size:1.3rem;font-weight:800;color:#1f2937" id="statOrders">0</div>
@@ -993,9 +984,8 @@
                     </div>
                     <div class="stat-card">
                         <div style="display:flex;align-items:center;gap:.75rem">
-                            <div
-                                style="width:44px;height:44px;border-radius:.75rem;background:#fdf2f8;display:flex;align-items:center;justify-content:center">
-                                <i data-lucide="map-pin" style="width:20px;height:20px;color:#d6336c"></i>
+                            <div style="width:44px;height:44px;border-radius:.75rem;background:#fdf2f8;display:flex;align-items:center;justify-content:center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="map-pin" aria-hidden="true" style="width:20px;height:20px;color:#d6336c" class="lucide lucide-map-pin"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path><circle cx="12" cy="10" r="3"></circle></svg>
                             </div>
                             <div>
                                 <div style="font-size:.85rem;font-weight:700;color:#1f2937" id="statLocation">—</div>
@@ -1006,25 +996,21 @@
                 </div>
 
                 <h2 style="font-size:1.15rem;font-weight:700;margin-bottom:1rem">Featured Items</h2>
-                <div id="featuredGrid"
-                    style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1.25rem"></div>
+                <div id="featuredGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1.25rem"></div>
             </div>
 
             <!-- SHOP -->
             <div class="section" id="shopSection">
-                <div
-                    style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:1.5rem">
+                <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:1.5rem">
                     <h2 style="font-size:1.3rem;font-weight:800">Shop Collection</h2>
                     <div class="search-box" style="min-width:280px">
-                        <i data-lucide="search" style="width:18px;height:18px"></i>
-                        <input type="text" class="input-field" placeholder="Search products..." id="shopSearch"
-                            oninput="filterProducts()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="search" aria-hidden="true" style="width:18px;height:18px" class="lucide lucide-search"><path d="m21 21-4.34-4.34"></path><circle cx="11" cy="11" r="8"></circle></svg>
+                        <input type="text" class="input-field" placeholder="Search products..." id="shopSearch" oninput="filterProducts()">
                     </div>
                 </div>
-                <div id="shopGrid"
-                    style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1.25rem"></div>
+                <div id="shopGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1.25rem"></div>
                 <div id="shopEmpty" style="display:none;text-align:center;padding:4rem 1rem">
-                    <i data-lucide="shopping-bag" style="width:48px;height:48px;color:#fbcfe8;margin:0 auto 1rem"></i>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="shopping-bag" aria-hidden="true" style="width:48px;height:48px;color:#fbcfe8;margin:0 auto 1rem" class="lucide lucide-shopping-bag"><path d="M16 10a4 4 0 0 1-8 0"></path><path d="M3.103 6.034h17.794"></path><path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"></path></svg>
                     <p style="font-size:1rem;font-weight:600;color:#9ca3af">No products found</p>
                 </div>
             </div>
@@ -1034,7 +1020,7 @@
                 <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:1.5rem">My Orders</h2>
                 <div id="ordersList" style="display:flex;flex-direction:column;gap:1rem"></div>
                 <div id="ordersEmpty" style="display:none;text-align:center;padding:4rem 1rem">
-                    <i data-lucide="package" style="width:48px;height:48px;color:#fbcfe8;margin:0 auto 1rem"></i>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="package" aria-hidden="true" style="width:48px;height:48px;color:#fbcfe8;margin:0 auto 1rem" class="lucide lucide-package"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path><path d="M12 22V12"></path><polyline points="3.29 7 12 12 20.71 7"></polyline><path d="m7.5 4.27 9 5.15"></path></svg>
                     <p style="font-size:1rem;font-weight:600;color:#9ca3af">No orders yet</p>
                     <p style="font-size:.85rem;color:#d1d5db;margin-top:.35rem">Start shopping to see your orders here
                     </p>
@@ -1044,13 +1030,10 @@
             <!-- PROFILE -->
             <div class="section" id="profileSection">
                 <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:1.5rem">My Profile</h2>
-                <div
-                    style="background:#fff;border-radius:1rem;border:1px solid rgba(214,51,108,.08);padding:2rem;max-width:600px">
-                    <div
-                        style="display:flex;align-items:center;gap:1.25rem;margin-bottom:2rem;padding-bottom:1.5rem;border-bottom:1px solid #fce7f3">
+                <div style="background:#fff;border-radius:1rem;border:1px solid rgba(214,51,108,.08);padding:2rem;max-width:600px">
+                    <div style="display:flex;align-items:center;gap:1.25rem;margin-bottom:2rem;padding-bottom:1.5rem;border-bottom:1px solid #fce7f3">
                         <div class="avatar-ring">
-                            <div class="avatar-inner" id="profileAvatar"
-                                style="width:64px;height:64px;font-size:1.4rem">?</div>
+                            <div class="avatar-inner" id="profileAvatar" style="width:64px;height:64px;font-size:1.4rem">?</div>
                         </div>
                         <div>
                             <div style="font-size:1.15rem;font-weight:700" id="profileName">—</div>
@@ -1066,17 +1049,13 @@
     <!-- ==================== ORDER MODAL ==================== -->
     <div class="modal-overlay" id="orderModal">
         <div class="modal-content">
-            <div
-                style="padding:1.5rem;border-bottom:1px solid #fce7f3;display:flex;align-items:center;justify-content:space-between">
+            <div style="padding:1.5rem;border-bottom:1px solid #fce7f3;display:flex;align-items:center;justify-content:space-between">
                 <h3 style="font-size:1.1rem;font-weight:700">Place Order</h3>
-                <button onclick="closeOrderModal()"
-                    style="background:none;border:none;cursor:pointer;color:#9ca3af;padding:.25rem"><i data-lucide="x"
-                        style="width:20px;height:20px"></i></button>
+                <button onclick="closeOrderModal()" style="background:none;border:none;cursor:pointer;color:#9ca3af;padding:.25rem"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="x" aria-hidden="true" style="width:20px;height:20px" class="lucide lucide-x"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
             </div>
             <div style="padding:1.5rem">
                 <div style="display:flex;gap:1rem;margin-bottom:1.5rem">
-                    <img id="modalImg" src=""
-                        style="width:100px;height:100px;border-radius:.75rem;object-fit:cover;background:#fce7f3">
+                    <img id="modalImg" src="" style="width:100px;height:100px;border-radius:.75rem;object-fit:cover;background:#fce7f3">
                     <div>
                         <div style="font-weight:700;font-size:1rem" id="modalName">—</div>
                         <div style="color:#9ca3af;font-size:.82rem;margin-top:.2rem" id="modalDesc">—</div>
@@ -1087,21 +1066,16 @@
                 <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem">
                     <span style="font-size:.85rem;font-weight:600">Quantity:</span>
                     <div style="display:flex;align-items:center;gap:.5rem">
-                        <button onclick="changeQty(-1)"
-                            style="width:36px;height:36px;border-radius:.5rem;border:1.5px solid #fbcfe8;background:#fff;cursor:pointer;font-size:1.1rem;font-weight:700;color:#d6336c;display:flex;align-items:center;justify-content:center">−</button>
-                        <span style="font-size:1.1rem;font-weight:700;min-width:2rem;text-align:center"
-                            id="modalQty">1</span>
-                        <button onclick="changeQty(1)"
-                            style="width:36px;height:36px;border-radius:.5rem;border:1.5px solid #fbcfe8;background:#fff;cursor:pointer;font-size:1.1rem;font-weight:700;color:#d6336c;display:flex;align-items:center;justify-content:center">+</button>
+                        <button onclick="changeQty(-1)" style="width:36px;height:36px;border-radius:.5rem;border:1.5px solid #fbcfe8;background:#fff;cursor:pointer;font-size:1.1rem;font-weight:700;color:#d6336c;display:flex;align-items:center;justify-content:center">−</button>
+                        <span style="font-size:1.1rem;font-weight:700;min-width:2rem;text-align:center" id="modalQty">1</span>
+                        <button onclick="changeQty(1)" style="width:36px;height:36px;border-radius:.5rem;border:1.5px solid #fbcfe8;background:#fff;cursor:pointer;font-size:1.1rem;font-weight:700;color:#d6336c;display:flex;align-items:center;justify-content:center">+</button>
                     </div>
                 </div>
-                <div
-                    style="background:#fdf2f8;border-radius:.75rem;padding:1rem;display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem">
+                <div style="background:#fdf2f8;border-radius:.75rem;padding:1rem;display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem">
                     <span style="font-weight:600;color:#6b7280">Total:</span>
                     <span style="font-size:1.3rem;font-weight:800;color:#d6336c" id="modalTotal">KES 0</span>
                 </div>
-                <button class="btn-primary" style="width:100%;justify-content:center" id="confirmOrderBtn"
-                    onclick="confirmOrder()">Confirm Order</button>
+                <button class="btn-primary" style="width:100%;justify-content:center" id="confirmOrderBtn" onclick="confirmOrder()">Confirm Order</button>
             </div>
         </div>
     </div>
@@ -1109,18 +1083,16 @@
     <!-- ==================== CHAT WIDGET ==================== -->
     <button class="chat-fab" id="chatFab" onclick="toggleChat()">
         <span class="fab-pulse"></span>
-        <i data-lucide="message-circle" style="width:24px;height:24px" id="chatFabIcon"></i>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="message-circle" aria-hidden="true" style="width:24px;height:24px" id="chatFabIcon" class="lucide lucide-message-circle"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"></path></svg>
     </button>
     <div class="chat-panel" id="chatPanel">
         <div class="chat-header">
-            <div
-                style="width:36px;height:36px;border-radius:.75rem;background:rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center">
-                <i data-lucide="headphones" style="width:18px;height:18px"></i>
+            <div style="width:36px;height:36px;border-radius:.75rem;background:rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="headphones" aria-hidden="true" style="width:18px;height:18px" class="lucide lucide-headphones"><path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3"></path></svg>
             </div>
             <div>
                 <h3 style="font-size:.92rem;font-weight:700;margin:0">Zerah Support</h3>
-                <p
-                    style="font-size:.7rem;color:rgba(255,255,255,.6);margin-top:2px;display:flex;align-items:center;gap:5px">
+                <p style="font-size:.7rem;color:rgba(255,255,255,.6);margin-top:2px;display:flex;align-items:center;gap:5px">
                     <span style="width:6px;height:6px;border-radius:50%;background:#34d399;display:inline-block"></span>
                     Online
                 </p>
@@ -1132,9 +1104,8 @@
             </div>
         </div>
         <div class="chat-input-area">
-            <input type="text" id="chatInput" placeholder="Type a message..."
-                onkeydown="if(event.key==='Enter')sendChatMessage()">
-            <button onclick="sendChatMessage()"><i data-lucide="send" style="width:18px;height:18px"></i></button>
+            <input type="text" id="chatInput" placeholder="Type a message..." onkeydown="if(event.key==='Enter')sendChatMessage()">
+            <button onclick="sendChatMessage()"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="send" aria-hidden="true" style="width:18px;height:18px" class="lucide lucide-send"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"></path><path d="m21.854 2.147-10.94 10.939"></path></svg></button>
         </div>
     </div>
 
@@ -1523,7 +1494,60 @@
         document.getElementById('orderModal').addEventListener('click', function (e) {
             if (e.target === this) closeOrderModal();
         });
+        (function(){
+    document.addEventListener('DOMContentLoaded',function(){
+        var ad=document.getElementById('epsilonAd');
+        if(!ad)return;
+        function show(){ad.classList.add('visible')}
+        function close(){ad.classList.remove('visible')}
+        window.closeEpsilonAd=close;
+        ad.addEventListener('click',function(e){if(e.target===ad)close()});
+        document.addEventListener('keydown',function(e){if(e.key==='Escape')close()});
+        var orig=window.loadProfile;
+        if(typeof orig==='function'){
+            window.loadProfile=async function(){
+                var result=orig.apply(this,arguments);
+                setTimeout(show,800);
+                return result;
+            };
+        }
+    });
+})();
     </script>
-</body>
-
-</html>
+<!-- EPSILON PANEL AD MODAL -->
+<div class="ad-overlay" id="epsilonAd">
+    <div class="ad-card">
+        <div class="ad-card-top">
+            <button class="ad-close" onclick="closeEpsilonAd()" aria-label="Close">&times;</button>
+            <div class="ad-logo">ε</div>
+            <h3>Need a Website Like This?</h3>
+            <p>Order your own from Epsilon Panel — fast, customizable, and delivered within a month or less.</p>
+        </div>
+        <div class="ad-card-body">
+            <div class="ad-features">
+                <div class="ad-feature">
+                    <div class="ad-feature-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.5 4.5H18l-3.75 2.7 1.5 4.5L12 12l-3.75 2.7 1.5-4.5L6 7.5h4.5z"/></svg></div>
+                    Fully customizable to your brand
+                </div>
+                <div class="ad-feature">
+                    <div class="ad-feature-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+                    Delivered in a month or less
+                </div>
+                <div class="ad-feature">
+                    <div class="ad-feature-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+                    Affordable pricing for any business
+                </div>
+                <div class="ad-feature">
+                    <div class="ad-feature-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+                    Auth, database & hosting included
+                </div>
+            </div>
+            <a href="https://epsilon-panel.vercel.app" target="_blank" rel="noopener noreferrer" class="ad-btn-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                Order Your Website Now
+            </a>
+            <button class="ad-btn-dismiss" onclick="closeEpsilonAd()">Maybe later</button>
+        </div>
+    </div>
+</div>
+</body></html>
