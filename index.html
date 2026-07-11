@@ -2,1165 +2,1528 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Zerah Clothing</title>
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="icon" href="logo.png" type="image/png">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-    <!-- Tailwind CSS v4 -->
-    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
-
-    <!-- Supabase -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zerah — Kenyan Fashion</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👗</text></svg>">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
         body {
             font-family: 'Inter', sans-serif;
-            -webkit-font-smoothing: antialiased;
-        }
-        
-        h1, h2, h3, .brand-font {
-            font-family: 'Playfair Display', serif;
+            background: #fdf2f8;
+            color: #1f2937;
+            overflow-x: hidden
         }
 
-        /* Hide scrollbar for a cleaner look in the nav if it wraps */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
+        .bg-pattern {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background-image: radial-gradient(at 0% 0%, rgba(214, 51, 108, .06) 0, transparent 50%), radial-gradient(at 100% 100%, rgba(232, 67, 147, .05) 0, transparent 50%), radial-gradient(at 50% 50%, rgba(190, 24, 93, .03) 0, transparent 70%)
         }
 
-        ::-webkit-scrollbar-track {
-            background: transparent;
+        .glass {
+            background: rgba(255, 255, 255, .92);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(214, 51, 108, .1);
+            box-shadow: 0 4px 24px rgba(214, 51, 108, .04)
         }
 
-        ::-webkit-scrollbar-thumb {
+        .input-field {
+            width: 100%;
+            border-radius: .6rem;
+            padding: .8rem 1rem;
+            background: #fff;
+            border: 1.5px solid #fbcfe8;
+            transition: all .25s;
+            font-size: .95rem;
+            font-family: 'Inter', sans-serif;
+            color: #1f2937
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #d6336c;
+            box-shadow: 0 0 0 3px rgba(214, 51, 108, .1)
+        }
+
+        .input-field::placeholder {
+            color: #f9a8d4
+        }
+
+        select.input-field {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23d6336c' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center
+        }
+
+        .btn-primary {
+            padding: .75rem 1.5rem;
+            border-radius: .6rem;
+            background: linear-gradient(135deg, #d6336c, #e84393);
+            color: #fff;
+            font-size: .9rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all .25s;
+            font-family: 'Inter', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 24px rgba(214, 51, 108, .3)
+        }
+
+        .btn-primary:disabled {
+            opacity: .5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none
+        }
+
+        .btn-outline {
+            padding: .75rem 1.5rem;
+            border-radius: .6rem;
+            background: #fff;
+            color: #d6336c;
+            font-size: .9rem;
+            font-weight: 600;
+            border: 1.5px solid #fbcfe8;
+            cursor: pointer;
+            transition: all .25s;
+            font-family: 'Inter', sans-serif
+        }
+
+        .btn-outline:hover {
+            border-color: #d6336c;
+            background: #fdf2f8
+        }
+
+        /* Auth */
+        #authPage {
+            position: fixed;
+            inset: 0;
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 50%, #fbcfe8 100%)
+        }
+
+        .auth-card {
+            background: #fff;
+            border-radius: 1.25rem;
+            box-shadow: 0 24px 64px rgba(214, 51, 108, .1);
+            max-width: 460px;
+            width: 100%;
+            margin: 1rem;
+            overflow: hidden
+        }
+
+        .auth-tabs {
+            display: flex;
+            border-bottom: 2px solid #fce7f3
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 1rem;
+            text-align: center;
+            font-weight: 600;
+            font-size: .9rem;
+            cursor: pointer;
+            transition: all .25s;
+            color: #9ca3af;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px
+        }
+
+        .auth-tab.active {
+            color: #d6336c;
+            border-bottom-color: #d6336c
+        }
+
+        .auth-form {
+            display: none;
+            padding: 1.75rem
+        }
+
+        .auth-form.active {
+            display: block
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            width: 260px;
+            background: rgba(255, 255, 255, .97);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(214, 51, 108, .08);
+            transition: transform .35s cubic-bezier(.4, 0, .2, 1);
+            z-index: 100;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 4px
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
             background: #fbcfe8;
-            border-radius: 4px;
+            border-radius: 4px
         }
-        
-        .bg-pink-soft {
-            background-color: #fff1f2;
+
+        .sidebar.closed {
+            transform: translateX(-100%)
         }
-        
-        .text-pink-primary {
-            color: #ec4899;
+
+        .main-content {
+            margin-left: 260px;
+            transition: margin-left .35s cubic-bezier(.4, 0, .2, 1);
+            padding: 2rem 2.5rem;
+            min-height: 100vh
         }
-        
-        .border-pink-light {
-            border-color: #fce7f3;
+
+        .main-content.expanded {
+            margin-left: 0
+        }
+
+        .menu-toggle {
+            position: fixed;
+            top: 1.25rem;
+            left: 1.25rem;
+            z-index: 101;
+            background: linear-gradient(135deg, #d6336c, #e84393);
+            border: none;
+            padding: .65rem;
+            border-radius: .6rem;
+            cursor: pointer;
+            transition: all .25s;
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(214, 51, 108, .25);
+            display: none;
+            align-items: center;
+            justify-content: center
+        }
+
+        .nav-btn {
+            display: flex;
+            align-items: center;
+            gap: .75rem;
+            padding: .7rem 1.25rem;
+            margin: .15rem .75rem;
+            border-radius: .6rem;
+            font-size: .88rem;
+            font-weight: 500;
+            color: #6b7280;
+            cursor: pointer;
+            transition: all .2s;
+            border: none;
+            background: transparent;
+            width: calc(100% - 1.5rem);
+            font-family: 'Inter', sans-serif;
+            text-align: left
+        }
+
+        .nav-btn:hover {
+            background: #fdf2f8;
+            color: #d6336c
+        }
+
+        .nav-btn.active-nav {
+            background: linear-gradient(135deg, #d6336c, #e84393) !important;
+            color: #fff !important
+        }
+
+        .nav-btn.active-nav svg {
+            color: #fff !important
+        }
+
+        .section {
+            display: none
+        }
+
+        .section.active {
+            display: block
+        }
+
+        /* Product Cards */
+        .product-card {
+            background: #fff;
+            border-radius: 1rem;
+            border: 1px solid rgba(214, 51, 108, .08);
+            overflow: hidden;
+            transition: all .35s cubic-bezier(.4, 0, .2, 1);
+            display: flex;
+            flex-direction: column
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(214, 51, 108, .08)
+        }
+
+        .product-card:hover .product-img {
+            transform: scale(1.06)
+        }
+
+        .product-img-wrap {
+            position: relative;
+            height: 220px;
+            overflow: hidden;
+            background: #fce7f3
+        }
+
+        .product-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform .5s cubic-bezier(.4, 0, .2, 1)
+        }
+
+        .product-stock-badge {
+            position: absolute;
+            top: .75rem;
+            right: .75rem;
+            padding: .3rem .7rem;
+            border-radius: 9999px;
+            font-size: .68rem;
+            font-weight: 700;
+            background: rgba(255, 255, 255, .9);
+            backdrop-filter: blur(8px);
+            color: #d6336c
+        }
+
+        .product-stock-badge.out {
+            color: #dc2626
+        }
+
+        .product-body {
+            padding: 1.25rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column
+        }
+
+        .product-name {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: .3rem
+        }
+
+        .product-desc {
+            font-size: .82rem;
+            color: #9ca3af;
+            margin-bottom: 1rem;
+            flex: 1;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden
+        }
+
+        .product-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: .75rem;
+            border-top: 1px solid #fce7f3
+        }
+
+        .product-price {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #d6336c
+        }
+
+        .order-btn {
+            padding: .55rem 1.1rem;
+            border-radius: .6rem;
+            background: linear-gradient(135deg, #d6336c, #e84393);
+            color: #fff;
+            font-size: .8rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all .25s;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            align-items: center;
+            gap: .35rem
+        }
+
+        .order-btn:hover {
+            box-shadow: 0 6px 16px rgba(214, 51, 108, .3);
+            transform: translateY(-1px)
+        }
+
+        .order-btn:disabled {
+            background: #fce7f3;
+            color: #f9a8d4;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none
+        }
+
+        /* Order Cards */
+        .order-card {
+            background: #fff;
+            border-radius: 1rem;
+            border: 1px solid rgba(214, 51, 108, .08);
+            padding: 1.25rem;
+            transition: all .25s
+        }
+
+        .order-card:hover {
+            box-shadow: 0 8px 24px rgba(214, 51, 108, .06);
+            transform: translateY(-2px)
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: .3rem;
+            padding: .25rem .75rem;
+            border-radius: 9999px;
+            font-size: .7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .04em
+        }
+
+        .status-pending {
+            background: #fef3c7;
+            color: #d97706
+        }
+
+        .status-processing {
+            background: #dbeafe;
+            color: #2563eb
+        }
+
+        .status-shipped {
+            background: #e0e7ff;
+            color: #4f46e5
+        }
+
+        .status-delivered {
+            background: #d1fae5;
+            color: #059669
+        }
+
+        .status-cancelled {
+            background: #fee2e2;
+            color: #dc2626
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .4);
+            backdrop-filter: blur(6px);
+            z-index: 300;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem
+        }
+
+        .modal-overlay.active {
+            display: flex
+        }
+
+        .modal-content {
+            background: #fff;
+            border-radius: 1.25rem;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 60px rgba(214, 51, 108, .15);
+            animation: modalIn .3s cubic-bezier(.4, 0, .2, 1)
+        }
+
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: scale(.95) translateY(10px)
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0)
+            }
+        }
+
+        /* Chat Widget */
+        .chat-fab {
+            position: fixed;
+            bottom: 1.75rem;
+            right: 1.75rem;
+            z-index: 600;
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #d6336c, #e84393);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            box-shadow: 0 12px 40px rgba(214, 51, 108, .35);
+            transition: all .3s cubic-bezier(.4, 0, .2, 1)
+        }
+
+        .chat-fab:hover {
+            transform: scale(1.06) translateY(-2px);
+            box-shadow: 0 16px 48px rgba(214, 51, 108, .45)
+        }
+
+        .chat-fab.active {
+            transform: rotate(90deg) scale(1.02);
+            background: #dc2626
+        }
+
+        .chat-fab .fab-pulse {
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            border: 2px solid rgba(214, 51, 108, .3);
+            animation: fabPulse 2.5s ease-out infinite
+        }
+
+        @keyframes fabPulse {
+            0% {
+                transform: scale(1);
+                opacity: .7
+            }
+
+            100% {
+                transform: scale(1.4);
+                opacity: 0
+            }
+        }
+
+        .chat-panel {
+            position: fixed;
+            bottom: 6.5rem;
+            right: 1.75rem;
+            z-index: 599;
+            width: 400px;
+            max-width: calc(100vw - 2rem);
+            height: 560px;
+            max-height: calc(100vh - 8rem);
+            border-radius: 1.25rem;
+            background: rgba(255, 255, 255, .98);
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(214, 51, 108, .1);
+            box-shadow: 0 24px 64px rgba(0, 0, 0, .12);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transform: scale(.92) translateY(24px);
+            opacity: 0;
+            pointer-events: none;
+            transition: all .35s cubic-bezier(.4, 0, .2, 1);
+            transform-origin: bottom right
+        }
+
+        .chat-panel.open {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+            pointer-events: all
+        }
+
+        .chat-header {
+            padding: 1.1rem 1.25rem;
+            background: linear-gradient(135deg, #d6336c, #e84393);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: .85rem
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: .75rem
+        }
+
+        .chat-msg {
+            display: flex;
+            gap: .6rem;
+            max-width: 85%;
+            animation: msgIn .25s cubic-bezier(.4, 0, .2, 1)
+        }
+
+        @keyframes msgIn {
+            from {
+                opacity: 0;
+                transform: translateY(6px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        .chat-msg.user {
+            align-self: flex-end;
+            flex-direction: row-reverse
+        }
+
+        .chat-msg .msg-bubble {
+            padding: .7rem 1rem;
+            border-radius: 1rem;
+            font-size: .85rem;
+            line-height: 1.55;
+            color: #1f2937
+        }
+
+        .chat-msg.assistant .msg-bubble {
+            background: #fce7f3;
+            border-top-left-radius: .25rem
+        }
+
+        .chat-msg.user .msg-bubble {
+            background: linear-gradient(135deg, #d6336c, #e84393);
+            color: #fff;
+            border-top-right-radius: .25rem
+        }
+
+        .chat-input-area {
+            padding: .85rem 1rem;
+            border-top: 1px solid #fce7f3;
+            display: flex;
+            gap: .5rem;
+            background: #fff
+        }
+
+        .chat-input-area input {
+            flex: 1;
+            border: 1.5px solid #fbcfe8;
+            border-radius: .75rem;
+            padding: .6rem 1rem;
+            font-size: .85rem;
+            outline: none;
+            background: #fdf2f8;
+            transition: all .2s;
+            font-family: 'Inter', sans-serif;
+            color: #1f2937
+        }
+
+        .chat-input-area input:focus {
+            border-color: #d6336c;
+            background: #fff
+        }
+
+        .chat-input-area button {
+            width: 40px;
+            height: 40px;
+            border-radius: .75rem;
+            background: linear-gradient(135deg, #d6336c, #e84393);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all .2s;
+            border: none;
+            cursor: pointer
+        }
+
+        .chat-input-area button:hover {
+            box-shadow: 0 4px 12px rgba(214, 51, 108, .3)
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 500;
+            padding: 1rem 1.5rem;
+            border-radius: .75rem;
+            color: #fff;
+            font-weight: 500;
+            font-size: .9rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, .15);
+            transform: translateY(120%);
+            transition: transform .4s cubic-bezier(.4, 0, .2, 1)
+        }
+
+        .toast.show {
+            transform: translateY(0)
+        }
+
+        .toast-success {
+            background: linear-gradient(135deg, #d6336c, #e84393)
+        }
+
+        .toast-error {
+            background: #dc2626
+        }
+
+        /* Skeleton */
+        .skeleton {
+            background: linear-gradient(90deg, #fce7f8 25%, #f9a8d4 50%, #fce7f8 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: .5rem
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: 200% 0
+            }
+
+            100% {
+                background-position: -200% 0
+            }
+        }
+
+        /* Stat card */
+        .stat-card {
+            background: #fff;
+            border-radius: 1rem;
+            border: 1px solid rgba(214, 51, 108, .08);
+            padding: 1.25rem;
+            transition: all .3s
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(214, 51, 108, .06)
+        }
+
+        /* Search */
+        .search-box {
+            position: relative
+        }
+
+        .search-box svg {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #f9a8d4
+        }
+
+        .search-box input {
+            padding-left: 3rem
+        }
+
+        /* Profile avatar */
+        .avatar-ring {
+            padding: 2px;
+            border-radius: 9999px;
+            background: linear-gradient(135deg, #d6336c, #e84393)
+        }
+
+        .avatar-ring .avatar-inner {
+            border-radius: 9999px;
+            border: 2px solid #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #fff;
+            background: linear-gradient(135deg, #d6336c, #e84393)
+        }
+
+        @media(max-width:768px) {
+            .sidebar {
+                transform: translateX(-100%)
+            }
+
+            .sidebar.open {
+                transform: translateX(0)
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 1.25rem
+            }
+
+            .menu-toggle {
+                display: flex !important
+            }
+
+            .chat-panel {
+                bottom: 0;
+                right: 0;
+                width: 100%;
+                height: 100%;
+                border-radius: 0
+            }
+
+            .product-img-wrap {
+                height: 180px
+            }
         }
     </style>
 </head>
 
-<body class="bg-[#fffafa] text-slate-800 min-h-screen flex flex-col">
+<body>
+    <div class="bg-pattern"></div>
 
-    <!-- NAVIGATION -->
-    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-lg border-b border-pink-100 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col sm:flex-row justify-between items-center py-4 gap-4">
-                <!-- Logo -->
-                <div class="flex items-center gap-2 cursor-pointer" onclick="showPage('home')">
-                    <div class="bg-pink-500 text-white p-2 rounded-full shadow-md">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z" />
-                        </svg>
-                    </div>
-                    <h1 class="text-2xl font-black tracking-tight text-slate-900">Zerah<span
-                            class="text-pink-500">Clothing</span></h1>
-                </div>
-
-                <!-- Nav Links -->
-                <div
-                    class="flex flex-wrap justify-center gap-1 sm:gap-2 bg-pink-50/50 p-1 rounded-2xl border border-pink-100">
-                    <button onclick="showPage('home')"
-                        class="nav-btn px-4 py-2 rounded-xl text-sm font-medium text-slate-600 hover:text-pink-600 hover:bg-white hover:shadow-sm transition-all flex items-center gap-2"
-                        data-target="home">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-                            <polyline points="9 22 9 12 15 12 15 22" />
-                        </svg>
-                        <span class="hidden sm:inline">Home</span>
-                    </button>
-                    <button onclick="showPage('shop')"
-                        class="nav-btn px-4 py-2 rounded-xl text-sm font-medium text-slate-600 hover:text-pink-600 hover:bg-white hover:shadow-sm transition-all flex items-center gap-2"
-                        data-target="shop">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
-                            <path d="M3 6h18" />
-                            <path d="M16 10a4 4 0 0 1-8 0" />
-                        </svg>
-                        <span class="hidden sm:inline">Shop</span>
-                    </button>
-                    <button id="cartBtn" onclick="showCart()"
-                        class="nav-btn px-4 py-2 rounded-xl text-sm font-medium text-slate-600 hover:text-pink-600 hover:bg-white hover:shadow-sm transition-all flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="9" cy="21" r="1" />
-                            <circle cx="20" cy="21" r="1" />
-                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
-                        </svg>
-                        <span class="hidden sm:inline">Cart (0)</span>
-                    </button>
-                    <button onclick="showPage('admin')"
-                        class="nav-btn px-4 py-2 rounded-xl text-sm font-medium text-slate-600 hover:text-pink-600 hover:bg-white hover:shadow-sm transition-all flex items-center gap-2"
-                        data-target="admin">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10" />
-                            <path d="m9 12 2 2 4-4" />
-                        </svg>
-                        <span class="hidden sm:inline">Admin</span>
-                    </button>
-                    <button onclick="showPage('auth')"
-                        class="nav-btn px-4 py-2 rounded-xl text-sm font-medium text-slate-600 hover:text-pink-600 hover:bg-white hover:shadow-sm transition-all flex items-center gap-2"
-                        data-target="auth">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-                            <circle cx="12" cy="7" r="4" />
-                        </svg>
-                        <span class="hidden sm:inline">Account</span>
-                    </button>
-                    <button onclick="showPage('settings')"
-                        class="nav-btn px-4 py-2 rounded-xl text-sm font-medium text-slate-600 hover:text-pink-600 hover:bg-white hover:shadow-sm transition-all flex items-center gap-2"
-                        data-target="settings">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path
-                                d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
-                            <circle cx="12" cy="12" r="3" />
-                        </svg>
-                        <span class="hidden sm:inline">Settings</span>
-                    </button>
-                </div>
+    <!-- ==================== AUTH PAGE ==================== -->
+    <div id="authPage">
+        <div class="auth-card">
+            <div style="padding:1.75rem 1.75rem 0;text-align:center">
+                <h1
+                    style="font-size:1.8rem;font-weight:800;background:linear-gradient(135deg,#d6336c,#e84393);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:.25rem">
+                    Zerah</h1>
+                <p style="font-size:.82rem;color:#9ca3af">Kenyan Fashion, Redefined</p>
             </div>
-        </div>
-    </nav>
-
-    <!-- MAIN CONTENT AREA -->
-    <main class="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-
-        <!-- HOME SECTION -->
-        <section id="home" class="page-section flex flex-col items-center justify-center text-center py-12 sm:py-24">
-            <div
-                class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-50 text-pink-600 text-sm font-semibold mb-6 border border-pink-100">
-                <span class="relative flex h-2 w-2">
-                    <span
-                        class="animate-ping absolute inline-flex h-full w-full rounded-full bg-pink-400 opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-2 w-2 bg-pink-500"></span>
-                </span>
-                Fashion by <a href="https://epsilonhub.vercel.app" target="_blank"
-                    class="underline hover:no-underline">Epsilon</a>
-            </div>
-            <h2 class="text-4xl sm:text-7xl font-extrabold text-slate-900 tracking-tight leading-tight max-w-4xl">
-                Elegance in Every <br class="hidden sm:block" /> <span class="text-pink-500">Stitch & Detail</span>
-            </h2>
-            <p class="mt-6 text-lg sm:text-xl text-slate-500 max-w-2xl leading-relaxed">
-                Discover the latest in girly and chic fashion. From dreamy dresses to trendy accessories, Zerah Clothing brings you the perfect look for every occasion.
-            </p>
-            <div class="mt-10 flex flex-col sm:flex-row gap-4">
-                <button onclick="showPage('shop')"
-                    class="px-8 py-4 bg-pink-500 hover:bg-pink-600 text-white rounded-2xl font-semibold shadow-lg shadow-pink-500/20 transition-all hover:-translate-y-0.5 focus:ring-4 focus:ring-pink-100 flex items-center justify-center gap-2">
-                    Shop Collection
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M5 12h14" />
-                        <path d="m12 5 7 7-7 7" />
-                    </svg>
-                </button>
-                <button onclick="showPage('auth')"
-                    class="px-8 py-4 bg-white hover:bg-pink-50 text-pink-600 border border-pink-100 rounded-2xl font-semibold transition-all hover:-translate-y-0.5 focus:ring-4 focus:ring-pink-100">
-                    Join Zerah Club
-                </button>
-            </div>
-        </section>
-
-        <!-- SHOP SECTION -->
-        <section id="shop" class="page-section hidden">
-            <div class="mb-12">
-                <div class="flex items-center gap-3 mb-6">
-                    <div class="p-2 bg-pink-100 text-pink-600 rounded-lg">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z" />
-                        </svg>
-                    </div>
-                    <h2 class="text-3xl font-bold text-slate-900 tracking-tight">Apparel</h2>
-                </div>
-                <div id="productList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- Products injected via JS -->
-                </div>
+            <div class="auth-tabs" style="margin-top:1.25rem">
+                <div class="auth-tab active" onclick="switchAuthTab('signin')">Sign In</div>
+                <div class="auth-tab" onclick="switchAuthTab('signup')">Sign Up</div>
             </div>
 
-            <div class="mt-16">
-                <div class="flex items-center gap-3 mb-6">
-                    <div class="p-2 bg-pink-100 text-pink-600 rounded-lg">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10" />
-                            <path d="m9 12 2 2 4-4" />
-                        </svg>
-                    </div>
-                    <h2 class="text-3xl font-bold text-slate-900 tracking-tight">Styling Services</h2>
-                </div>
-                <div id="serviceList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- Services injected via JS -->
-                </div>
-            </div>
-        </section>
-
-        <!-- ADMIN SECTION -->
-        <section id="admin" class="page-section hidden">
-            <!-- Admin Login -->
-            <div id="adminLogin" class="max-w-md mx-auto mt-10">
-                <div class="bg-white p-8 rounded-3xl shadow-sm border border-pink-100 text-center">
-                    <div
-                        class="w-16 h-16 bg-pink-50 text-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
-                            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                        </svg>
-                    </div>
-                    <h2 class="text-2xl font-bold text-slate-900 mb-2">Boutique Admin</h2>
-                    <p class="text-slate-500 mb-6 text-sm">Enter the boutique key to manage inventory.</p>
-                    <div class="space-y-4">
-                        <input id="adminPass" type="password" placeholder="Boutique Key"
-                            class="w-full px-4 py-3 rounded-xl border border-pink-100 bg-pink-50/30 focus:bg-white focus:ring-2 focus:ring-pink-500 focus:border-pink-500 outline-none transition-all" />
-                        <button onclick="adminLogin()"
-                            class="w-full bg-pink-600 hover:bg-pink-700 text-white font-semibold py-3 rounded-xl transition-colors shadow-md shadow-pink-200">
-                            Enter Dashboard
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Admin Panel -->
-            <div id="adminPanel" class="hidden">
-                <div class="flex items-center justify-between mb-8">
+            <!-- Sign In -->
+            <form class="auth-form active" id="signinForm" onsubmit="handleSignIn(event)">
+                <div style="display:flex;flex-direction:column;gap:.85rem">
                     <div>
-                        <h2 class="text-3xl font-bold text-slate-900 tracking-tight">Boutique Dashboard</h2>
-                        <p class="text-slate-500 mt-1">Manage your apparel and track style orders.</p>
+                        <label
+                            style="font-size:.78rem;font-weight:600;color:#6b7280;display:block;margin-bottom:.35rem">Email</label>
+                        <input type="email" class="input-field" id="siEmail" placeholder="you@example.com" required>
                     </div>
-                </div>
-
-                <div class="grid lg:grid-cols-12 gap-8">
-                    <!-- Left Column: Forms -->
-                    <div class="lg:col-span-4 space-y-6">
-                        <!-- Add Product -->
-                        <div class="bg-white p-6 rounded-3xl shadow-sm border border-pink-100">
-                            <div class="flex items-center gap-2 mb-4">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" class="text-pink-500"
-                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z" />
-                                </svg>
-                                <h3 class="font-bold text-lg text-slate-900">Add Apparel</h3>
-                            </div>
-                            <div class="space-y-3">
-                                <input id="pname" placeholder="Item Name"
-                                    class="w-full px-4 py-2.5 rounded-xl border border-pink-100 text-sm focus:ring-2 focus:ring-pink-500 outline-none" />
-                                <input id="pprice" type="number" placeholder="Price (KSh)"
-                                    class="w-full px-4 py-2.5 rounded-xl border border-pink-100 text-sm focus:ring-2 focus:ring-pink-500 outline-none" />
-                                <textarea id="pdesc" placeholder="Fabric, fit, and style details..." rows="2"
-                                    class="w-full px-4 py-2.5 rounded-xl border border-pink-100 text-sm focus:ring-2 focus:ring-pink-500 outline-none resize-none"></textarea>
-                                <button onclick="addProduct()"
-                                    class="w-full bg-pink-500 hover:bg-pink-600 text-white font-medium py-2.5 rounded-xl transition-colors flex justify-center items-center gap-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round">
-                                        <path d="M5 12h14" />
-                                        <path d="M12 5v14" />
-                                    </svg>
-                                    Add Item
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Add Service -->
-                        <div class="bg-white p-6 rounded-3xl shadow-sm border border-pink-100">
-                            <div class="flex items-center gap-2 mb-4">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" class="text-pink-500"
-                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10" />
-                                    <path d="m9 12 2 2 4-4" />
-                                </svg>
-                                <h3 class="font-bold text-lg text-slate-900">Add Service</h3>
-                            </div>
-                            <div class="space-y-3">
-                                <input id="sname" placeholder="Service Name"
-                                    class="w-full px-4 py-2.5 rounded-xl border border-pink-100 text-sm focus:ring-2 focus:ring-pink-500 outline-none" />
-                                <input id="sprice" type="number" placeholder="Rate (KSh)"
-                                    class="w-full px-4 py-2.5 rounded-xl border border-pink-100 text-sm focus:ring-2 focus:ring-pink-500 outline-none" />
-                                <textarea id="sdesc" placeholder="Service description..." rows="2"
-                                    class="w-full px-4 py-2.5 rounded-xl border border-pink-100 text-sm focus:ring-2 focus:ring-pink-500 outline-none resize-none"></textarea>
-                                <button onclick="addService()"
-                                    class="w-full bg-pink-600 hover:bg-pink-700 text-white font-medium py-2.5 rounded-xl transition-colors flex justify-center items-center gap-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round">
-                                        <path d="M5 12h14" />
-                                        <path d="M12 5v14" />
-                                    </svg>
-                                    Add Service
-                                </button>
-                            </div>
-                        </div>
+                    <div>
+                        <label
+                            style="font-size:.78rem;font-weight:600;color:#6b7280;display:block;margin-bottom:.35rem">Password</label>
+                        <input type="password" class="input-field" id="siPassword" placeholder="••••••••" required>
                     </div>
-
-                    <!-- Right Column: Orders -->
-                    <div class="lg:col-span-8">
-                        <div class="bg-white p-6 rounded-3xl shadow-sm border border-pink-100 h-full">
-                            <div class="flex items-center gap-2 mb-6 pb-4 border-b border-pink-50">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" class="text-pink-300"
-                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                                    <polyline points="14 2 14 8 20 8" />
-                                    <line x1="16" x2="8" y1="13" y2="13" />
-                                    <line x1="16" x2="8" y1="17" y2="17" />
-                                    <polyline points="10 9 9 9 8 9" />
-                                </svg>
-                                <h3 class="font-bold text-xl text-slate-900">Recent Boutique Orders</h3>
-                            </div>
-                            <div id="orders" class="space-y-4 font-mono text-sm">
-                                <!-- Orders injected via JS -->
-                                <p class="text-slate-400 text-center py-8 font-sans">Loading orders...</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- AUTH SECTION -->
-        <section id="auth" class="page-section hidden">
-            <div class="max-w-md mx-auto mt-10">
-                <div class="bg-white p-8 rounded-3xl shadow-sm border border-pink-100">
-                    <div class="text-center mb-8">
-                        <div
-                            class="w-16 h-16 bg-pink-50 text-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-                                <circle cx="12" cy="7" r="4" />
-                            </svg>
-                        </div>
-                        <h2 class="text-2xl font-bold text-slate-900">Zerah Club</h2>
-                        <p class="text-slate-500 mt-1 text-sm">Sign in or join our fashion community.</p>
-                    </div>
-
-                    <div id="unauthUI" class="space-y-4">
-                        <div>
-                            <label
-                                class="block text-xs font-semibold text-pink-500 uppercase tracking-wider mb-2">Email
-                                Address</label>
-                            <input id="email" type="email" placeholder="belle@example.com"
-                                class="w-full px-4 py-3 rounded-xl border border-pink-100 bg-pink-50/30 focus:bg-white focus:ring-2 focus:ring-pink-500 outline-none transition-all" />
-                        </div>
-                        <div>
-                            <label
-                                class="block text-xs font-semibold text-pink-500 uppercase tracking-wider mb-2">Password</label>
-                            <input id="password" type="password" placeholder="••••••••"
-                                class="w-full px-4 py-3 rounded-xl border border-pink-100 bg-pink-50/30 focus:bg-white focus:ring-2 focus:ring-pink-500 outline-none transition-all" />
-                        </div>
-
-                        <div class="pt-4 grid grid-cols-2 gap-3">
-                            <button onclick="signIn()"
-                                class="w-full bg-pink-600 hover:bg-pink-700 text-white font-medium py-3 rounded-xl transition-colors shadow-md shadow-pink-100">
-                                Login
-                            </button>
-                            <button onclick="signUp()"
-                                class="w-full bg-white hover:bg-pink-50 text-pink-600 border border-pink-100 font-medium py-3 rounded-xl transition-colors">
-                                Sign Up
-                            </button>
-                        </div>
-                    </div>
-
-                    <div id="authUI" class="hidden space-y-6 text-center">
-                        <div class="p-4 bg-pink-50 rounded-2xl border border-pink-100">
-                            <p class="text-pink-800 font-semibold">Welcome back, Gorgeous!</p>
-                            <p id="userWelcome" class="text-pink-600 text-sm mt-1"></p>
-                        </div>
-                        <div class="grid grid-cols-1 gap-3">
-                            <button onclick="showPage('shop')"
-                                class="w-full bg-pink-600 hover:bg-pink-700 text-white font-semibold py-3 rounded-xl transition-colors">
-                                Go to Shop
-                            </button>
-                            <button onclick="signOut()"
-                                class="w-full bg-white hover:bg-pink-50 text-slate-900 border border-pink-100 font-medium py-3 rounded-xl transition-colors">
-                                Logout
-                            </button>
-                        </div>
-                    </div>
-
-                    <div id="authMsgContainer"
-                        class="hidden mt-4 p-3 rounded-xl bg-pink-50 text-center text-sm font-medium">
-                        <p id="authMsg" class="text-pink-700"></p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SETTINGS SECTION -->
-        <section id="settings" class="page-section hidden">
-            <div class="max-w-md mx-auto mt-10">
-                <div class="bg-white p-8 rounded-3xl shadow-sm border border-pink-100">
-                    <div class="text-center mb-8">
-                        <div
-                            class="w-16 h-16 bg-pink-50 text-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <path
-                                    d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
-                                <circle cx="12" cy="12" r="3" />
-                            </svg>
-                        </div>
-                        <h2 class="text-2xl font-bold text-slate-900">Settings</h2>
-                        <p class="text-slate-500 mt-1 text-sm">Update your style profile & delivery info.</p>
-                    </div>
-
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-xs font-semibold text-pink-500 uppercase tracking-wider mb-2">Full
-                                Name</label>
-                            <input id="set_name" type="text" placeholder="Your Name"
-                                class="w-full px-4 py-3 rounded-xl border border-pink-100 bg-pink-50/30 focus:bg-white focus:ring-2 focus:ring-pink-500 outline-none transition-all" />
-                        </div>
-                        <div>
-                            <label
-                                class="block text-xs font-semibold text-pink-500 uppercase tracking-wider mb-2">Delivery Address</label>
-                            <input id="set_location" type="text" placeholder="Your Address"
-                                class="w-full px-4 py-3 rounded-xl border border-pink-100 bg-pink-50/30 focus:bg-white focus:ring-2 focus:ring-pink-500 outline-none transition-all" />
-                        </div>
-                        <div>
-                            <label
-                                class="block text-xs font-semibold text-pink-500 uppercase tracking-wider mb-2">Phone
-                                Number</label>
-                            <input id="set_phone" type="tel" placeholder="Your Phone Number"
-                                class="w-full px-4 py-3 rounded-xl border border-pink-100 bg-pink-50/30 focus:bg-white focus:ring-2 focus:ring-pink-500 outline-none transition-all" />
-                        </div>
-                        <div>
-                            <label
-                                class="block text-xs font-semibold text-pink-500 uppercase tracking-wider mb-2">Email
-                                Address</label>
-                            <input id="set_email" type="email" placeholder="Your Email Address"
-                                class="w-full px-4 py-3 rounded-xl border border-pink-100 bg-pink-50/30 focus:bg-white focus:ring-2 focus:ring-pink-500 outline-none transition-all" />
-                        </div>
-
-                        <div class="pt-4">
-                            <button onclick="saveSettings()"
-                                class="w-full bg-pink-600 hover:bg-pink-700 text-white font-medium py-3 rounded-xl transition-colors shadow-lg shadow-pink-100">
-                                Save Profile
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </section>
-        <dialog id="orderDialog" class="p-6 rounded-2xl border-none shadow-2xl backdrop:blur-sm w-90">
-            <div class="flex flex-col gap-4">
-                <h2 class="text-xl font-bold text-slate-900">Checkout Details</h2>
-                <input type="text" id="custName" placeholder="Full Name" class="p-3 border border-pink-100 rounded-xl focus:ring-2 focus:ring-pink-500 outline-none">
-                <input type="text" id="custLocation" placeholder="Delivery Address" class="p-3 border border-pink-100 rounded-xl focus:ring-2 focus:ring-pink-500 outline-none">
-                <input type="tel" id="custPhone" placeholder="Phone Number" class="p-3 border border-pink-100 rounded-xl focus:ring-2 focus:ring-pink-500 outline-none">
-                <input type="email" id="custEmail" placeholder="Email Address" class="p-3 border border-pink-100 rounded-xl focus:ring-2 focus:ring-pink-500 outline-none">
-                <div class="flex gap-2 mt-2">
-                    <button onclick="document.getElementById('orderDialog').close()"
-                        class="flex-1 p-3 bg-pink-50 text-pink-600 rounded-xl font-bold">Cancel</button>
-                    <button onclick="confirmOrder()"
-                        class="flex-1 p-3 bg-pink-600 text-white rounded-xl font-bold shadow-md shadow-pink-200">Place Order</button>
-                </div>
-            </div>
-        </dialog>
-    </main>
-
-    <!-- UI & ROUTING SCRIPT -->
-    <script>
-        function showPage(id) {
-            // Hide all sections
-            document.querySelectorAll('.page-section').forEach(s => {
-                s.classList.add('hidden');
-            });
-
-            // Show target section
-            const target = document.getElementById(id);
-            if(target) target.classList.remove('hidden');
-
-            // Update Nav Active States
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                if (btn.dataset.target === id) {
-                    btn.classList.add('bg-white', 'shadow-sm', 'text-pink-600');
-                    btn.classList.remove('text-slate-600');
-                } else {
-                    btn.classList.remove('bg-white', 'shadow-sm', 'text-pink-600');
-                    btn.classList.add('text-slate-600');
-                }
-            });
-        }
-    </script>
-
-    <!-- SUPABASE SCRIPT -->
-    <script>
-        // Configuration
-        const CONFIG = {
-            SUPABASE_URL: "https://ryoiycupoohyfasiugns.supabase.co",
-            SUPABASE_ANON: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ5b2l5Y3Vwb29oeWZhc2l1Z25zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzOTEyNzAsImV4cCI6MjA5MDk2NzI3MH0.vrEle9LQgtYMZ7rYSyDpZf7hxZRaisW1s04Lfj4IAU0",
-            ADMIN_PASSWORD: 'zerah@boutique'
-        };
-
-        // Initialize Supabase client
-        const sb = supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON);
-
-        // State management
-        const state = {
-            cart: [],
-            currentUser: null,
-            currentPage: 'home'
-        };
-
-        // Utility functions
-        function sanitizeString(str) {
-            return str.replace(/['"]/g, '');
-        }
-
-        function formatPrice(price) {
-            return new Intl.NumberFormat('en-KE', {
-                style: 'currency',
-                currency: 'KES',
-                minimumFractionDigits: 0
-            }).format(price);
-        }
-
-        function showNotification(message, type = 'info') {
-            const container = document.getElementById('authMsgContainer');
-            const text = document.getElementById('authMsg');
-
-            if (!container || !text) {
-                console.log(`[${type.toUpperCase()}] ${message}`);
-                return;
-            }
-
-            container.classList.remove('hidden', 'bg-red-50', 'bg-green-50', 'bg-pink-50');
-            text.classList.remove('text-red-600', 'text-green-600', 'text-pink-600');
-
-            if (type === 'error') {
-                container.classList.add('bg-red-50');
-                text.classList.add('text-red-600');
-            } else if (type === 'success') {
-                container.classList.add('bg-green-50');
-                text.classList.add('text-green-600');
-            } else {
-                container.classList.add('bg-pink-50');
-                text.classList.add('text-pink-600');
-            }
-
-            text.innerText = message;
-            container.classList.remove('hidden');
-
-            // Auto-hide after 5 seconds
-            setTimeout(() => {
-                container.classList.add('hidden');
-            }, 5000);
-        }
-
-        // Page navigation
-        function showPage(pageId) {
-            try {
-                // Authentication guard: Only 'home' and 'auth' are accessible to unauthenticated users
-                const allowedPages = ['home', 'auth'];
-                if (!state.currentUser && !allowedPages.includes(pageId)) {
-                    showNotification('Please login or join Zerah Club to access this page', 'info');
-                    pageId = 'auth';
-                }
-
-                // Update Auth UI if navigating to auth page
-                if (pageId === 'auth') {
-                    updateAuthUI();
-                }
-
-                // Hide all sections
-                document.querySelectorAll('.page-section').forEach(section => {
-                    section.classList.add('hidden');
-                });
-
-                // Show target section
-                const targetSection = document.getElementById(pageId);
-                if (!targetSection) {
-                    throw new Error(`Page section with ID "${pageId}" not found`);
-                }
-                targetSection.classList.remove('hidden');
-
-                // Update navigation state
-                document.querySelectorAll('.nav-btn').forEach(btn => {
-                    if (btn.dataset.target === pageId) {
-                        btn.classList.add('bg-white', 'shadow-sm', 'text-pink-600');
-                        btn.classList.remove('text-slate-600');
-                    } else {
-                        btn.classList.remove('bg-white', 'shadow-sm', 'text-pink-600');
-                        btn.classList.add('text-slate-600');
-                    }
-                });
-
-                state.currentPage = pageId;
-
-                // Load data based on page
-                if (pageId === 'shop') {
-                    loadProducts();
-                    loadServices();
-                } else if (pageId === 'settings') {
-                    loadSettings();
-                }
-
-            } catch (error) {
-                console.error('Navigation error:', error);
-                showNotification('Failed to navigate to page', 'error');
-            }
-        }
-
-        function updateAuthUI() {
-            const unauthUI = document.getElementById('unauthUI');
-            const authUI = document.getElementById('authUI');
-            const userWelcome = document.getElementById('userWelcome');
-
-            if (state.currentUser) {
-                if (unauthUI) unauthUI.classList.add('hidden');
-                if (authUI) authUI.classList.remove('hidden');
-                if (userWelcome) userWelcome.innerText = state.currentUser.email;
-            } else {
-                if (unauthUI) unauthUI.classList.remove('hidden');
-                if (authUI) authUI.classList.add('hidden');
-            }
-        }
-
-        // Authentication functions
-        async function signUp() {
-            try {
-                const email = document.getElementById('email')?.value?.trim();
-                const password = document.getElementById('password')?.value;
-
-                if (!email || !password) {
-                    throw new Error('Email and password are required');
-                }
-
-                if (password.length < 6) {
-                    throw new Error('Password must be at least 6 characters');
-                }
-
-                const { data, error } = await sb.auth.signUp({
-                    email,
-                    password,
-                    options: {
-                        data: {
-                            full_name: email.split('@')[0]
-                        }
-                    }
-                });
-
-                if (error) throw error;
-
-                showNotification('Welcome to Zerah Club! Please verify your email.', 'success');
-                document.getElementById('email').value = '';
-                document.getElementById('password').value = '';
-
-            } catch (error) {
-                console.error('Signup error:', error);
-                showNotification(error.message, 'error');
-            }
-        }
-
-        async function signIn() {
-            try {
-                const email = document.getElementById('email')?.value?.trim();
-                const password = document.getElementById('password')?.value;
-
-                if (!email || !password) {
-                    throw new Error('Email and password are required');
-                }
-
-                const { data, error } = await sb.auth.signInWithPassword({ email, password });
-
-                if (error) throw error;
-
-                state.currentUser = data.user;
-                showNotification('Welcome back to Zerah!', 'success');
-                document.getElementById('email').value = '';
-                document.getElementById('password').value = '';
-                setTimeout(() => showPage('shop'), 1000);
-
-            } catch (error) {
-                console.error('Signin error:', error);
-                showNotification(error.message, 'error');
-            }
-        }
-
-        async function signOut() {
-            try {
-                const { error } = await sb.auth.signOut();
-                if (error) throw error;
-
-                state.currentUser = null;
-                state.cart = [];
-                updateCartUI();
-                showNotification('Logged out successfully', 'success');
-                showPage('home');
-            } catch (error) {
-                console.error('Signout error:', error);
-                showNotification('Failed to sign out', 'error');
-            }
-        }
-
-        // Cart functions
-        function addToCart(id, name, price, type) {
-            try {
-                state.cart.push({ id, name, price, type });
-                updateCartUI();
-                showNotification(`${name} added to your selection!`, 'success');
-            } catch (error) {
-                console.error('Cart error:', error);
-            }
-        }
-
-        function updateCartUI() {
-            const cartBtn = document.getElementById('cartBtn');
-            if (cartBtn) {
-                cartBtn.querySelector('span').innerText = `Cart (${state.cart.length})`;
-            }
-        }
-
-        function showCart() {
-            if (state.cart.length === 0) {
-                showNotification('Your selection is empty!', 'info');
-                return;
-            }
-
-            let cartDetails = "Your Selection:\n\n";
-            let total = 0;
-
-            state.cart.forEach((item, index) => {
-                cartDetails += `${index + 1}. ${item.name} - ${formatPrice(item.price)}\n`;
-                total += item.price;
-            });
-
-            cartDetails += `\nTotal: ${formatPrice(total)}\n\nProceed to checkout?`;
-
-            if (confirm(cartDetails)) {
-                placeOrder();
-            }
-        }
-
-        // Settings functions
-        function saveSettings() {
-            const settings = {
-                name: document.getElementById('set_name')?.value?.trim(),
-                location: document.getElementById('set_location')?.value?.trim(),
-                phone: document.getElementById('set_phone')?.value?.trim(),
-                email: document.getElementById('set_email')?.value?.trim()
-            };
-
-            localStorage.setItem('zerah_settings', JSON.stringify(settings));
-            showNotification('Style profile updated!', 'success');
-        }
-
-        function loadSettings() {
-            const saved = localStorage.getItem('zerah_settings');
-            if (saved) {
-                const settings = JSON.parse(saved);
-                if (document.getElementById('set_name')) document.getElementById('set_name').value = settings.name || '';
-                if (document.getElementById('set_location')) document.getElementById('set_location').value = settings.location || '';
-                if (document.getElementById('set_phone')) document.getElementById('set_phone').value = settings.phone || '';
-                if (document.getElementById('set_email')) document.getElementById('set_email').value = settings.email || '';
-            }
-        }
-
-        function autoFillOrderDialog() {
-            const saved = localStorage.getItem('zerah_settings');
-            if (saved) {
-                const settings = JSON.parse(saved);
-                if (document.getElementById('custName')) document.getElementById('custName').value = settings.name || '';
-                if (document.getElementById('custLocation')) document.getElementById('custLocation').value = settings.location || '';
-                if (document.getElementById('custPhone')) document.getElementById('custPhone').value = settings.phone || '';
-                if (document.getElementById('custEmail')) document.getElementById('custEmail').value = settings.email || '';
-            }
-        }
-
-        // Order functions
-        function placeOrder() {
-            if (state.cart.length === 0) {
-                showNotification('Selection is empty!', 'error');
-                return;
-            }
-            autoFillOrderDialog();
-            document.getElementById('orderDialog')?.showModal();
-        }
-
-        async function confirmOrder() {
-            try {
-                const { data: { user }, error: authError } = await sb.auth.getUser();
-                if (authError || !user) throw new Error('Please login to place an order');
-
-                const name = document.getElementById('custName')?.value?.trim();
-                const location = document.getElementById('custLocation')?.value?.trim();
-                const phone = document.getElementById('custPhone')?.value?.trim();
-                const email = document.getElementById('custEmail')?.value?.trim();
-
-                if (!name || !location || !phone || !email) throw new Error('Please fill in all details');
-
-                const { data: order, error: orderError } = await sb
-                    .from('orders')
-                    .insert({
-                        user_id: user.id,
-                        customer_name: name,
-                        customer_location: location,
-                        customer_phone: phone,
-                        customer_email: email,
-                        status: 'pending'
-                    })
-                    .select()
-                    .single();
-
-                if (orderError) throw orderError;
-
-                const orderItems = state.cart.map(item => ({
-                    order_id: order.id,
-                    product_id: item.type === 'product' ? item.id : null,
-                    service_id: item.type === 'service' ? item.id : null,
-                    price: item.price
-                }));
-
-                const { error: itemsError } = await sb.from('order_items').insert(orderItems);
-                if (itemsError) throw itemsError;
-
-                state.cart = [];
-                updateCartUI();
-                document.getElementById('orderDialog')?.close();
-                showNotification('Order placed! Zerah team is preparing your goodies.', 'success');
-
-            } catch (error) {
-                console.error('Order error:', error);
-                showNotification(error.message, 'error');
-            }
-        }
-
-        // Admin functions
-        function adminLogin() {
-            const password = document.getElementById('adminPass')?.value;
-            if (password === CONFIG.ADMIN_PASSWORD) {
-                document.getElementById('adminLogin')?.classList.add('hidden');
-                document.getElementById('adminPanel')?.classList.remove('hidden');
-                loadOrders();
-            } else {
-                showNotification('Incorrect boutique key.', 'error');
-            }
-        }
-
-        async function loadOrders() {
-            try {
-                const ordersDiv = document.getElementById('orders');
-                if (!ordersDiv) return;
-                ordersDiv.innerHTML = '<p class="text-pink-400 text-center py-8 font-sans">Fetching orders...</p>';
-
-                const { data: orders, error } = await sb
-                    .from('orders')
-                    .select(`*, order_items(price, products(name), services(name))`)
-                    .order('id', { ascending: false });
-
-                if (error) throw error;
-                if (!orders || orders.length === 0) {
-                    ordersDiv.innerHTML = '<p class="text-slate-500 text-center py-8">No boutique orders yet.</p>';
-                    return;
-                }
-
-                ordersDiv.innerHTML = '';
-                orders.forEach(order => {
-                    let total = 0;
-                    const itemsHtml = order.order_items.map(item => {
-                        total += Number(item.price);
-                        return `<div class="flex justify-between py-1 border-b border-pink-50 last:border-0"><span class="text-slate-600 text-xs">${item.products?.name || item.services?.name || 'Unknown Item'}</span><span class="font-medium text-xs">${formatPrice(item.price)}</span></div>`;
-                    }).join('');
-
-                    const orderCard = document.createElement('div');
-                    orderCard.className = 'bg-white p-5 rounded-2xl border border-pink-100 shadow-sm';
-                    orderCard.innerHTML = `
-                        <div class="flex justify-between items-start mb-4">
-                            <div><h3 class="font-extrabold text-slate-900">Order #${order.id}</h3><p class="text-pink-600 font-bold text-xs">${order.customer_email}</p></div>
-                            <span class="text-[10px] bg-pink-100 text-pink-700 px-2 py-1 rounded-full font-bold uppercase">${order.status}</span>
-                        </div>
-                        <div class="bg-pink-50/50 p-3 rounded-xl mb-4 text-[11px] space-y-1 border border-pink-50">
-                            <p>👤 <span class="font-semibold text-slate-700">${order.customer_name}</span></p>
-                            <p>📍 <span class="font-semibold text-slate-700">${order.customer_location}</span></p>
-                            <p>📞 <span class="font-semibold text-slate-700">${order.customer_phone}</span></p>
-                        </div>
-                        <div class="mb-4">${itemsHtml}</div>
-                        <div class="flex justify-between items-center pt-3 border-t-2 border-dashed border-pink-100">
-                            <span class="text-pink-400 uppercase text-[10px] font-black tracking-widest">Total</span>
-                            <span class="font-black text-lg text-slate-900">${formatPrice(total)}</span>
-                        </div>`;
-                    ordersDiv.appendChild(orderCard);
-                });
-            } catch (error) {
-                console.error('Admin error:', error);
-            }
-        }
-
-        async function addProduct() {
-            try {
-                const name = document.getElementById('pname')?.value?.trim();
-                const price = document.getElementById('pprice')?.value;
-                const description = document.getElementById('pdesc')?.value?.trim();
-
-                if (!name || !price) throw new Error('Name and price are required');
-
-                const { error } = await sb.from('products').insert({
-                    name: sanitizeString(name),
-                    price: parseFloat(price),
-                    description: sanitizeString(description)
-                });
-
-                if (error) throw error;
-                showNotification('New item added to boutique!', 'success');
-                loadProducts();
-                document.getElementById('pname').value = '';
-                document.getElementById('pprice').value = '';
-                document.getElementById('pdesc').value = '';
-            } catch (error) {
-                showNotification(error.message, 'error');
-            }
-        }
-
-        async function addService() {
-            try {
-                const name = document.getElementById('sname')?.value?.trim();
-                const price = document.getElementById('sprice')?.value;
-                const description = document.getElementById('sdesc')?.value?.trim();
-
-                if (!name || !price) throw new Error('Service name and price are required');
-
-                const { error } = await sb.from('services').insert({
-                    name: sanitizeString(name),
-                    price: parseFloat(price),
-                    description: sanitizeString(description)
-                });
-
-                if (error) throw error;
-                showNotification('Styling service added!', 'success');
-                loadServices();
-                document.getElementById('sname').value = '';
-                document.getElementById('sprice').value = '';
-                document.getElementById('sdesc').value = '';
-            } catch (error) {
-                showNotification(error.message, 'error');
-            }
-        }
-
-        async function loadProducts() {
-            try {
-                const productList = document.getElementById('productList');
-                if (!productList) return;
-                const { data, error } = await sb.from('products').select('*').order('id', { ascending: true });
-                if (error) throw error;
-                if (!data || data.length === 0) {
-                    productList.innerHTML = `<p class="text-slate-500 col-span-full text-center py-8">No apparel available yet.</p>`;
-                    return;
-                }
-                productList.innerHTML = '';
-                data.forEach(product => {
-                    const productCard = document.createElement('div');
-                    productCard.className = 'bg-white p-6 rounded-3xl border border-pink-50 shadow-sm hover:shadow-pink-100 hover:shadow-md transition-all flex flex-col h-full';
-                    productCard.innerHTML = `
-                        <div class="flex-1">
-                            <div class="w-12 h-12 bg-pink-50 text-pink-500 rounded-2xl flex items-center justify-center mb-4">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z" />
-                                </svg>
-                            </div>
-                            <h3 class="text-lg font-bold text-slate-900">${product.name}</h3>
-                            <p class="text-slate-500 mt-2 text-sm leading-relaxed">${product.description || 'Girly and chic apparel.'}</p>
-                        </div>
-                        <div class="mt-6 flex items-center justify-between pt-4 border-t border-pink-50">
-                            <span class="text-xl font-extrabold text-pink-600">${formatPrice(product.price)}</span>
-                            <button class="bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded-xl font-medium text-sm transition-colors" onclick="addToCart(${product.id}, '${product.name.replace(/'/g, "\\'")}', ${product.price}, 'product')">Add to Cart</button>
-                        </div>`;
-                    productList.appendChild(productCard);
-                });
-            } catch (error) {}
-        }
-
-        async function loadServices() {
-            try {
-                const serviceList = document.getElementById('serviceList');
-                if (!serviceList) return;
-                const { data, error } = await sb.from('services').select('*').order('id', { ascending: true });
-                if (error) throw error;
-                if (!data || data.length === 0) {
-                    serviceList.innerHTML = `<p class="text-slate-500 col-span-full text-center py-8">No styling services yet.</p>`;
-                    return;
-                }
-                serviceList.innerHTML = '';
-                data.forEach(service => {
-                    const serviceCard = document.createElement('div');
-                    serviceCard.className = 'bg-white p-6 rounded-3xl border border-pink-50 shadow-sm hover:shadow-pink-100 hover:shadow-md transition-all flex flex-col h-full';
-                    serviceCard.innerHTML = `
-                        <div class="flex-1">
-                            <div class="w-12 h-12 bg-pink-50 text-pink-500 rounded-2xl flex items-center justify-center mb-4">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10" />
-                                    <path d="m9 12 2 2 4-4" />
-                                </svg>
-                            </div>
-                            <h3 class="text-lg font-bold text-slate-900">${service.name}</h3>
-                            <p class="text-slate-500 mt-2 text-sm leading-relaxed">${service.description || 'Professional styling by Zerah experts.'}</p>
-                        </div>
-                        <div class="mt-6 flex items-center justify-between pt-4 border-t border-pink-50">
-                            <span class="text-xl font-extrabold text-pink-600">${formatPrice(service.price)}</span>
-                            <button class="bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded-xl font-medium text-sm transition-colors" onclick="addToCart(${service.id}, '${service.name.replace(/'/g, "\\'")}', ${service.price}, 'service')">Select</button>
-                        </div>`;
-                    serviceList.appendChild(serviceCard);
-                });
-            } catch (error) {}
-        }
-
-        // Initialize app
-        document.addEventListener('DOMContentLoaded', async () => {
-            try {
-                const { data: { user } } = await sb.auth.getUser();
-                if (user) state.currentUser = user;
-                sb.auth.onAuthStateChange((event, session) => {
-                    state.currentUser = session?.user || null;
-                    updateAuthUI();
-                });
-                loadSettings();
-                showPage('home');
-            } catch (error) {}
-        });
-    </script>
-    <!-- FOOTER -->
-<footer class="bg-gradient-to-br from-pink-50 to-rose-50 border-t border-pink-100 mt-20">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <!-- Brand Section -->
-            <div class="col-span-1 md:col-span-2">
-                <div class="flex items-center space-x-3 mb-4">
-                    <div class="w-10 h-10 bg-gradient-to-br from-pink-500 to-rose-500 rounded-2xl flex items-center justify-center shadow-lg shadow-pink-200">
-                        <span class="text-white font-bold text-lg">Z</span>
-                    </div>
-                    <h3 class="text-2xl font-bold bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent">Zerah Boutique</h3>
-                </div>
-                <p class="text-slate-600 text-sm leading-relaxed mb-6 max-w-md">
-                    Your premier destination for chic fashion and personalized styling services. 
-                    Where elegance meets contemporary style.
-                </p>
-                <div class="flex space-x-3">
-                    <a href="#" class="w-10 h-10 bg-white hover:bg-pink-100 text-pink-600 rounded-xl flex items-center justify-center transition-all shadow-sm hover:shadow-md">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                        </svg>
-                    </a>
-                    <a href="#" class="w-10 h-10 bg-white hover:bg-pink-100 text-pink-600 rounded-xl flex items-center justify-center transition-all shadow-sm hover:shadow-md">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zM5.838 12a6.162 6.162 0 1 1 12.324 0 6.162 6.162 0 0 1-12.324 0zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm4.965-10.405a1.44 1.44 0 1 1 2.881.001 1.44 1.44 0 0 1-2.881-.001z"/>
-                        </svg>
-                    </a>
-                    <a href="#" class="w-10 h-10 bg-white hover:bg-pink-100 text-pink-600 rounded-xl flex items-center justify-center transition-all shadow-sm hover:shadow-md">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
-                        </svg>
-                    </a>
-                    <a href="#" class="w-10 h-10 bg-white hover:bg-pink-100 text-pink-600 rounded-xl flex items-center justify-center transition-all shadow-sm hover:shadow-md">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
-                            <rect x="2" y="9" width="4" height="12"/>
-                            <circle cx="4" cy="4" r="2"/>
-                        </svg>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Quick Links -->
-            <div>
-                <h4 class="text-sm font-bold text-pink-600 uppercase tracking-wider mb-4">Quick Links</h4>
-                <ul class="space-y-3">
-                    <li><a href="#" onclick="showPage('shop')" class="text-slate-600 hover:text-pink-600 text-sm transition-colors">Shop Collection</a></li>
-                    <li><a href="#" onclick="showPage('services')" class="text-slate-600 hover:text-pink-600 text-sm transition-colors">Styling Services</a></li>
-                    <li><a href="#" onclick="showPage('about')" class="text-slate-600 hover:text-pink-600 text-sm transition-colors">About Zerah</a></li>
-                    <li><a href="#" onclick="showPage('contact')" class="text-slate-600 hover:text-pink-600 text-sm transition-colors">Contact Us</a></li>
-                    <li><a href="#" onclick="showPage('settings')" class="text-slate-600 hover:text-pink-600 text-sm transition-colors">My Account</a></li>
-                </ul>
-            </div>
-
-            <!-- Contact Info -->
-            <div>
-                <h4 class="text-sm font-bold text-pink-600 uppercase tracking-wider mb-4">Get in Touch</h4>
-                <ul class="space-y-3">
-                    <li class="flex items-start space-x-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-pink-500 mt-0.5 flex-shrink-0">
-                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-                            <circle cx="12" cy="10" r="3"/>
-                        </svg>
-                        <span class="text-slate-600 text-sm">Nairobi, Kenya<br/>Westlands Shopping Mall</span>
-                    </li>
-                    <li class="flex items-start space-x-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-pink-500 mt-0.5 flex-shrink-0">
-                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
-                        </svg>
-                        <span class="text-slate-600 text-sm">+254 700 123 456<br/>+254 712 987 654</span>
-                    </li>
-                    <li class="flex items-start space-x-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-pink-500 mt-0.5 flex-shrink-0">
-                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                            <polyline points="22,6 12,13 2,6"/>
-                        </svg>
-                        <span class="text-slate-600 text-sm">hello@zerah.co.ke<br/>support@zerah.co.ke</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- Newsletter Section -->
-        <div class="mt-12 pt-8 border-t border-pink-100">
-            <div class="flex flex-col md:flex-row items-center justify-between">
-                <div class="mb-4 md:mb-0">
-                    <h4 class="text-sm font-bold text-pink-600 uppercase tracking-wider mb-2">Join Zerah Club</h4>
-                    <p class="text-slate-600 text-sm">Get exclusive offers and style tips delivered to your inbox</p>
-                </div>
-                <div class="flex space-x-3">
-                    <input type="email" placeholder="Enter your email" 
-                           class="px-4 py-2 rounded-xl border border-pink-100 bg-white text-sm focus:ring-2 focus:ring-pink-500 outline-none w-64">
-                    <button class="bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white px-6 py-2 rounded-xl font-medium text-sm transition-all shadow-lg shadow-pink-200">
-                        Subscribe
+                    <button type="submit" class="btn-primary" style="width:100%;justify-content:center;margin-top:.5rem"
+                        id="siBtn">
+                        Sign In
                     </button>
                 </div>
-            </div>
-        </div>
-
-        <!-- Bottom Bar -->
-        <div class="mt-8 pt-8 border-t border-pink-100">
-            <div class="flex flex-col md:flex-row items-center justify-between">
-                <p class="text-slate-500 text-sm mb-2 md:mb-0">
-                    © 2026 Zerah Boutique. All rights reserved. Made with 💕 in Kenya
+                <p id="siError" style="color:#dc2626;font-size:.82rem;margin-top:.75rem;text-align:center;display:none">
                 </p>
-                <div class="flex space-x-6">
-                    <a href="#" class="text-slate-500 hover:text-pink-600 text-sm transition-colors">Privacy Policy</a>
-                    <a href="#" class="text-slate-500 hover:text-pink-600 text-sm transition-colors">Terms of Service</a>
-                    <a href="#" class="text-slate-500 hover:text-pink-600 text-sm transition-colors">Shipping Info</a>
-                    <a href="#" class="text-slate-500 hover:text-pink-600 text-sm transition-colors">Returns</a>
+            </form>
+
+            <!-- Sign Up -->
+            <form class="auth-form" id="signupForm" onsubmit="handleSignUp(event)">
+                <div style="display:flex;flex-direction:column;gap:.75rem">
+                    <div>
+                        <label
+                            style="font-size:.78rem;font-weight:600;color:#6b7280;display:block;margin-bottom:.35rem">Full
+                            Name</label>
+                        <input type="text" class="input-field" id="suName" placeholder="Jane Wanjiku" required>
+                    </div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
+                        <div>
+                            <label
+                                style="font-size:.78rem;font-weight:600;color:#6b7280;display:block;margin-bottom:.35rem">Gender</label>
+                            <select class="input-field" id="suGender" required>
+                                <option value="">Select</option>
+                                <option value="Female">Female</option>
+                                <option value="Male">Male</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label
+                                style="font-size:.78rem;font-weight:600;color:#6b7280;display:block;margin-bottom:.35rem">Phone</label>
+                            <input type="tel" class="input-field" id="suNumber" placeholder="0712 345 678" required>
+                        </div>
+                    </div>
+                    <div>
+                        <label
+                            style="font-size:.78rem;font-weight:600;color:#6b7280;display:block;margin-bottom:.35rem">Email</label>
+                        <input type="email" class="input-field" id="suEmail" placeholder="you@example.com" required>
+                    </div>
+                    <div>
+                        <label
+                            style="font-size:.78rem;font-weight:600;color:#6b7280;display:block;margin-bottom:.35rem">Location</label>
+                        <input type="text" class="input-field" id="suLocation" placeholder="Nairobi, Kenya" required>
+                    </div>
+                    <div>
+                        <label
+                            style="font-size:.78rem;font-weight:600;color:#6b7280;display:block;margin-bottom:.35rem">Style
+                            Preferences</label>
+                        <input type="text" class="input-field" id="suPrefs"
+                            placeholder="Dresses, casual wear, African print...">
+                    </div>
+                    <div>
+                        <label
+                            style="font-size:.78rem;font-weight:600;color:#6b7280;display:block;margin-bottom:.35rem">Password</label>
+                        <input type="password" class="input-field" id="suPassword" placeholder="Min 6 characters"
+                            required minlength="6">
+                    </div>
+                    <div>
+                        <label
+                            style="font-size:.78rem;font-weight:600;color:#6b7280;display:block;margin-bottom:.35rem">Confirm
+                            Password</label>
+                        <input type="password" class="input-field" id="suConfirm" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="btn-primary" style="width:100%;justify-content:center;margin-top:.5rem"
+                        id="suBtn">
+                        Create Account
+                    </button>
+                </div>
+                <p id="suError" style="color:#dc2626;font-size:.82rem;margin-top:.75rem;text-align:center;display:none">
+                </p>
+                <p id="suSuccess"
+                    style="color:#059669;font-size:.82rem;margin-top:.75rem;text-align:center;display:none"></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==================== DASHBOARD ==================== -->
+    <div id="dashboardPage" style="display:none">
+        <button class="menu-toggle" onclick="toggleSidebar()"><i data-lucide="menu"
+                style="width:20px;height:20px"></i></button>
+
+        <!-- Sidebar -->
+        <nav class="sidebar" id="sidebar">
+            <div style="padding:1.5rem 1.25rem;border-bottom:1px solid #fce7f3">
+                <h2
+                    style="font-size:1.4rem;font-weight:800;background:linear-gradient(135deg,#d6336c,#e84393);-webkit-background-clip:text;-webkit-text-fill-color:transparent">
+                    Zerah</h2>
+                <p style="font-size:.72rem;color:#9ca3af;margin-top:.1rem">Fashion & Style</p>
+            </div>
+            <div style="padding:.75rem 0;flex:1">
+                <button class="nav-btn active-nav" data-section="homeSection" onclick="navigateTo('homeSection',this)">
+                    <i data-lucide="home" style="width:18px;height:18px"></i> Home
+                </button>
+                <button class="nav-btn" data-section="shopSection" onclick="navigateTo('shopSection',this)">
+                    <i data-lucide="shopping-bag" style="width:18px;height:18px"></i> Shop
+                </button>
+                <button class="nav-btn" data-section="ordersSection" onclick="navigateTo('ordersSection',this)">
+                    <i data-lucide="package" style="width:18px;height:18px"></i> My Orders
+                </button>
+                <button class="nav-btn" data-section="profileSection" onclick="navigateTo('profileSection',this)">
+                    <i data-lucide="user" style="width:18px;height:18px"></i> Profile
+                </button>
+            </div>
+            <div style="padding:1rem 1.25rem;border-top:1px solid #fce7f3">
+                <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem">
+                    <div class="avatar-ring">
+                        <div class="avatar-inner" id="sidebarAvatar" style="width:36px;height:36px;font-size:.8rem">?
+                        </div>
+                    </div>
+                    <div style="min-width:0">
+                        <div style="font-size:.82rem;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"
+                            id="sidebarName">Loading...</div>
+                        <div style="font-size:.68rem;color:#9ca3af;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"
+                            id="sidebarEmail"></div>
+                    </div>
+                </div>
+                <button onclick="handleSignOut()"
+                    style="width:100%;padding:.55rem;border-radius:.5rem;background:#fdf2f8;color:#d6336c;font-size:.8rem;font-weight:600;border:1px solid #fbcfe8;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:.4rem">
+                    <i data-lucide="log-out" style="width:15px;height:15px"></i> Sign Out
+                </button>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="main-content" id="mainContent">
+
+            <!-- HOME -->
+            <div class="section active" id="homeSection">
+                <div
+                    style="background:linear-gradient(135deg,#d6336c,#e84393);border-radius:1.25rem;padding:2.5rem;color:#fff;margin-bottom:2rem;position:relative;overflow:hidden">
+                    <div
+                        style="position:absolute;top:-40px;right:-40px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.08)">
+                    </div>
+                    <div
+                        style="position:absolute;bottom:-60px;right:80px;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,.05)">
+                    </div>
+                    <h1 style="font-size:1.75rem;font-weight:800;margin-bottom:.5rem;position:relative">Welcome back,
+                        <span id="homeName">there</span> ✨
+                    </h1>
+                    <p style="font-size:.9rem;opacity:.85;max-width:500px;position:relative">Discover the latest Kenyan
+                        fashion. Browse our collection and place your orders effortlessly.</p>
+                </div>
+
+                <div
+                    style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:2rem">
+                    <div class="stat-card">
+                        <div style="display:flex;align-items:center;gap:.75rem">
+                            <div
+                                style="width:44px;height:44px;border-radius:.75rem;background:#fdf2f8;display:flex;align-items:center;justify-content:center">
+                                <i data-lucide="shopping-bag" style="width:20px;height:20px;color:#d6336c"></i>
+                            </div>
+                            <div>
+                                <div style="font-size:1.3rem;font-weight:800;color:#1f2937" id="statProducts">0</div>
+                                <div style="font-size:.72rem;color:#9ca3af;font-weight:600">Products</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div style="display:flex;align-items:center;gap:.75rem">
+                            <div
+                                style="width:44px;height:44px;border-radius:.75rem;background:#fdf2f8;display:flex;align-items:center;justify-content:center">
+                                <i data-lucide="package" style="width:20px;height:20px;color:#d6336c"></i>
+                            </div>
+                            <div>
+                                <div style="font-size:1.3rem;font-weight:800;color:#1f2937" id="statOrders">0</div>
+                                <div style="font-size:.72rem;color:#9ca3af;font-weight:600">My Orders</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div style="display:flex;align-items:center;gap:.75rem">
+                            <div
+                                style="width:44px;height:44px;border-radius:.75rem;background:#fdf2f8;display:flex;align-items:center;justify-content:center">
+                                <i data-lucide="map-pin" style="width:20px;height:20px;color:#d6336c"></i>
+                            </div>
+                            <div>
+                                <div style="font-size:.85rem;font-weight:700;color:#1f2937" id="statLocation">—</div>
+                                <div style="font-size:.72rem;color:#9ca3af;font-weight:600">Location</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 style="font-size:1.15rem;font-weight:700;margin-bottom:1rem">Featured Items</h2>
+                <div id="featuredGrid"
+                    style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1.25rem"></div>
+            </div>
+
+            <!-- SHOP -->
+            <div class="section" id="shopSection">
+                <div
+                    style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:1.5rem">
+                    <h2 style="font-size:1.3rem;font-weight:800">Shop Collection</h2>
+                    <div class="search-box" style="min-width:280px">
+                        <i data-lucide="search" style="width:18px;height:18px"></i>
+                        <input type="text" class="input-field" placeholder="Search products..." id="shopSearch"
+                            oninput="filterProducts()">
+                    </div>
+                </div>
+                <div id="shopGrid"
+                    style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1.25rem"></div>
+                <div id="shopEmpty" style="display:none;text-align:center;padding:4rem 1rem">
+                    <i data-lucide="shopping-bag" style="width:48px;height:48px;color:#fbcfe8;margin:0 auto 1rem"></i>
+                    <p style="font-size:1rem;font-weight:600;color:#9ca3af">No products found</p>
+                </div>
+            </div>
+
+            <!-- ORDERS -->
+            <div class="section" id="ordersSection">
+                <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:1.5rem">My Orders</h2>
+                <div id="ordersList" style="display:flex;flex-direction:column;gap:1rem"></div>
+                <div id="ordersEmpty" style="display:none;text-align:center;padding:4rem 1rem">
+                    <i data-lucide="package" style="width:48px;height:48px;color:#fbcfe8;margin:0 auto 1rem"></i>
+                    <p style="font-size:1rem;font-weight:600;color:#9ca3af">No orders yet</p>
+                    <p style="font-size:.85rem;color:#d1d5db;margin-top:.35rem">Start shopping to see your orders here
+                    </p>
+                </div>
+            </div>
+
+            <!-- PROFILE -->
+            <div class="section" id="profileSection">
+                <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:1.5rem">My Profile</h2>
+                <div
+                    style="background:#fff;border-radius:1rem;border:1px solid rgba(214,51,108,.08);padding:2rem;max-width:600px">
+                    <div
+                        style="display:flex;align-items:center;gap:1.25rem;margin-bottom:2rem;padding-bottom:1.5rem;border-bottom:1px solid #fce7f3">
+                        <div class="avatar-ring">
+                            <div class="avatar-inner" id="profileAvatar"
+                                style="width:64px;height:64px;font-size:1.4rem">?</div>
+                        </div>
+                        <div>
+                            <div style="font-size:1.15rem;font-weight:700" id="profileName">—</div>
+                            <div style="font-size:.85rem;color:#9ca3af" id="profileEmail">—</div>
+                        </div>
+                    </div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem" id="profileFields"></div>
                 </div>
             </div>
         </div>
     </div>
-</footer>
+
+    <!-- ==================== ORDER MODAL ==================== -->
+    <div class="modal-overlay" id="orderModal">
+        <div class="modal-content">
+            <div
+                style="padding:1.5rem;border-bottom:1px solid #fce7f3;display:flex;align-items:center;justify-content:space-between">
+                <h3 style="font-size:1.1rem;font-weight:700">Place Order</h3>
+                <button onclick="closeOrderModal()"
+                    style="background:none;border:none;cursor:pointer;color:#9ca3af;padding:.25rem"><i data-lucide="x"
+                        style="width:20px;height:20px"></i></button>
+            </div>
+            <div style="padding:1.5rem">
+                <div style="display:flex;gap:1rem;margin-bottom:1.5rem">
+                    <img id="modalImg" src=""
+                        style="width:100px;height:100px;border-radius:.75rem;object-fit:cover;background:#fce7f3">
+                    <div>
+                        <div style="font-weight:700;font-size:1rem" id="modalName">—</div>
+                        <div style="color:#9ca3af;font-size:.82rem;margin-top:.2rem" id="modalDesc">—</div>
+                        <div style="color:#d6336c;font-weight:800;font-size:1.1rem;margin-top:.5rem" id="modalPrice">KES
+                            0</div>
+                    </div>
+                </div>
+                <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem">
+                    <span style="font-size:.85rem;font-weight:600">Quantity:</span>
+                    <div style="display:flex;align-items:center;gap:.5rem">
+                        <button onclick="changeQty(-1)"
+                            style="width:36px;height:36px;border-radius:.5rem;border:1.5px solid #fbcfe8;background:#fff;cursor:pointer;font-size:1.1rem;font-weight:700;color:#d6336c;display:flex;align-items:center;justify-content:center">−</button>
+                        <span style="font-size:1.1rem;font-weight:700;min-width:2rem;text-align:center"
+                            id="modalQty">1</span>
+                        <button onclick="changeQty(1)"
+                            style="width:36px;height:36px;border-radius:.5rem;border:1.5px solid #fbcfe8;background:#fff;cursor:pointer;font-size:1.1rem;font-weight:700;color:#d6336c;display:flex;align-items:center;justify-content:center">+</button>
+                    </div>
+                </div>
+                <div
+                    style="background:#fdf2f8;border-radius:.75rem;padding:1rem;display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem">
+                    <span style="font-weight:600;color:#6b7280">Total:</span>
+                    <span style="font-size:1.3rem;font-weight:800;color:#d6336c" id="modalTotal">KES 0</span>
+                </div>
+                <button class="btn-primary" style="width:100%;justify-content:center" id="confirmOrderBtn"
+                    onclick="confirmOrder()">Confirm Order</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== CHAT WIDGET ==================== -->
+    <button class="chat-fab" id="chatFab" onclick="toggleChat()">
+        <span class="fab-pulse"></span>
+        <i data-lucide="message-circle" style="width:24px;height:24px" id="chatFabIcon"></i>
+    </button>
+    <div class="chat-panel" id="chatPanel">
+        <div class="chat-header">
+            <div
+                style="width:36px;height:36px;border-radius:.75rem;background:rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center">
+                <i data-lucide="headphones" style="width:18px;height:18px"></i>
+            </div>
+            <div>
+                <h3 style="font-size:.92rem;font-weight:700;margin:0">Zerah Support</h3>
+                <p
+                    style="font-size:.7rem;color:rgba(255,255,255,.6);margin-top:2px;display:flex;align-items:center;gap:5px">
+                    <span style="width:6px;height:6px;border-radius:50%;background:#34d399;display:inline-block"></span>
+                    Online
+                </p>
+            </div>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="chat-msg assistant">
+                <div class="msg-bubble">Hey there! 👋 Welcome to Zerah. How can we help you today?</div>
+            </div>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" id="chatInput" placeholder="Type a message..."
+                onkeydown="if(event.key==='Enter')sendChatMessage()">
+            <button onclick="sendChatMessage()"><i data-lucide="send" style="width:18px;height:18px"></i></button>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        const { createClient } = supabase;
+        const supabaseClient = createClient('https://ycpteixmladknxndneho.supabase.co',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InljcHRlaXhtbGFka254bmRuZWhvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg0MTA1MjYsImV4cCI6MjA5Mzk4NjUyNn0.LCy-JDnLoSHSmB7GgSoge4nRi0X6LgkUGF1WYMogRGQ', {
+            auth: { persistSession: true, storageKey: 'zh-auth' }
+        });
+
+        let currentUser = null;
+        let userProfile = null;
+        let allProducts = [];
+        let myOrders = [];
+        let activeProduct = null;
+        let orderQty = 1;
+        let conversationId = null;
+        let chatPoll = null;
+
+        // ========== AUTH ==========
+        function switchAuthTab(tab) {
+            document.querySelectorAll('.auth-tab').forEach((t, i) => {
+                t.classList.toggle('active', (tab === 'signin' ? i === 0 : i === 1));
+            });
+            document.getElementById('signinForm').classList.toggle('active', tab === 'signin');
+            document.getElementById('signupForm').classList.toggle('active', tab === 'signup');
+            hideErrors();
+        }
+
+        function hideErrors() {
+            document.getElementById('siError').style.display = 'none';
+            document.getElementById('suError').style.display = 'none';
+            document.getElementById('suSuccess').style.display = 'none';
+        }
+
+        function showErr(id, msg) {
+            const el = document.getElementById(id);
+            el.textContent = msg;
+            el.style.display = 'block';
+        }
+
+        async function handleSignIn(e) {
+            e.preventDefault();
+            hideErrors();
+            const btn = document.getElementById('siBtn');
+            btn.disabled = true;
+            btn.textContent = 'Signing in...';
+            const { data, error } = await supabaseClient.auth.signInWithPassword({
+                email: document.getElementById('siEmail').value.trim(),
+                password: document.getElementById('siPassword').value
+            });
+            if (error) { showErr('siError', error.message); btn.disabled = false; btn.textContent = 'Sign In'; return; }
+            await loadProfile();
+        }
+
+        async function handleSignUp(e) {
+            e.preventDefault();
+            hideErrors();
+            const pw = document.getElementById('suPassword').value;
+            const confirm = document.getElementById('suConfirm').value;
+            if (pw !== confirm) { showErr('suError', 'Passwords do not match'); return; }
+            const btn = document.getElementById('suBtn');
+            btn.disabled = true;
+            btn.textContent = 'Creating account...';
+            const { data, error } = await supabaseClient.auth.signUp({
+                email: document.getElementById('suEmail').value.trim(),
+                password: pw
+            });
+            if (error) { showErr('suError', error.message); btn.disabled = false; btn.textContent = 'Create Account'; return; }
+            if (data.user) {
+                const { error: profErr } = await supabaseClient.from('zhu').insert({
+                    id: data.user.id,
+                    name: document.getElementById('suName').value.trim(),
+                    gender: document.getElementById('suGender').value,
+                    number: document.getElementById('suNumber').value.trim(),
+                    email: document.getElementById('suEmail').value.trim(),
+                    location: document.getElementById('suLocation').value.trim(),
+                    preferences: document.getElementById('suPrefs').value.trim()
+                });
+                if (profErr) { showErr('suError', 'Account created but profile failed: ' + profErr.message); btn.disabled = false; btn.textContent = 'Create Account'; return; }
+                if (data.session) {
+                    await loadProfile();
+                } else {
+                    document.getElementById('suSuccess').textContent = 'Account created! Please check your email to confirm, then sign in.';
+                    document.getElementById('suSuccess').style.display = 'block';
+                    btn.disabled = false;
+                    btn.textContent = 'Create Account';
+                    document.getElementById('signupForm').reset();
+                }
+            }
+        }
+
+        async function handleSignOut() {
+            await supabaseClient.auth.signOut();
+            currentUser = null;
+            userProfile = null;
+            document.getElementById('dashboardPage').style.display = 'none';
+            document.getElementById('authPage').style.display = 'flex';
+            document.getElementById('signinForm').reset();
+            if (chatPoll) clearInterval(chatPoll);
+        }
+
+        async function loadProfile() {
+            const { data: { user } } = await supabaseClient.auth.getUser();
+            if (!user) return;
+            currentUser = user;
+            const { data: profile, error } = await supabaseClient.from('zhu').select('*').eq('id', user.id).single();
+            if (error || !profile) { showErr('siError', 'Profile not found. Please sign up first.'); await supabaseClient.auth.signOut(); return; }
+            userProfile = profile;
+            enterDashboard();
+        }
+
+        function enterDashboard() {
+            document.getElementById('authPage').style.display = 'none';
+            document.getElementById('dashboardPage').style.display = 'block';
+            const initials = userProfile.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+            document.getElementById('sidebarAvatar').textContent = initials;
+            document.getElementById('sidebarName').textContent = userProfile.name;
+            document.getElementById('sidebarEmail').textContent = userProfile.email || '';
+            document.getElementById('homeName').textContent = userProfile.name.split(' ')[0];
+            document.getElementById('statLocation').textContent = userProfile.location || '—';
+            document.getElementById('profileAvatar').textContent = initials;
+            document.getElementById('profileName').textContent = userProfile.name;
+            document.getElementById('profileEmail').textContent = userProfile.email || '—';
+            renderProfileFields();
+            loadProducts();
+            loadOrders();
+            loadConversation();
+            lucide.createIcons();
+            navigateTo('homeSection', document.querySelector('.nav-btn.active-nav'));
+        }
+
+        function renderProfileFields() {
+            const fields = [
+                { label: 'Gender', value: userProfile.gender || '—' },
+                { label: 'Phone', value: userProfile.number || '—' },
+                { label: 'Location', value: userProfile.location || '—' },
+                { label: 'Preferences', value: userProfile.preferences || '—' }
+            ];
+            document.getElementById('profileFields').innerHTML = fields.map(f => `
+                <div>
+                    <div style="font-size:.72rem;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:.04em;margin-bottom:.3rem">${f.label}</div>
+                    <div style="font-size:.92rem;font-weight:600;color:#1f2937">${f.value}</div>
+                </div>
+            `).join('');
+        }
+
+        // ========== NAVIGATION ==========
+        function navigateTo(sectionId, btn) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active-nav'));
+            if (btn) btn.classList.add('active-nav');
+            // Close sidebar on mobile
+            if (window.innerWidth <= 768) { document.getElementById('sidebar').classList.remove('open'); }
+        }
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+        }
+
+        // ========== PRODUCTS ==========
+        async function loadProducts() {
+            const { data, error } = await supabaseClient.from('zhp').select('*').order('created_at', { ascending: false });
+            if (error) { console.error(error); return; }
+            allProducts = data || [];
+            document.getElementById('statProducts').textContent = allProducts.length;
+            renderProducts(allProducts, 'shopGrid');
+            renderProducts(allProducts.slice(0, 4), 'featuredGrid');
+        }
+
+        function renderProducts(products, containerId) {
+            const container = document.getElementById(containerId);
+            if (!products.length) { container.innerHTML = ''; return; }
+            container.innerHTML = products.map(p => `
+                <div class="product-card">
+                    <div class="product-img-wrap">
+                        <img src="${p.image_url || 'https://picsum.photos/seed/' + p.id + '/400/300.jpg'}" class="product-img" alt="${p.name}" onerror="this.src='https://picsum.photos/seed/${p.id}/400/300.jpg'">
+                        <div class="product-stock-badge ${p.stock <= 0 ? 'out' : ''}">${p.stock <= 0 ? 'Out of Stock' : p.stock + ' in stock'}</div>
+                    </div>
+                    <div class="product-body">
+                        <div class="product-name">${p.name}</div>
+                        <div class="product-desc">${p.description || 'Stylish Kenyan fashion piece'}</div>
+                        <div class="product-footer">
+                            <div class="product-price">KES ${Number(p.price).toLocaleString()}</div>
+                            <button class="order-btn" onclick='openOrderModal(${JSON.stringify(p).replace(/'/g, "&#39;")})' ${p.stock <= 0 ? 'disabled' : ''}>
+                                <i data-lucide="shopping-cart" style="width:14px;height:14px"></i> Order
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        function filterProducts() {
+            const q = document.getElementById('shopSearch').value.toLowerCase();
+            const filtered = allProducts.filter(p => p.name.toLowerCase().includes(q) || (p.description || '').toLowerCase().includes(q));
+            renderProducts(filtered, 'shopGrid');
+            document.getElementById('shopEmpty').style.display = filtered.length ? 'none' : 'block';
+        }
+
+        // ========== ORDER MODAL ==========
+        function openOrderModal(product) {
+            activeProduct = product;
+            orderQty = 1;
+            document.getElementById('modalImg').src = product.image_url || 'https://picsum.photos/seed/' + product.id + '/400/300.jpg';
+            document.getElementById('modalName').textContent = product.name;
+            document.getElementById('modalDesc').textContent = product.description || '';
+            document.getElementById('modalPrice').textContent = 'KES ' + Number(product.price).toLocaleString() + ' each';
+            updateModalTotal();
+            document.getElementById('orderModal').classList.add('active');
+            lucide.createIcons();
+        }
+
+        function closeOrderModal() {
+            document.getElementById('orderModal').classList.remove('active');
+            activeProduct = null;
+        }
+
+        function changeQty(delta) {
+            if (!activeProduct) return;
+            orderQty = Math.max(1, Math.min(orderQty + delta, activeProduct.stock));
+            document.getElementById('modalQty').textContent = orderQty;
+            updateModalTotal();
+        }
+
+        function updateModalTotal() {
+            if (!activeProduct) return;
+            const total = orderQty * Number(activeProduct.price);
+            document.getElementById('modalTotal').textContent = 'KES ' + total.toLocaleString();
+        }
+
+        async function confirmOrder() {
+            if (!activeProduct || !userProfile) return;
+            const btn = document.getElementById('confirmOrderBtn');
+            btn.disabled = true;
+            btn.textContent = 'Placing order...';
+            const total = orderQty * Number(activeProduct.price);
+            const { error } = await supabaseClient.from('orders').insert({
+                user_id: currentUser.id,
+                name: userProfile.name,
+                location: userProfile.location,
+                number: userProfile.number,
+                items: [{ name: activeProduct.name, qty: orderQty, price: Number(activeProduct.price) }],
+                amount: orderQty,
+                total_price: total,
+                status: 'pending'
+            });
+            // Decrease stock
+            await supabaseClient.from('zhp').update({ stock: activeProduct.stock - orderQty }).eq('id', activeProduct.id);
+            btn.disabled = false;
+            btn.textContent = 'Confirm Order';
+            if (error) { showToast('Failed to place order: ' + error.message, 'error'); return; }
+            closeOrderModal();
+            showToast('Order placed successfully! 🎉', 'success');
+            loadProducts();
+            loadOrders();
+        }
+
+        // ========== ORDERS ==========
+        async function loadOrders() {
+            if (!currentUser) return;
+            const { data, error } = await supabaseClient.from('orders').select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false });
+            if (error) { console.error(error); return; }
+            myOrders = data || [];
+            document.getElementById('statOrders').textContent = myOrders.length;
+            renderOrders();
+        }
+
+        function renderOrders() {
+            const container = document.getElementById('ordersList');
+            const empty = document.getElementById('ordersEmpty');
+            if (!myOrders.length) { container.innerHTML = ''; empty.style.display = 'block'; return; }
+            empty.style.display = 'none';
+            container.innerHTML = myOrders.map(o => {
+                const items = Array.isArray(o.items) ? o.items : JSON.parse(o.items || '[]');
+                const itemNames = items.map(i => `${i.name} x${i.qty}`).join(', ');
+                const date = new Date(o.created_at).toLocaleDateString('en-KE', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+                return `
+                <div class="order-card">
+                    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;margin-bottom:.75rem">
+                        <div>
+                            <span style="font-size:.72rem;color:#9ca3af;font-weight:600">ORDER #${o.id.slice(0, 8).toUpperCase()}</span>
+                            <span style="font-size:.72rem;color:#d1d5db;margin-left:.5rem">${date}</span>
+                        </div>
+                        <span class="status-badge status-${o.status}">${o.status}</span>
+                    </div>
+                    <div style="font-size:.88rem;font-weight:600;color:#1f2937;margin-bottom:.35rem">${itemNames}</div>
+                    <div style="display:flex;align-items:center;justify-content:space-between">
+                        <span style="font-size:.78rem;color:#9ca3af">Qty: ${o.amount}</span>
+                        <span style="font-size:1.05rem;font-weight:800;color:#d6336c">KES ${Number(o.total_price).toLocaleString()}</span>
+                    </div>
+                    ${o.status !== 'delivered' && o.status !== 'cancelled' ? `
+                    <div style="margin-top:.75rem;padding-top:.75rem;border-top:1px solid #fce7f3;display:flex;align-items:center;gap:.5rem">
+                        <div style="flex:1;height:4px;border-radius:2px;background:#fce7f3;overflow:hidden">
+                            <div style="height:100%;border-radius:2px;background:linear-gradient(90deg,#d6336c,#e84393);width:${({ pending: 10, processing: 40, shipped: 70 }[o.status] || 10)}%;transition:width .5s"></div>
+                        </div>
+                        <span style="font-size:.68rem;color:#9ca3af;font-weight:600;white-space:nowrap">${o.status === 'pending' ? 'Confirmed' : o.status === 'processing' ? 'Preparing' : o.status === 'shipped' ? 'On the way' : o.status}</span>
+                    </div>` : ''}
+                </div>`;
+            }).join('');
+        }
+
+        // ========== CHAT ==========
+        function toggleChat() {
+            const panel = document.getElementById('chatPanel');
+            const fab = document.getElementById('chatFab');
+            panel.classList.toggle('open');
+            fab.classList.toggle('active');
+            if (panel.classList.contains('open') && conversationId) {
+                loadChatMessages();
+            }
+        }
+
+        async function loadConversation() {
+            if (!currentUser) return;
+            const { data } = await supabaseClient.from('conversations').select('*').eq('user_id', currentUser.id).order('updated_at', { ascending: false }).limit(1);
+            if (data && data.length) { conversationId = data[0].id; }
+            // Start polling
+            if (chatPoll) clearInterval(chatPoll);
+            chatPoll = setInterval(async () => {
+                if (conversationId && document.getElementById('chatPanel').classList.contains('open')) {
+                    loadChatMessages();
+                }
+            }, 3000);
+        }
+
+        async function loadChatMessages() {
+            if (!conversationId) return;
+            const { data } = await supabaseClient.from('chat_messages').select('*').eq('conversation_id', conversationId).order('created_at', { ascending: true });
+            if (!data) return;
+            const container = document.getElementById('chatMessages');
+            const wasAtBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 50;
+            container.innerHTML = data.map(m => `
+                <div class="chat-msg ${m.sender_type}">
+                    <div class="msg-bubble">${m.message}</div>
+                </div>
+            `).join('');
+            if (wasAtBottom) container.scrollTop = container.scrollHeight;
+        }
+
+        async function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const text = input.value.trim();
+            if (!text || !currentUser) return;
+            input.value = '';
+            // Create conversation if needed
+            if (!conversationId) {
+                const { data: conv } = await supabaseClient.from('conversations').insert({
+                    user_id: currentUser.id,
+                    user_name: userProfile.name
+                }).select().single();
+                if (conv) conversationId = conv.id;
+            }
+            if (!conversationId) return;
+            await supabaseClient.from('chat_messages').insert({
+                conversation_id: conversationId,
+                sender_type: 'user',
+                message: text
+            });
+            await supabaseClient.from('conversations').update({ updated_at: new Date().toISOString() }).eq('id', conversationId);
+            loadChatMessages();
+        }
+
+        // ========== TOAST ==========
+        function showToast(msg, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.className = 'toast toast-' + type + ' show';
+            setTimeout(() => toast.classList.remove('show'), 3500);
+        }
+
+        // ========== INIT ==========
+        async function init() {
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            if (session) { await loadProfile(); }
+            lucide.createIcons();
+        }
+        init();
+
+        // Close modal on overlay click
+        document.getElementById('orderModal').addEventListener('click', function (e) {
+            if (e.target === this) closeOrderModal();
+        });
+    </script>
 </body>
 
 </html>
