@@ -1,534 +1,1237 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zerah Boutique - Admin Dashboard</title>
-    <link rel="icon" href="zerah-logo.png">
-    
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-    <!-- Tailwind CSS v4 -->
-    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
-
-    <!-- Supabase -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
+    <title>Zerah — Admin Panel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👗</text></svg>">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
         body {
             font-family: 'Inter', sans-serif;
-            -webkit-font-smoothing: antialiased;
-        }
-        
-        h1, h2, h3, .brand-font {
-            font-family: 'Playfair Display', serif;
+            background: #fdf2f8;
+            color: #1f2937;
+            overflow-x: hidden
         }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
+        .bg-pattern {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background-image: radial-gradient(at 0% 0%, rgba(214, 51, 108, .06) 0, transparent 50%), radial-gradient(at 100% 100%, rgba(232, 67, 147, .05) 0, transparent 50%)
         }
 
-        ::-webkit-scrollbar-track {
-            background: #fff5f7;
+        .input-field {
+            width: 100%;
+            border-radius: .6rem;
+            padding: .75rem 1rem;
+            background: #fff;
+            border: 1.5px solid #fbcfe8;
+            transition: all .25s;
+            font-size: .9rem;
+            font-family: 'Inter', sans-serif;
+            color: #1f2937
         }
 
-        ::-webkit-scrollbar-thumb {
+        .input-field:focus {
+            outline: none;
+            border-color: #d6336c;
+            box-shadow: 0 0 0 3px rgba(214, 51, 108, .1)
+        }
+
+        .input-field::placeholder {
+            color: #f9a8d4
+        }
+
+        textarea.input-field {
+            resize: vertical;
+            min-height: 80px
+        }
+
+        .btn-primary {
+            padding: .7rem 1.4rem;
+            border-radius: .6rem;
+            background: linear-gradient(135deg, #d6336c, #e84393);
+            color: #fff;
+            font-size: .88rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all .25s;
+            font-family: 'Inter', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 24px rgba(214, 51, 108, .3)
+        }
+
+        .btn-primary:disabled {
+            opacity: .5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none
+        }
+
+        .btn-outline {
+            padding: .6rem 1.2rem;
+            border-radius: .6rem;
+            background: #fff;
+            color: #d6336c;
+            font-size: .82rem;
+            font-weight: 600;
+            border: 1.5px solid #fbcfe8;
+            cursor: pointer;
+            transition: all .25s;
+            font-family: 'Inter', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: .35rem
+        }
+
+        .btn-outline:hover {
+            border-color: #d6336c;
+            background: #fdf2f8
+        }
+
+        .btn-danger {
+            padding: .5rem 1rem;
+            border-radius: .5rem;
+            background: #fef2f2;
+            color: #dc2626;
+            font-size: .78rem;
+            font-weight: 600;
+            border: 1px solid #fecaca;
+            cursor: pointer;
+            transition: all .2s;
+            font-family: 'Inter', sans-serif
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+            color: #fff
+        }
+
+        /* Auth */
+        #authPage {
+            position: fixed;
+            inset: 0;
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 50%, #fbcfe8 100%)
+        }
+
+        .auth-card {
+            background: #fff;
+            border-radius: 1.25rem;
+            box-shadow: 0 24px 64px rgba(214, 51, 108, .1);
+            max-width: 420px;
+            width: 100%;
+            margin: 1rem;
+            padding: 2rem
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            width: 260px;
+            background: rgba(255, 255, 255, .97);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(214, 51, 108, .08);
+            transition: transform .35s cubic-bezier(.4, 0, .2, 1);
+            z-index: 100;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 4px
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
             background: #fbcfe8;
-            border-radius: 4px;
+            border-radius: 4px
         }
 
-        .sidebar-item.active {
-            background-color: #fce7f3;
-            color: #db2777;
-            border-right: 4px solid #db2777;
+        .sidebar.closed {
+            transform: translateX(-100%)
+        }
+
+        .main-content {
+            margin-left: 260px;
+            transition: margin-left .35s cubic-bezier(.4, 0, .2, 1);
+            padding: 2rem 2.5rem;
+            min-height: 100vh
+        }
+
+        .main-content.expanded {
+            margin-left: 0
+        }
+
+        .menu-toggle {
+            position: fixed;
+            top: 1.25rem;
+            left: 1.25rem;
+            z-index: 101;
+            background: linear-gradient(135deg, #d6336c, #e84393);
+            border: none;
+            padding: .65rem;
+            border-radius: .6rem;
+            cursor: pointer;
+            transition: all .25s;
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(214, 51, 108, .25);
+            display: none;
+            align-items: center;
+            justify-content: center
+        }
+
+        .nav-btn {
+            display: flex;
+            align-items: center;
+            gap: .75rem;
+            padding: .7rem 1.25rem;
+            margin: .15rem .75rem;
+            border-radius: .6rem;
+            font-size: .88rem;
+            font-weight: 500;
+            color: #6b7280;
+            cursor: pointer;
+            transition: all .2s;
+            border: none;
+            background: transparent;
+            width: calc(100% - 1.5rem);
+            font-family: 'Inter', sans-serif;
+            text-align: left
+        }
+
+        .nav-btn:hover {
+            background: #fdf2f8;
+            color: #d6336c
+        }
+
+        .nav-btn.active-nav {
+            background: linear-gradient(135deg, #d6336c, #e84393) !important;
+            color: #fff !important
+        }
+
+        .nav-btn.active-nav svg {
+            color: #fff !important
+        }
+
+        .section {
+            display: none
+        }
+
+        .section.active {
+            display: block
+        }
+
+        /* Stat card */
+        .stat-card {
+            background: #fff;
+            border-radius: 1rem;
+            border: 1px solid rgba(214, 51, 108, .08);
+            padding: 1.25rem;
+            transition: all .3s
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(214, 51, 108, .06)
+        }
+
+        /* Table */
+        .data-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: #fff;
+            border-radius: 1rem;
+            overflow: hidden;
+            border: 1px solid rgba(214, 51, 108, .08)
+        }
+
+        .data-table thead {
+            background: linear-gradient(135deg, #d6336c, #e84393)
+        }
+
+        .data-table th {
+            padding: .85rem 1rem;
+            text-align: left;
+            font-size: .78rem;
+            font-weight: 700;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: .04em
+        }
+
+        .data-table td {
+            padding: .85rem 1rem;
+            font-size: .85rem;
+            border-bottom: 1px solid #fce7f3;
+            color: #1f2937
+        }
+
+        .data-table tbody tr {
+            transition: background .15s
+        }
+
+        .data-table tbody tr:hover {
+            background: #fdf2f8
+        }
+
+        .data-table tbody tr:last-child td {
+            border-bottom: none
+        }
+
+        /* Status badges */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: .3rem;
+            padding: .2rem .65rem;
+            border-radius: 9999px;
+            font-size: .68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .04em
+        }
+
+        .status-pending {
+            background: #fef3c7;
+            color: #d97706
+        }
+
+        .status-processing {
+            background: #dbeafe;
+            color: #2563eb
+        }
+
+        .status-shipped {
+            background: #e0e7ff;
+            color: #4f46e5
+        }
+
+        .status-delivered {
+            background: #d1fae5;
+            color: #059669
+        }
+
+        .status-cancelled {
+            background: #fee2e2;
+            color: #dc2626
+        }
+
+        /* Chat */
+        .chat-layout {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 0;
+            background: #fff;
+            border-radius: 1rem;
+            border: 1px solid rgba(214, 51, 108, .08);
+            overflow: hidden;
+            height: calc(100vh - 10rem);
+            min-height: 500px
+        }
+
+        .chat-conv-list {
+            border-right: 1px solid #fce7f3;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column
+        }
+
+        .chat-conv-item {
+            padding: 1rem 1.25rem;
+            cursor: pointer;
+            transition: all .2s;
+            border-bottom: 1px solid #fce7f3
+        }
+
+        .chat-conv-item:hover {
+            background: #fdf2f8
+        }
+
+        .chat-conv-item.active {
+            background: #fce7f3;
+            border-left: 3px solid #d6336c
+        }
+
+        .chat-conv-name {
+            font-size: .88rem;
+            font-weight: 600;
+            color: #1f2937
+        }
+
+        .chat-conv-preview {
+            font-size: .75rem;
+            color: #9ca3af;
+            margin-top: .2rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap
+        }
+
+        .chat-conv-time {
+            font-size: .65rem;
+            color: #d1d5db;
+            margin-top: .3rem
+        }
+
+        .chat-window {
+            display: flex;
+            flex-direction: column
+        }
+
+        .chat-window-header {
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid #fce7f3;
+            background: #fdf2f8
+        }
+
+        .chat-window-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: .75rem
+        }
+
+        .chat-msg {
+            display: flex;
+            gap: .6rem;
+            max-width: 80%;
+            animation: msgIn .25s ease
+        }
+
+        @keyframes msgIn {
+            from {
+                opacity: 0;
+                transform: translateY(6px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        .chat-msg.user {
+            align-self: flex-end;
+            flex-direction: row-reverse
+        }
+
+        .chat-msg .msg-bubble {
+            padding: .65rem 1rem;
+            border-radius: 1rem;
+            font-size: .85rem;
+            line-height: 1.55
+        }
+
+        .chat-msg.admin .msg-bubble {
+            background: #fce7f3;
+            color: #1f2937;
+            border-top-left-radius: .25rem
+        }
+
+        .chat-msg.user .msg-bubble {
+            background: linear-gradient(135deg, #d6336c, #e84393);
+            color: #fff;
+            border-top-right-radius: .25rem
+        }
+
+        .chat-msg .msg-time {
+            font-size: .6rem;
+            color: #d1d5db;
+            margin-top: .25rem
+        }
+
+        .chat-window-input {
+            padding: .85rem 1rem;
+            border-top: 1px solid #fce7f3;
+            display: flex;
+            gap: .5rem;
+            background: #fff
+        }
+
+        .chat-window-input input {
+            flex: 1;
+            border: 1.5px solid #fbcfe8;
+            border-radius: .75rem;
+            padding: .6rem 1rem;
+            font-size: .85rem;
+            outline: none;
+            background: #fdf2f8;
+            transition: all .2s;
+            font-family: 'Inter', sans-serif;
+            color: #1f2937
+        }
+
+        .chat-window-input input:focus {
+            border-color: #d6336c;
+            background: #fff
+        }
+
+        .chat-window-input button {
+            width: 40px;
+            height: 40px;
+            border-radius: .75rem;
+            background: linear-gradient(135deg, #d6336c, #e84393);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all .2s;
+            border: none;
+            cursor: pointer
+        }
+
+        .chat-window-input button:hover {
+            box-shadow: 0 4px 12px rgba(214, 51, 108, .3)
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 500;
+            padding: 1rem 1.5rem;
+            border-radius: .75rem;
+            color: #fff;
+            font-weight: 500;
+            font-size: .9rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, .15);
+            transform: translateY(120%);
+            transition: transform .4s cubic-bezier(.4, 0, .2, 1)
+        }
+
+        .toast.show {
+            transform: translateY(0)
+        }
+
+        .toast-success {
+            background: linear-gradient(135deg, #d6336c, #e84393)
+        }
+
+        .toast-error {
+            background: #dc2626
+        }
+
+        /* Product card in admin */
+        .admin-product-card {
+            background: #fff;
+            border-radius: .75rem;
+            border: 1px solid rgba(214, 51, 108, .08);
+            padding: 1rem;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            transition: all .25s
+        }
+
+        .admin-product-card:hover {
+            box-shadow: 0 4px 16px rgba(214, 51, 108, .06)
+        }
+
+        .admin-product-card img {
+            width: 64px;
+            height: 64px;
+            border-radius: .5rem;
+            object-fit: cover;
+            background: #fce7f3;
+            flex-shrink: 0
+        }
+
+        /* Status select */
+        .status-select {
+            padding: .35rem .6rem;
+            border-radius: .5rem;
+            border: 1.5px solid #fbcfe8;
+            font-size: .78rem;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            color: #1f2937;
+            background: #fff;
+            cursor: pointer;
+            outline: none
+        }
+
+        .status-select:focus {
+            border-color: #d6336c
+        }
+
+        @media(max-width:768px) {
+            .sidebar {
+                transform: translateX(-100%)
+            }
+
+            .sidebar.open {
+                transform: translateX(0)
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 1.25rem
+            }
+
+            .menu-toggle {
+                display: flex !important
+            }
+
+            .chat-layout {
+                grid-template-columns: 1fr;
+                height: auto;
+                min-height: 400px
+            }
+
+            .chat-conv-list {
+                max-height: 200px;
+                border-right: none;
+                border-bottom: 1px solid #fce7f3
+            }
+
+            .data-table {
+                font-size: .75rem
+            }
+
+            .data-table th,
+            .data-table td {
+                padding: .6rem .5rem
+            }
         }
     </style>
 </head>
-<body class="bg-[#fffafa] text-slate-800 min-h-screen flex">
 
-    <!-- Sidebar -->
-    <aside class="w-64 bg-white border-r border-pink-100 flex flex-col fixed h-full z-20 transition-all duration-300 shadow-sm" id="sidebar">
-        <div class="p-6 border-b border-pink-50 flex items-center gap-3">
-            <div class="bg-pink-500 text-white p-2 rounded-full">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z" />
-                </svg>
-            </div>
-            <h1 class="text-xl font-black text-slate-900">Zerah <span class="text-pink-500 text-sm">Admin</span></h1>
-        </div>
-        
-        <nav class="flex-1 py-4 overflow-y-auto">
-            <button onclick="showSection('orders')" class="sidebar-item w-full flex items-center gap-3 px-6 py-4 text-slate-600 hover:bg-pink-50 hover:text-pink-600 transition-colors active" id="btn-orders">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-                <span class="font-medium">Orders</span>
-            </button>
-            <button onclick="showSection('inventory')" class="sidebar-item w-full flex items-center gap-3 px-6 py-4 text-slate-600 hover:bg-pink-50 hover:text-pink-600 transition-colors" id="btn-inventory">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-                <span class="font-medium">Inventory</span>
-            </button>
-            <button onclick="showSection('customers')" class="sidebar-item w-full flex items-center gap-3 px-6 py-4 text-slate-600 hover:bg-pink-50 hover:text-pink-600 transition-colors" id="btn-customers">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                <span class="font-medium">Customers</span>
-            </button>
-        </nav>
+<body>
+    <div class="bg-pattern"></div>
 
-        <div class="p-4 border-t border-pink-50">
-            <button onclick="logout()" class="w-full flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-red-50 hover:text-red-600 rounded-xl transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
-                <span class="font-medium text-sm">Sign Out</span>
-            </button>
-        </div>
-    </aside>
-
-    <!-- Main Content -->
-    <main class="flex-1 ml-64 p-8">
-        
-        <!-- Login Overlay -->
-        <div id="login-overlay" class="fixed inset-0 bg-white/95 backdrop-blur-md z-50 flex items-center justify-center p-4">
-            <div class="max-w-md w-full bg-white p-8 rounded-3xl border border-pink-100 shadow-2xl">
-                <div class="text-center mb-8">
-                    <div class="w-20 h-20 bg-pink-50 text-pink-600 rounded-3xl flex items-center justify-center mx-auto mb-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-                        </svg>
-                    </div>
-                    <h2 class="text-3xl font-black text-slate-900">Boutique Access</h2>
-                    <p class="text-slate-500 mt-2">Enter your admin credentials to continue</p>
-                </div>
-                <div class="space-y-4">
-                    <input type="password" id="admin-pass" placeholder="Boutique Secret Key" class="w-full px-5 py-4 rounded-2xl border border-pink-100 bg-pink-50/30 focus:bg-white focus:ring-2 focus:ring-pink-500 outline-none transition-all">
-                    <button onclick="authenticate()" class="w-full bg-pink-600 hover:bg-pink-700 text-white font-bold py-4 rounded-2xl transition-all shadow-lg shadow-pink-200">
-                        Access Dashboard
-                    </button>
-                    <p id="login-error" class="text-red-500 text-sm text-center hidden font-medium">Incorrect key. Please try again.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Dashboard Content -->
-        <div id="dashboard-content" class="hidden opacity-0 transition-opacity duration-500">
-            <header class="flex justify-between items-center mb-10">
+    <!-- ==================== AUTH PAGE ==================== -->
+    <div id="authPage">
+        <div class="auth-card" style="text-align:center">
+            <h1
+                style="font-size:1.6rem;font-weight:800;background:linear-gradient(135deg,#d6336c,#e84393);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:.25rem">
+                Zerah Admin</h1>
+            <p style="font-size:.82rem;color:#9ca3af;margin-bottom:1.75rem">Sign in to manage your store</p>
+            <form onsubmit="handleAdminSignIn(event)"
+                style="display:flex;flex-direction:column;gap:.85rem;text-align:left">
                 <div>
-                    <h2 class="text-4xl font-black text-slate-900" id="section-title">Order Management</h2>
-                    <p class="text-slate-500 mt-1" id="section-desc">Track and process your boutique sales.</p>
+                    <label
+                        style="font-size:.78rem;font-weight:600;color:#6b7280;display:block;margin-bottom:.35rem">Email</label>
+                    <input type="email" class="input-field" id="adminEmail" placeholder="admin@zerah.co.ke" required>
                 </div>
-                <div class="flex gap-4">
-                    <button onclick="refreshData()" class="p-3 bg-white border border-pink-100 rounded-2xl text-pink-600 hover:bg-pink-50 transition-colors shadow-sm">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M3 21v-5h5"/></svg>
-                    </button>
-                    <div class="flex items-center gap-3 bg-white border border-pink-100 px-4 py-2 rounded-2xl shadow-sm">
-                        <div class="w-8 h-8 bg-pink-100 rounded-full flex items-center justify-center text-pink-600 font-bold text-xs">AD</div>
-                        <span class="font-bold text-sm text-slate-700">Admin</span>
-                    </div>
+                <div>
+                    <label
+                        style="font-size:.78rem;font-weight:600;color:#6b7280;display:block;margin-bottom:.35rem">Password</label>
+                    <input type="password" class="input-field" id="adminPassword" placeholder="••••••••" required>
                 </div>
-            </header>
-
-            <!-- Sections -->
-            <div id="section-orders" class="section">
-                <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
-                    <div class="xl:col-span-3">
-                        <div class="bg-white rounded-3xl border border-pink-100 shadow-sm overflow-hidden">
-                            <div class="p-6 border-b border-pink-50 bg-pink-50/30 flex justify-between items-center">
-                                <h3 class="font-bold text-xl text-slate-900">Recent Sales</h3>
-                                <div class="flex gap-2">
-                                    <span class="px-3 py-1 bg-yellow-100 text-yellow-700 rounded-full text-[10px] font-black uppercase">Pending</span>
-                                    <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-[10px] font-black uppercase">Shipping</span>
-                                    <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-[10px] font-black uppercase">Delivered</span>
-                                </div>
-                            </div>
-                            <div id="orders-list" class="divide-y divide-pink-50 min-h-[400px]">
-                                <!-- Orders will be injected here -->
-                                <div class="p-20 text-center">
-                                    <p class="text-slate-400">Loading orders...</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="section-inventory" class="section hidden">
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                    <!-- Add Item Form -->
-                    <div class="lg:col-span-4 space-y-6">
-                        <div class="bg-white p-8 rounded-3xl border border-pink-100 shadow-sm">
-                            <h3 class="font-bold text-xl text-slate-900 mb-6 flex items-center gap-2">
-                                <span class="p-2 bg-pink-50 text-pink-500 rounded-xl">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
-                                </span>
-                                Add New Apparel
-                            </h3>
-                            <div class="space-y-4">
-                                <input id="pname" placeholder="Apparel Name" class="w-full px-5 py-4 rounded-2xl border border-pink-100 bg-pink-50/20 focus:bg-white focus:ring-2 focus:ring-pink-500 outline-none transition-all">
-                                <input id="pprice" type="number" placeholder="Price (KSh)" class="w-full px-5 py-4 rounded-2xl border border-pink-100 bg-pink-50/20 focus:bg-white focus:ring-2 focus:ring-pink-500 outline-none transition-all">
-                                <textarea id="pdesc" placeholder="Details (Fit, Fabric, Style...)" rows="3" class="w-full px-5 py-4 rounded-2xl border border-pink-100 bg-pink-50/20 focus:bg-white focus:ring-2 focus:ring-pink-500 outline-none transition-all resize-none"></textarea>
-                                <button onclick="addItem('product')" class="w-full bg-pink-500 hover:bg-pink-600 text-white font-bold py-4 rounded-2xl transition-all shadow-md shadow-pink-100">
-                                    Launch Product
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="bg-white p-8 rounded-3xl border border-pink-100 shadow-sm">
-                            <h3 class="font-bold text-xl text-slate-900 mb-6 flex items-center gap-2">
-                                <span class="p-2 bg-pink-50 text-pink-500 rounded-xl">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-4"/></svg>
-                                </span>
-                                Add Styling Service
-                            </h3>
-                            <div class="space-y-4">
-                                <input id="sname" placeholder="Service Name" class="w-full px-5 py-4 rounded-2xl border border-pink-100 bg-pink-50/20 focus:bg-white focus:ring-2 focus:ring-pink-500 outline-none transition-all">
-                                <input id="sprice" type="number" placeholder="Rate (KSh)" class="w-full px-5 py-4 rounded-2xl border border-pink-100 bg-pink-50/20 focus:bg-white focus:ring-2 focus:ring-pink-500 outline-none transition-all">
-                                <textarea id="sdesc" placeholder="Service description..." rows="3" class="w-full px-5 py-4 rounded-2xl border border-pink-100 bg-pink-50/20 focus:bg-white focus:ring-2 focus:ring-pink-500 outline-none transition-all resize-none"></textarea>
-                                <button onclick="addItem('service')" class="w-full bg-pink-600 hover:bg-pink-700 text-white font-bold py-4 rounded-2xl transition-all shadow-md shadow-pink-100">
-                                    Add Styling Option
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Items List -->
-                    <div class="lg:col-span-8">
-                        <div class="bg-white rounded-3xl border border-pink-100 shadow-sm overflow-hidden">
-                            <div class="p-6 border-b border-pink-50 bg-pink-50/30">
-                                <h3 class="font-bold text-xl text-slate-900">Current Boutique Inventory</h3>
-                            </div>
-                            <div id="inventory-list" class="divide-y divide-pink-50">
-                                <!-- Inventory will be injected here -->
-                                <div class="p-10 text-center">
-                                    <p class="text-slate-400">Loading inventory...</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="section-customers" class="section hidden">
-                <div class="bg-white rounded-3xl border border-pink-100 shadow-sm overflow-hidden">
-                    <div class="p-6 border-b border-pink-50 bg-pink-50/30">
-                        <h3 class="font-bold text-xl text-slate-900">Zerah Club Members</h3>
-                    </div>
-                    <div id="customers-list" class="divide-y divide-pink-50">
-                        <!-- Customers will be injected here -->
-                        <div class="p-20 text-center">
-                            <p class="text-slate-400">Loading members...</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                <button type="submit" class="btn-primary" style="width:100%;justify-content:center;margin-top:.5rem"
+                    id="adminSignInBtn">Sign In</button>
+            </form>
+            <p id="authError" style="color:#dc2626;font-size:.82rem;margin-top:1rem;display:none"></p>
         </div>
-    </main>
-
-    <!-- Notification Toast -->
-    <div id="toast" class="fixed bottom-8 right-8 px-6 py-4 rounded-2xl bg-slate-900 text-white font-bold text-sm shadow-2xl transition-all duration-300 translate-y-20 opacity-0 z-[100]">
-        Notification message
     </div>
 
+    <!-- ==================== DASHBOARD ==================== -->
+    <div id="dashboardPage" style="display:none">
+        <button class="menu-toggle" onclick="toggleSidebar()"><i data-lucide="menu"
+                style="width:20px;height:20px"></i></button>
+
+        <nav class="sidebar" id="sidebar">
+            <div style="padding:1.5rem 1.25rem;border-bottom:1px solid #fce7f3">
+                <div style="display:flex;align-items:center;gap:.5rem">
+                    <h2
+                        style="font-size:1.3rem;font-weight:800;background:linear-gradient(135deg,#d6336c,#e84393);-webkit-background-clip:text;-webkit-text-fill-color:transparent">
+                        Zerah</h2>
+                    <span
+                        style="font-size:.6rem;font-weight:700;background:#fce7f3;color:#d6336c;padding:.15rem .5rem;border-radius:9999px;text-transform:uppercase;letter-spacing:.05em">Admin</span>
+                </div>
+                <p style="font-size:.72rem;color:#9ca3af;margin-top:.1rem">Store Management</p>
+            </div>
+            <div style="padding:.75rem 0;flex:1">
+                <button class="nav-btn active-nav" data-section="dashSection" onclick="navigateTo('dashSection',this)">
+                    <i data-lucide="layout-dashboard" style="width:18px;height:18px"></i> Dashboard
+                </button>
+                <button class="nav-btn" data-section="productsSection" onclick="navigateTo('productsSection',this)">
+                    <i data-lucide="shirt" style="width:18px;height:18px"></i> Products
+                </button>
+                <button class="nav-btn" data-section="ordersSection" onclick="navigateTo('ordersSection',this)">
+                    <i data-lucide="clipboard-list" style="width:18px;height:18px"></i> Orders
+                </button>
+                <button class="nav-btn" data-section="chatSection" onclick="navigateTo('chatSection',this)">
+                    <i data-lucide="messages-square" style="width:18px;height:18px"></i> Chat
+                </button>
+            </div>
+            <div style="padding:1rem 1.25rem;border-top:1px solid #fce7f3">
+                <button onclick="handleSignOut()"
+                    style="width:100%;padding:.55rem;border-radius:.5rem;background:#fdf2f8;color:#d6336c;font-size:.8rem;font-weight:600;border:1px solid #fbcfe8;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:.4rem">
+                    <i data-lucide="log-out" style="width:15px;height:15px"></i> Sign Out
+                </button>
+            </div>
+        </nav>
+
+        <div class="main-content" id="mainContent">
+
+            <!-- DASHBOARD -->
+            <div class="section active" id="dashSection">
+                <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:1.5rem">Dashboard</h2>
+                <div
+                    style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:2rem">
+                    <div class="stat-card">
+                        <div style="display:flex;align-items:center;gap:.75rem">
+                            <div
+                                style="width:44px;height:44px;border-radius:.75rem;background:#fdf2f8;display:flex;align-items:center;justify-content:center">
+                                <i data-lucide="shirt" style="width:20px;height:20px;color:#d6336c"></i></div>
+                            <div>
+                                <div style="font-size:1.3rem;font-weight:800" id="dashProducts">0</div>
+                                <div style="font-size:.72rem;color:#9ca3af;font-weight:600">Products</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div style="display:flex;align-items:center;gap:.75rem">
+                            <div
+                                style="width:44px;height:44px;border-radius:.75rem;background:#fdf2f8;display:flex;align-items:center;justify-content:center">
+                                <i data-lucide="clipboard-list" style="width:20px;height:20px;color:#d6336c"></i></div>
+                            <div>
+                                <div style="font-size:1.3rem;font-weight:800" id="dashOrders">0</div>
+                                <div style="font-size:.72rem;color:#9ca3af;font-weight:600">Total Orders</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div style="display:flex;align-items:center;gap:.75rem">
+                            <div
+                                style="width:44px;height:44px;border-radius:.75rem;background:#d1fae5;display:flex;align-items:center;justify-content:center">
+                                <i data-lucide="currency-dollar" style="width:20px;height:20px;color:#059669"></i></div>
+                            <div>
+                                <div style="font-size:1.3rem;font-weight:800" id="dashRevenue">KES 0</div>
+                                <div style="font-size:.72rem;color:#9ca3af;font-weight:600">Revenue</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div style="display:flex;align-items:center;gap:.75rem">
+                            <div
+                                style="width:44px;height:44px;border-radius:.75rem;background:#fef3c7;display:flex;align-items:center;justify-content:center">
+                                <i data-lucide="clock" style="width:20px;height:20px;color:#d97706"></i></div>
+                            <div>
+                                <div style="font-size:1.3rem;font-weight:800" id="dashPending">0</div>
+                                <div style="font-size:.72rem;color:#9ca3af;font-weight:600">Pending</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="font-size:1.05rem;font-weight:700;margin-bottom:1rem">Recent Orders</h3>
+                <div style="overflow-x:auto;border-radius:1rem;border:1px solid rgba(214,51,108,.08)">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Customer</th>
+                                <th>Items</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dashRecentOrders">
+                            <tr>
+                                <td colspan="5" style="text-align:center;color:#9ca3af;padding:2rem">Loading...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- PRODUCTS -->
+            <div class="section" id="productsSection">
+                <div
+                    style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:1.5rem">
+                    <h2 style="font-size:1.3rem;font-weight:800">Products</h2>
+                    <button class="btn-primary" onclick="toggleAddProduct()"><i data-lucide="plus"
+                            style="width:16px;height:16px"></i> Add Product</button>
+                </div>
+
+                <!-- Add Product Form -->
+                <div id="addProductForm"
+                    style="display:none;background:#fff;border-radius:1rem;border:1px solid rgba(214,51,108,.08);padding:1.75rem;margin-bottom:1.5rem">
+                    <h3 style="font-size:1rem;font-weight:700;margin-bottom:1.25rem">New Product</h3>
+                    <form onsubmit="addProduct(event)" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+                        <div>
+                            <label
+                                style="font-size:.75rem;font-weight:600;color:#6b7280;display:block;margin-bottom:.3rem">Product
+                                Name</label>
+                            <input type="text" class="input-field" id="pName" placeholder="Pink Ankara Dress" required>
+                        </div>
+                        <div>
+                            <label
+                                style="font-size:.75rem;font-weight:600;color:#6b7280;display:block;margin-bottom:.3rem">Price
+                                (KES)</label>
+                            <input type="number" class="input-field" id="pPrice" placeholder="1500" min="0" step="0.01"
+                                required>
+                        </div>
+                        <div style="grid-column:1/-1">
+                            <label
+                                style="font-size:.75rem;font-weight:600;color:#6b7280;display:block;margin-bottom:.3rem">Description</label>
+                            <textarea class="input-field" id="pDesc"
+                                placeholder="Beautiful hand-crafted Kenyan dress..."></textarea>
+                        </div>
+                        <div>
+                            <label
+                                style="font-size:.75rem;font-weight:600;color:#6b7280;display:block;margin-bottom:.3rem">Stock</label>
+                            <input type="number" class="input-field" id="pStock" placeholder="50" min="0" required>
+                        </div>
+                        <div>
+                            <label
+                                style="font-size:.75rem;font-weight:600;color:#6b7280;display:block;margin-bottom:.3rem">Image
+                                URL</label>
+                            <input type="url" class="input-field" id="pImage" placeholder="https://...">
+                        </div>
+                        <div style="grid-column:1/-1;display:flex;gap:.75rem;justify-content:flex-end">
+                            <button type="button" class="btn-outline" onclick="toggleAddProduct()">Cancel</button>
+                            <button type="submit" class="btn-primary" id="addProductBtn">Add Product</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="productsList" style="display:flex;flex-direction:column;gap:.75rem"></div>
+                <div id="productsEmpty" style="display:none;text-align:center;padding:4rem 1rem">
+                    <i data-lucide="shirt" style="width:48px;height:48px;color:#fbcfe8;margin:0 auto 1rem"></i>
+                    <p style="font-size:1rem;font-weight:600;color:#9ca3af">No products yet</p>
+                </div>
+            </div>
+
+            <!-- ORDERS -->
+            <div class="section" id="ordersSection">
+                <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:1.5rem">All Orders</h2>
+                <div style="overflow-x:auto;border-radius:1rem;border:1px solid rgba(214,51,108,.08)">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Name</th>
+                                <th>Location</th>
+                                <th>Phone</th>
+                                <th>Items</th>
+                                <th>Qty</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ordersTableBody">
+                            <tr>
+                                <td colspan="9" style="text-align:center;color:#9ca3af;padding:2rem">Loading...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="ordersEmpty" style="display:none;text-align:center;padding:4rem 1rem">
+                    <i data-lucide="clipboard-list" style="width:48px;height:48px;color:#fbcfe8;margin:0 auto 1rem"></i>
+                    <p style="font-size:1rem;font-weight:600;color:#9ca3af">No orders yet</p>
+                </div>
+            </div>
+
+            <!-- CHAT -->
+            <div class="section" id="chatSection">
+                <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:1.5rem">Customer Chat</h2>
+                <div class="chat-layout">
+                    <div class="chat-conv-list" id="convList">
+                        <div style="padding:2rem;text-align:center;color:#9ca3af;font-size:.88rem">Loading
+                            conversations...</div>
+                    </div>
+                    <div class="chat-window" id="chatWindow">
+                        <div class="chat-window-header" id="chatWindowHeader" style="display:none">
+                            <div style="font-weight:700;font-size:.95rem" id="chatUserName">—</div>
+                            <div style="font-size:.75rem;color:#9ca3af" id="chatUserEmail"></div>
+                        </div>
+                        <div class="chat-window-messages" id="chatWindowMessages" style="flex:1">
+                            <div
+                                style="display:flex;align-items:center;justify-content:center;height:100%;color:#d1d5db;font-size:.88rem">
+                                Select a conversation to start chatting</div>
+                        </div>
+                        <div class="chat-window-input" id="chatWindowInput" style="display:none">
+                            <input type="text" id="adminChatInput" placeholder="Type a reply..."
+                                onkeydown="if(event.key==='Enter')sendAdminReply()">
+                            <button onclick="sendAdminReply()"><i data-lucide="send"
+                                    style="width:18px;height:18px"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
     <script>
-        // CONFIG
-        const CONFIG = {
-            SUPABASE_URL: "https://ryoiycupoohyfasiugns.supabase.co",
-            SUPABASE_ANON: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ5b2l5Y3Vwb29oeWZhc2l1Z25zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzOTEyNzAsImV4cCI6MjA5MDk2NzI3MH0.vrEle9LQgtYMZ7rYSyDpZf7hxZRaisW1s04Lfj4IAU0",
-            ADMIN_PASSWORD: 'zerah@admin'
-        };
+        const { createClient } = supabase;
+        const supabaseClient = createClient('https://ycpteixmladknxndneho.supabase.co',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InljcHRlaXhtbGFka254bmRuZWhvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg0MTA1MjYsImV4cCI6MjA5Mzk4NjUyNn0.LCy-JDnLoSHSmB7GgSoge4nRi0X6LgkUGF1WYMogRGQ', {
+            auth: { persistSession: true, storageKey: 'zh-auth' }
+        });
 
-        const sb = supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON);
+        let currentUser = null;
+        let allProducts = [];
+        let allOrders = [];
+        let conversations = [];
+        let activeConvId = null;
+        let chatPoll = null;
 
-        // UI STATE
-        const state = {
-            isAuthenticated: false,
-            currentSection: 'orders',
-            orders: [],
-            products: [],
-            services: [],
-            customers: []
-        };
-
-        // AUTHENTICATION
-        function authenticate() {
-            const pass = document.getElementById('admin-pass').value;
-            if (pass === CONFIG.ADMIN_PASSWORD) {
-                state.isAuthenticated = true;
-                document.getElementById('login-overlay').classList.add('hidden');
-                document.getElementById('dashboard-content').classList.remove('hidden');
-                setTimeout(() => document.getElementById('dashboard-content').classList.replace('opacity-0', 'opacity-100'), 100);
-                refreshData();
-                showToast("Access Granted. Welcome back, Queen!", "success");
-            } else {
-                const err = document.getElementById('login-error');
-                err.classList.remove('hidden');
-                setTimeout(() => err.classList.add('hidden'), 3000);
-            }
-        }
-
-        function logout() {
-            window.location.reload();
-        }
-
-        // NAVIGATION
-        function showSection(sectionId) {
-            document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
-            document.getElementById(`section-${sectionId}`).classList.remove('hidden');
-            
-            document.querySelectorAll('.sidebar-item').forEach(btn => btn.classList.remove('active'));
-            document.getElementById(`btn-${sectionId}`).classList.add('active');
-            
-            state.currentSection = sectionId;
-            
-            const titles = {
-                'orders': ['Order Management', 'Track and process your boutique sales.'],
-                'inventory': ['Boutique Inventory', 'Curate and manage your apparel collection.'],
-                'customers': ['Member Directory', 'View and manage your Zerah Club members.']
-            };
-            
-            document.getElementById('section-title').innerText = titles[sectionId][0];
-            document.getElementById('section-desc').innerText = titles[sectionId][1];
-            
-            loadSectionData(sectionId);
-        }
-
-        // DATA LOADING
-        async function refreshData() {
-            loadSectionData(state.currentSection);
-        }
-
-        function loadSectionData(section) {
-            if (section === 'orders') loadOrders();
-            if (section === 'inventory') loadInventory();
-            if (section === 'customers') loadCustomers();
-        }
-
-        async function loadOrders() {
-            const list = document.getElementById('orders-list');
-            list.innerHTML = '<div class="p-20 text-center"><p class="text-pink-400 font-bold animate-pulse">Fetching sales data...</p></div>';
-            
-            try {
-                const { data, error } = await sb
-                    .from('orders')
-                    .select('*, order_items(price, products(name), services(name))')
-                    .order('id', { ascending: false });
-
-                if (error) throw error;
-                state.orders = data;
-
-                if (data.length === 0) {
-                    list.innerHTML = '<div class="p-20 text-center text-slate-400 font-medium">No boutique orders found yet.</div>';
-                    return;
-                }
-
-                list.innerHTML = data.map(order => {
-                    let total = 0;
-                    const items = order.order_items.map(i => {
-                        total += Number(i.price);
-                        return `<span class="text-xs bg-pink-50 text-pink-600 px-2 py-1 rounded-lg font-bold border border-pink-100">${i.products?.name || i.services?.name || 'Unknown Item'}</span>`;
-                    }).join('');
-
-                    const statusColors = {
-                        'pending': 'bg-yellow-50 text-yellow-600 border-yellow-100',
-                        'delivered': 'bg-green-50 text-green-600 border-green-100'
-                    };
-
-                    return `
-                        <div class="p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 group hover:bg-pink-50/20 transition-colors">
-                            <div class="flex items-center gap-4">
-                                <div class="w-12 h-12 bg-pink-50 text-pink-500 rounded-2xl flex items-center justify-center font-black text-xs">#${order.id}</div>
-                                <div>
-                                    <h4 class="font-black text-slate-900">${order.customer_name}</h4>
-                                    <p class="text-xs text-slate-500 font-medium">${order.customer_email} • ${order.customer_phone}</p>
-                                    <div class="flex flex-wrap gap-1 mt-2">${items}</div>
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-6">
-                                <div class="text-right">
-                                    <p class="text-[10px] uppercase font-black text-pink-300 tracking-widest">Total Selection</p>
-                                    <p class="text-lg font-black text-slate-900">KES ${total.toLocaleString()}</p>
-                                </div>
-                                <select onchange="updateStatus(${order.id}, this.value)" class="px-4 py-2 rounded-xl border border-pink-100 bg-white font-bold text-xs outline-none focus:ring-2 focus:ring-pink-500">
-                                    <option value="pending" ${order.status === 'pending' ? 'selected' : ''}>Pending</option>
-                                    <option value="delivered" ${order.status === 'delivered' ? 'selected' : ''}>Delivered</option>
-                                </select>
-                                <button onclick="deleteData('orders', ${order.id})" class="p-2 text-slate-300 hover:text-red-500 transition-colors">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
-                                </button>
-                            </div>
-                        </div>
-                    `;
-                }).join('');
-            } catch (err) {
-                list.innerHTML = `<div class="p-20 text-center text-red-500 font-bold">${err.message}</div>`;
-            }
-        }
-
-        async function loadInventory() {
-            const list = document.getElementById('inventory-list');
-            list.innerHTML = '<div class="p-20 text-center"><p class="text-pink-400 font-bold animate-pulse">Browsing catalog...</p></div>';
-            
-            try {
-                const [prods, servs] = await Promise.all([
-                    sb.from('products').select('*').order('id', { ascending: false }),
-                    sb.from('services').select('*').order('id', { ascending: false })
-                ]);
-
-                if (prods.error) throw prods.error;
-                if (servs.error) throw servs.error;
-
-                const allItems = [
-                    ...prods.data.map(p => ({ ...p, type: 'Apparel' })),
-                    ...servs.data.map(s => ({ ...s, type: 'Service' }))
-                ];
-
-                if (allItems.length === 0) {
-                    list.innerHTML = '<div class="p-20 text-center text-slate-400 font-medium">Inventory is empty. Add your first item!</div>';
-                    return;
-                }
-
-                list.innerHTML = allItems.map(item => `
-                    <div class="p-6 flex items-center justify-between group hover:bg-pink-50/20 transition-colors">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-pink-50 text-pink-500 rounded-2xl flex items-center justify-center">
-                                ${item.type === 'Apparel' ? 
-                                    '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z" /></svg>' : 
-                                    '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-4"/></svg>'
-                                }
-                            </div>
-                            <div>
-                                <h4 class="font-black text-slate-900">${item.name}</h4>
-                                <p class="text-xs text-slate-500 max-w-md line-clamp-1 font-medium">${item.description || 'No description provided.'}</p>
-                                <span class="text-[9px] uppercase font-black tracking-widest ${item.type === 'Apparel' ? 'text-amber-500' : 'text-blue-500'}">${item.type}</span>
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-6">
-                            <div class="text-right">
-                                <p class="text-lg font-black text-pink-600">KES ${Number(item.price).toLocaleString()}</p>
-                            </div>
-                            <button onclick="deleteData('${item.type === 'Apparel' ? 'products' : 'services'}', ${item.id})" class="p-2 text-slate-300 hover:text-red-500 transition-colors">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
-                            </button>
-                        </div>
-                    </div>
-                `).join('');
-            } catch (err) {
-                list.innerHTML = `<div class="p-20 text-center text-red-500 font-bold">${err.message}</div>`;
-            }
-        }
-
-        async function loadCustomers() {
-            const list = document.getElementById('customers-list');
-            list.innerHTML = '<div class="p-20 text-center"><p class="text-pink-400 font-bold animate-pulse">Opening member books...</p></div>';
-            
-            try {
-                const { data, error } = await sb.from('profiles').select('*').order('created_at', { ascending: false });
-                if (error) throw error;
-
-                if (data.length === 0) {
-                    list.innerHTML = '<div class="p-20 text-center text-slate-400 font-medium">No Zerah Club members found.</div>';
-                    return;
-                }
-
-                list.innerHTML = data.map(cust => `
-                    <div class="p-6 flex items-center justify-between group hover:bg-pink-50/20 transition-colors">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-pink-100 text-pink-600 rounded-full flex items-center justify-center font-black text-sm uppercase">
-                                ${cust.full_name?.substring(0, 2) || cust.email.substring(0, 2)}
-                            </div>
-                            <div>
-                                <h4 class="font-black text-slate-900">${cust.full_name || 'Anonymous Member'}</h4>
-                                <p class="text-xs text-slate-500 font-medium">${cust.email}</p>
-                                <p class="text-[9px] text-pink-300 font-bold mt-1 uppercase tracking-tighter">Joined ${new Date(cust.created_at).toLocaleDateString()}</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-4">
-                            <button onclick="showToast('Member profile details coming soon!', 'info')" class="px-4 py-2 bg-pink-50 text-pink-600 rounded-xl font-bold text-xs hover:bg-pink-100 transition-colors">View Profile</button>
-                        </div>
-                    </div>
-                `).join('');
-            } catch (err) {
-                list.innerHTML = `<div class="p-20 text-center text-red-500 font-bold">${err.message}</div>`;
-            }
-        }
-
-        // ACTIONS
-        async function addItem(type) {
-            const nameId = type === 'product' ? 'pname' : 'sname';
-            const priceId = type === 'product' ? 'pprice' : 'sprice';
-            const descId = type === 'product' ? 'pdesc' : 'sdesc';
-            
-            const name = document.getElementById(nameId).value.trim();
-            const price = document.getElementById(priceId).value;
-            const desc = document.getElementById(descId).value.trim();
-            
-            if (!name || !price) {
-                showToast("Name and Price are required, Honey!", "error");
+        // ========== AUTH ==========
+        async function handleAdminSignIn(e) {
+            e.preventDefault();
+            const btn = document.getElementById('adminSignInBtn');
+            const errEl = document.getElementById('authError');
+            errEl.style.display = 'none';
+            btn.disabled = true;
+            btn.textContent = 'Signing in...';
+            const { data, error } = await supabaseClient.auth.signInWithPassword({
+                email: document.getElementById('adminEmail').value.trim(),
+                password: document.getElementById('adminPassword').value
+            });
+            if (error) { errEl.textContent = error.message; errEl.style.display = 'block'; btn.disabled = false; btn.textContent = 'Sign In'; return; }
+            // Check admin status
+            const { data: profile } = await supabaseClient.from('zhu').select('is_admin, name').eq('id', data.user.id).single();
+            if (!profile || !profile.is_admin) {
+                errEl.textContent = 'Access denied. You are not an admin.';
+                errEl.style.display = 'block';
+                await supabaseClient.auth.signOut();
+                btn.disabled = false;
+                btn.textContent = 'Sign In';
                 return;
             }
+            currentUser = data.user;
+            enterDashboard();
+        }
 
-            try {
-                const table = type === 'product' ? 'products' : 'services';
-                const { error } = await sb.from(table).insert({
-                    name,
-                    price: parseFloat(price),
-                    description: desc
-                });
+        async function handleSignOut() {
+            if (chatPoll) clearInterval(chatPoll);
+            await supabaseClient.auth.signOut();
+            currentUser = null;
+            document.getElementById('dashboardPage').style.display = 'none';
+            document.getElementById('authPage').style.display = 'flex';
+            document.getElementById('adminEmail').value = '';
+            document.getElementById('adminPassword').value = '';
+            document.getElementById('adminSignInBtn').disabled = false;
+            document.getElementById('adminSignInBtn').textContent = 'Sign In';
+        }
 
-                if (error) throw error;
-                
-                document.getElementById(nameId).value = '';
-                document.getElementById(priceId).value = '';
-                document.getElementById(descId).value = '';
-                
-                showToast(`${type === 'product' ? 'Apparel' : 'Service'} added successfully!`, "success");
-                loadInventory();
-            } catch (err) {
-                showToast(err.message, "error");
+        function enterDashboard() {
+            document.getElementById('authPage').style.display = 'none';
+            document.getElementById('dashboardPage').style.display = 'block';
+            loadDashboard();
+            loadProducts();
+            loadOrders();
+            loadConversations();
+            startChatPolling();
+            lucide.createIcons();
+            navigateTo('dashSection', document.querySelector('.nav-btn.active-nav'));
+        }
+
+        // ========== NAVIGATION ==========
+        function navigateTo(sectionId, btn) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active-nav'));
+            if (btn) btn.classList.add('active-nav');
+            if (window.innerWidth <= 768) document.getElementById('sidebar').classList.remove('open');
+        }
+
+        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
+
+        // ========== DASHBOARD ==========
+        async function loadDashboard() {
+            const { data: prods } = await supabaseClient.from('zhp').select('id');
+            const { data: ords } = await supabaseClient.from('orders').select('*').order('created_at', { ascending: false }).limit(100);
+            allOrders = ords || [];
+            const revenue = allOrders.reduce((s, o) => s + Number(o.total_price), 0);
+            const pending = allOrders.filter(o => o.status === 'pending').length;
+            document.getElementById('dashProducts').textContent = (prods || []).length;
+            document.getElementById('dashOrders').textContent = allOrders.length;
+            document.getElementById('dashRevenue').textContent = 'KES ' + revenue.toLocaleString();
+            document.getElementById('dashPending').textContent = pending;
+
+            // Recent orders (last 5)
+            const recent = allOrders.slice(0, 5);
+            const tbody = document.getElementById('dashRecentOrders');
+            if (!recent.length) { tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#9ca3af;padding:2rem">No orders yet</td></tr>'; return; }
+            tbody.innerHTML = recent.map(o => {
+                const items = Array.isArray(o.items) ? o.items : JSON.parse(o.items || '[]');
+                const itemNames = items.map(i => i.name).join(', ');
+                const date = new Date(o.created_at).toLocaleDateString('en-KE', { day: 'numeric', month: 'short' });
+                return `<tr>
+                    <td style="font-weight:600">${o.name}</td>
+                    <td>${itemNames}</td>
+                    <td style="font-weight:700;color:#d6336c">KES ${Number(o.total_price).toLocaleString()}</td>
+                    <td><span class="status-badge status-${o.status}">${o.status}</span></td>
+                    <td style="color:#9ca3af">${date}</td>
+                </tr>`;
+            }).join('');
+        }
+
+        // ========== PRODUCTS ==========
+        async function loadProducts() {
+            const { data, error } = await supabaseClient.from('zhp').select('*').order('created_at', { ascending: false });
+            if (error) { console.error(error); return; }
+            allProducts = data || [];
+            renderProducts();
+        }
+
+        function renderProducts() {
+            const list = document.getElementById('productsList');
+            const empty = document.getElementById('productsEmpty');
+            if (!allProducts.length) { list.innerHTML = ''; empty.style.display = 'block'; return; }
+            empty.style.display = 'none';
+            list.innerHTML = allProducts.map(p => `
+                <div class="admin-product-card">
+                    <img src="${p.image_url || 'https://picsum.photos/seed/' + p.id + '/128/128.jpg'}" alt="${p.name}" onerror="this.src='https://picsum.photos/seed/${p.id}/128/128.jpg'">
+                    <div style="flex:1;min-width:0">
+                        <div style="font-weight:700;font-size:.95rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${p.name}</div>
+                        <div style="font-size:.78rem;color:#9ca3af;margin-top:.15rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${p.description || 'No description'}</div>
+                        <div style="display:flex;gap:1rem;margin-top:.5rem;flex-wrap:wrap">
+                            <span style="font-size:.85rem;font-weight:800;color:#d6336c">KES ${Number(p.price).toLocaleString()}</span>
+                            <span style="font-size:.8rem;color:${p.stock > 0 ? '#059669' : '#dc2626'};font-weight:600">${p.stock} in stock</span>
+                        </div>
+                    </div>
+                    <button class="btn-danger" onclick="deleteProduct('${p.id}')">
+                        <i data-lucide="trash-2" style="width:14px;height:14px"></i> Delete
+                    </button>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        function toggleAddProduct() {
+            const form = document.getElementById('addProductForm');
+            form.style.display = form.style.display === 'none' ? 'block' : 'none';
+        }
+
+        async function addProduct(e) {
+            e.preventDefault();
+            const btn = document.getElementById('addProductBtn');
+            btn.disabled = true;
+            btn.textContent = 'Adding...';
+            const { error } = await supabaseClient.from('zhp').insert({
+                name: document.getElementById('pName').value.trim(),
+                description: document.getElementById('pDesc').value.trim(),
+                price: Number(document.getElementById('pPrice').value),
+                stock: Number(document.getElementById('pStock').value),
+                image_url: document.getElementById('pImage').value.trim() || null
+            });
+            btn.disabled = false;
+            btn.textContent = 'Add Product';
+            if (error) { showToast('Failed: ' + error.message, 'error'); return; }
+            showToast('Product added successfully! 🎉', 'success');
+            document.getElementById('pName').value = '';
+            document.getElementById('pDesc').value = '';
+            document.getElementById('pPrice').value = '';
+            document.getElementById('pStock').value = '';
+            document.getElementById('pImage').value = '';
+            toggleAddProduct();
+            loadProducts();
+            loadDashboard();
+        }
+
+        async function deleteProduct(id) {
+            if (!confirm('Delete this product?')) return;
+            const { error } = await supabaseClient.from('zhp').delete().eq('id', id);
+            if (error) { showToast('Failed: ' + error.message, 'error'); return; }
+            showToast('Product deleted', 'success');
+            loadProducts();
+            loadDashboard();
+        }
+
+        // ========== ORDERS ==========
+        async function loadOrders() {
+            const { data, error } = await supabaseClient.from('orders').select('*').order('created_at', { ascending: false });
+            if (error) { console.error(error); return; }
+            allOrders = data || [];
+            renderOrders();
+        }
+
+        function renderOrders() {
+            const tbody = document.getElementById('ordersTableBody');
+            const empty = document.getElementById('ordersEmpty');
+            if (!allOrders.length) { tbody.innerHTML = ''; empty.style.display = 'block'; return; }
+            empty.style.display = 'none';
+            tbody.innerHTML = allOrders.map(o => {
+                const items = Array.isArray(o.items) ? o.items : JSON.parse(o.items || '[]');
+                const itemNames = items.map(i => `${i.name} x${i.qty}`).join(', ');
+                const date = new Date(o.created_at).toLocaleDateString('en-KE', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+                return `<tr>
+                    <td style="font-family:monospace;font-size:.75rem;color:#9ca3af">${o.id.slice(0, 8).toUpperCase()}</td>
+                    <td style="font-weight:600">${o.name}</td>
+                    <td>${o.location || '—'}</td>
+                    <td>${o.number || '—'}</td>
+                    <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${itemNames}">${itemNames}</td>
+                    <td style="text-align:center">${o.amount}</td>
+                    <td style="font-weight:700;color:#d6336c">KES ${Number(o.total_price).toLocaleString()}</td>
+                    <td>
+                        <select class="status-select" onchange="updateOrderStatus('${o.id}', this.value)">
+                            <option value="pending" ${o.status === 'pending' ? 'selected' : ''}>Pending</option>
+                            <option value="processing" ${o.status === 'processing' ? 'selected' : ''}>Processing</option>
+                            <option value="shipped" ${o.status === 'shipped' ? 'selected' : ''}>Shipped</option>
+                            <option value="delivered" ${o.status === 'delivered' ? 'selected' : ''}>Delivered</option>
+                            <option value="cancelled" ${o.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
+                        </select>
+                    </td>
+                    <td style="font-size:.78rem;color:#9ca3af;white-space:nowrap">${date}</td>
+                </tr>`;
+            }).join('');
+        }
+
+        async function updateOrderStatus(orderId, status) {
+            const { error } = await supabaseClient.from('orders').update({ status }).eq('id', orderId);
+            if (error) { showToast('Failed to update status', 'error'); return; }
+            showToast('Order status updated', 'success');
+            loadDashboard();
+        }
+
+        // ========== CHAT ==========
+        async function loadConversations() {
+            const { data, error } = await supabaseClient.from('conversations').select('*').order('updated_at', { ascending: false });
+            if (error) { console.error(error); return; }
+            conversations = data || [];
+            renderConversations();
+        }
+
+        function renderConversations() {
+            const list = document.getElementById('convList');
+            if (!conversations.length) {
+                list.innerHTML = '<div style="padding:2rem;text-align:center;color:#9ca3af;font-size:.88rem">No conversations yet</div>';
+                return;
+            }
+            list.innerHTML = conversations.map(c => {
+                const time = c.updated_at ? new Date(c.updated_at).toLocaleDateString('en-KE', { day: 'numeric', month: 'short' }) : '';
+                return `<div class="chat-conv-item ${c.id === activeConvId ? 'active' : ''}" onclick="openConversation('${c.id}')">
+                    <div style="display:flex;align-items:center;gap:.75rem">
+                        <div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#d6336c,#e84393);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:.8rem;flex-shrink:0">${(c.user_name || '?').split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()}</div>
+                        <div style="min-width:0;flex:1">
+                            <div class="chat-conv-name">${c.user_name || 'Unknown'}</div>
+                            <div class="chat-conv-preview" id="convPreview_${c.id}">Tap to view</div>
+                            <div class="chat-conv-time">${time}</div>
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
+
+            // Load last message for each conversation
+            conversations.forEach(async c => {
+                const { data: msgs } = await supabaseClient.from('chat_messages').select('message,created_at').eq('conversation_id', c.id).order('created_at', { ascending: false }).limit(1);
+                if (msgs && msgs.length) {
+                    const el = document.getElementById('convPreview_' + c.id);
+                    if (el) el.textContent = msgs[0].message;
+                }
+            });
+        }
+
+        async function openConversation(convId) {
+            activeConvId = convId;
+            renderConversations();
+            document.getElementById('chatWindowHeader').style.display = 'block';
+            document.getElementById('chatWindowInput').style.display = 'flex';
+            const conv = conversations.find(c => c.id === convId);
+            if (conv) {
+                document.getElementById('chatUserName').textContent = conv.user_name || 'Customer';
+            }
+            loadChatMessages();
+            lucide.createIcons();
+        }
+
+        async function loadChatMessages() {
+            if (!activeConvId) return;
+            const { data } = await supabaseClient.from('chat_messages').select('*').eq('conversation_id', activeConvId).order('created_at', { ascending: true });
+            if (!data) return;
+            const container = document.getElementById('chatWindowMessages');
+            const wasAtBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 50;
+            container.innerHTML = data.map(m => {
+                const time = new Date(m.created_at).toLocaleTimeString('en-KE', { hour: '2-digit', minute: '2-digit' });
+                return `<div class="chat-msg ${m.sender_type}">
+                    <div>
+                        <div class="msg-bubble">${m.message}</div>
+                        <div class="msg-time" style="${m.sender_type === 'user' ? 'text-align:right' : ''}">${time}</div>
+                    </div>
+                </div>`;
+            }).join('');
+            if (wasAtBottom || !container.dataset.loaded) {
+                container.scrollTop = container.scrollHeight;
+                container.dataset.loaded = '1';
             }
         }
 
-        async function updateStatus(id, status) {
-            try {
-                const { error } = await sb.from('orders').update({ status }).eq('id', id);
-                if (error) throw error;
-                showToast("Order status updated!", "success");
-                loadOrders();
-            } catch (err) {
-                showToast(err.message, "error");
-            }
+        async function sendAdminReply() {
+            const input = document.getElementById('adminChatInput');
+            const text = input.value.trim();
+            if (!text || !activeConvId) return;
+            input.value = '';
+            await supabaseClient.from('chat_messages').insert({
+                conversation_id: activeConvId,
+                sender_type: 'admin',
+                message: text
+            });
+            await supabaseClient.from('conversations').update({ updated_at: new Date().toISOString() }).eq('id', activeConvId);
+            loadChatMessages();
         }
 
-        async function deleteData(table, id) {
-            if (!confirm("Are you sure you want to remove this? This cannot be undone!")) return;
-            
-            try {
-                const { error } = await sb.from(table).delete().eq('id', id);
-                if (error) throw error;
-                showToast("Item removed from the boutique.", "success");
-                refreshData();
-            } catch (err) {
-                showToast(err.message, "error");
-            }
-        }
-
-        // UTILS
-        function showToast(msg, type = 'success') {
-            const t = document.getElementById('toast');
-            t.innerText = msg;
-            t.classList.remove('bg-slate-900', 'bg-green-500', 'bg-red-500', 'bg-pink-500');
-            
-            if (type === 'success') t.classList.add('bg-pink-500');
-            else if (type === 'error') t.classList.add('bg-red-500');
-            else t.classList.add('bg-slate-900');
-            
-            t.classList.replace('translate-y-20', 'translate-y-0');
-            t.classList.replace('opacity-0', 'opacity-100');
-            
-            setTimeout(() => {
-                t.classList.replace('translate-y-0', 'translate-y-20');
-                t.classList.replace('opacity-100', 'opacity-0');
+        function startChatPolling() {
+            if (chatPoll) clearInterval(chatPoll);
+            chatPoll = setInterval(() => {
+                loadConversations();
+                if (activeConvId) loadChatMessages();
             }, 3000);
         }
+
+        // ========== TOAST ==========
+        function showToast(msg, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.className = 'toast toast-' + type + ' show';
+            setTimeout(() => toast.classList.remove('show'), 3500);
+        }
+
+        // ========== INIT ==========
+        async function init() {
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            if (session) {
+                const { data: profile } = await supabaseClient.from('zhu').select('is_admin').eq('id', session.user.id).single();
+                if (profile && profile.is_admin) {
+                    currentUser = session.user;
+                    enterDashboard();
+                } else {
+                    await supabaseClient.auth.signOut();
+                }
+            }
+            lucide.createIcons();
+        }
+        init();
     </script>
 </body>
+
 </html>
