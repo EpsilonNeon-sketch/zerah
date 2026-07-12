@@ -1550,4 +1550,36 @@
         </div>
     </div>
 </div>
+    <script>
+(function(){
+    var authPage = document.getElementById('authPage');
+    var authCard = authPage ? authPage.querySelector('.auth-card') : null;
+    if (!authPage || !authCard) return;
+
+    /* Allow the auth page itself to scroll when content overflows */
+    authPage.style.overflowY = 'auto';
+    authPage.style.alignItems = 'flex-start';
+    authPage.style.padding = '2rem 1rem';
+
+    /* Let the card grow naturally instead of clipping */
+    authCard.style.overflow = 'visible';
+
+    /* Custom scrollbar for the auth page */
+    var scrollStyle = document.createElement('style');
+    scrollStyle.id = 'auth-scroll-style';
+    scrollStyle.textContent = [
+        '#authPage::-webkit-scrollbar { width: 6px; }',
+        '#authPage::-webkit-scrollbar-track { background: transparent; }',
+        '#authPage::-webkit-scrollbar-thumb {',
+        '  background: linear-gradient(180deg, #7c3aed, #ec4899);',
+        '  border-radius: 10px;',
+        '}',
+        '#authPage::-webkit-scrollbar-thumb:hover {',
+        '  background: linear-gradient(180deg, #6d28d9, #db2777);',
+        '}',
+        '#authPage { scrollbar-width: thin; scrollbar-color: #7c3aed transparent; }'
+    ].join('\n');
+    document.head.appendChild(scrollStyle);
+})();
+</script>
 </body></html>
